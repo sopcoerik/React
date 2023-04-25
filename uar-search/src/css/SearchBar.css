@@ -1,0 +1,22 @@
+.form--container {
+  display: flex;
+  justify-content: center;
+  margin: 3rem 0;
+  padding: 3rem 0;
+  line-height: 1.8;
+  border-top: 1px solid goldenrod;
+  border-bottom: 1px solid goldenrod;
+}
+
+label {
+  font-size: 2rem;
+  color: #444;
+}
+
+input {
+  width: 92%;
+  padding: 0.75rem;
+  font-size: 1.5rem;
+  color: #555;
+  outline-color: goldenrod;
+}

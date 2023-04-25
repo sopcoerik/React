@@ -1,0 +1,4 @@
+.images--container {
+  columns: 6 400px;
+  gap: 1rem;
+}
