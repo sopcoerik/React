@@ -1,0 +1,31 @@
+.animals {
+  width: 12rem;
+  height: 12rem;
+  position: relative;
+  margin: 1rem;
+}
+
+button {
+  width: 30%;
+}
+
+.heart {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.animals-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.all-animals {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.animal {
+  width: 100%;
+}
