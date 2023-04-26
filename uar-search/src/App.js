@@ -5,23 +5,17 @@ import ImageList from "./components/ImageList";
 import "./css/App.css";
 
 function App() {
-  const [searchedItems, setSearchedItems] = useState([]);
+  const [images, setImages] = useState([]);
 
-  const [imagesToSend, setImagesToSend] = useState([]);
-
-  const handleSubmit = (items) => {
-    setSearchedItems(items);
-    sendImagesToImageList();
-  };
-
-  const sendImagesToImageList = async () => {
-    setImagesToSend(await getQueryFromAPI(searchedItems));
+  const handleSubmit = async (query) => {
+    const imagesData = await getQueryFromAPI(query)
+    setImages(imagesData);
   };
 
   return (
     <div>
       <SearchBar onSubmit={handleSubmit} />
-      <ImageList images={imagesToSend} />
+      <ImageList images={images} />
     </div>
   );
 }
