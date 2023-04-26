@@ -1,8 +1,8 @@
-import ShowBook from "./ShowBook";
+import BookCard from "./BookCard";
 
 function ListBooks({ books, handleEditBook, handleDeleteBook }) {
   const renderedBooks = books.map((book) => (
-    <ShowBook
+    <BookCard
       book={book}
       key={book.id}
       handleEditBook={handleEditBook}
