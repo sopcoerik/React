@@ -2,7 +2,7 @@ import EditBook from "./EditBook";
 
 import { useState } from "react";
 
-function ShowBook({ book, handleEditBook, handleDeleteBook }) {
+function BookCard({ book, handleEditBook, handleDeleteBook }) {
   const [editState, setEditState] = useState(false);
 
   const handleEditButtonClick = () => {
@@ -25,8 +25,7 @@ function ShowBook({ book, handleEditBook, handleDeleteBook }) {
     <div>Title: {book.title}</div>
   );
 
-  const randomIDForLink = Math.floor(Math.random() * 99999);
-  const imageLink = `https://picsum.photos/seed/${randomIDForLink}/300/200`;
+  const imageLink = `https://picsum.photos/seed/${book.id}/300/200`;
   return (
     <div className="book-show">
       <img alt="image" src={imageLink} />
@@ -39,4 +38,4 @@ function ShowBook({ book, handleEditBook, handleDeleteBook }) {
   );
 }
 
-export default ShowBook;
+export default BookCard;
