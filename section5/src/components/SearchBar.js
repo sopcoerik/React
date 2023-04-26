@@ -19,7 +19,7 @@ function SearchBar({ onSubmit }) {
       <form onSubmit={handleSubmit}>
         <label>Enter a keyword to search:</label>
         <br />
-        <input onChange={handleChange} />
+        <input onChange={handleChange} value={searchedTerm} />
       </form>
     </div>
   );

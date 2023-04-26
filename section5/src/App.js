@@ -8,7 +8,7 @@ function App() {
   const [images, setImages] = useState([]);
 
   const handleSubmit = async (query) => {
-    const imagesData = await getQueryFromAPI(query)
+    const imagesData = await getQueryFromAPI(query);
     setImages(imagesData);
   };
 
