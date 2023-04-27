@@ -5,11 +5,17 @@ import axios from "axios";
 
 import { useState, useEffect } from "react";
 
+var localBaseUrl;
+// localBaseUrl = 'http://localhost:3001/'
+const baseUrl = localBaseUrl || "https://xwqd95-3001.csb.app/";
+
+const booksApiUrl = baseUrl + "books";
+
 function App() {
   const [books, setBooks] = useState([]);
 
   const handleFetchBooks = async () => {
-    const response = await axios.get(`http://localhost:3001/books`);
+    const response = await axios.get(booksApiUrl);
 
     setBooks(response.data);
   };
@@ -19,7 +25,7 @@ function App() {
   }, []);
 
   const handleCreateBook = async (title) => {
-    const response = await axios.post(`http://localhost:3001/books`, {
+    const response = await axios.post(booksApiUrl, {
       title,
     });
 
@@ -29,7 +35,7 @@ function App() {
   };
 
   const handleEditBook = async (newTitle, id) => {
-    const response = await axios.put(`http://localhost:3001/books/${id}`, {
+    const response = await axios.put(`${booksApiUrl}/${id}`, {
       title: newTitle,
     });
 
@@ -45,10 +51,9 @@ function App() {
   };
 
   const handleDeleteBook = async (id) => {
-    const response = await axios.delete(`http://localhost:3001/books/${id}`);
+    const response = await axios.delete(`${booksApiUrl}/${id}`);
 
     const updatedBooksArray = books.filter((book) => book.id !== id);
-
     setBooks(updatedBooksArray);
   };
 
