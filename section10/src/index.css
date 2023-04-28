@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.accordeon-container {
+  width: 15rem;
+  margin-left: 2rem;
+}
+
+.accordeon {
+  border: 1px solid gray;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.accordeon-header {
+  font-size: 1.5rem;
+  text-align: center;
+  border-bottom: 1px solid gray;
+  background-color: rgb(241, 241, 241);
+}
+
+.accordeon-content {
+  font-size: 1.1rem;
+  line-height: 1.3;
+}

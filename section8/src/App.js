@@ -10,7 +10,7 @@ function App() {
 
   useEffect(() => {
     handleFetchBooks();
-  }, []);
+  }, [handleFetchBooks]);
 
   return (
     <div className="app">
