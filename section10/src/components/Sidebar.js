@@ -1,13 +1,18 @@
 import Link from "./Link";
 
 function Sidebar() {
-  return (
-    <div className="nav">
-      <Link path={"/"}>Dropdown</Link>
-      <Link path={"/accordeon"}>Accordeon</Link>
-      <Link path={"/buttons"}>Buttons</Link>
-    </div>
-  );
+  const links = [
+    { name: "Dropdown", path: "/" },
+    { name: "Accordeon", path: "/accordeon" },
+    { name: "Buttons", path: "/buttons" },
+    { name: "Modal", path: "/modal" },
+  ];
+
+  const renderedLinks = links.map((link) => {
+    return <Link path={link.path}>{link.name}</Link>;
+  });
+
+  return <div className="nav">{renderedLinks}</div>;
 }
 
 export default Sidebar;
