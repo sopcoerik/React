@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.accordeon-container {
+  width: 15rem;
+  margin-left: 2rem;
+}
+
+.accordeon {
+  border: 1px solid gray;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.accordeon-header {
+  font-size: 1.5rem;
+  text-align: center;
+  border-bottom: 1px solid gray;
+  background-color: rgb(241, 241, 241);
+}
+
+.accordeon-content {
+  font-size: 1.1rem;
+  line-height: 1.3;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  margin: 5rem 3rem;
+  width: 5rem;
+}
+
+.link {
+  font-size: 1.5rem;
+  color: rgb(59, 114, 218);
+  padding: 1rem;
+}
+
+.active-link {
+  border-left: 3px rgb(59, 114, 218) solid;
+  font-weight: bold;
+}
+
+.app-container {
+  display: grid;
+  grid-template-columns: 1fr 10fr;
+  gap: 2rem;
+}
