@@ -10,13 +10,16 @@ function SortableTable({ data, config, addKey }) {
       setSortState(sortState);
     }
 
-    sortState === null
-      ? setSortState("asc")
-      : sortState === "asc"
-      ? setSortState("desc")
-      : setSortState(null);
-
-    setSortedByValue(label);
+    if (sortState === null) {
+      setSortState("asc");
+      setSortedByValue(label);
+    } else if (sortState === "asc") {
+      setSortState("desc");
+      setSortedByValue(label);
+    } else {
+      setSortState(null);
+      setSortedByValue(null);
+    }
   };
 
   const sortedData = data.sort((a, b) => {

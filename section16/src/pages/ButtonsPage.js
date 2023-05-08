@@ -12,8 +12,8 @@ function ButtonsPage() {
           Secondary
         </Button>
         <Button success>Success</Button>
-        <Button outlined primary>
-          Primary & Outlined
+        <Button outlined warning>
+          Warning & Outlined
         </Button>
         <Button danger rounded>
           Danger & Rounded
