@@ -17,10 +17,8 @@ const carSlice = createSlice({
     },
 
     removeCar(state, action) {
-      const updatedDataArray = state.data.filter(
-        (car) => car.id !== action.payload
-      );
-      state.data = updatedDataArray;
+      const updated = state.data.filter((car) => car.id !== action.payload);
+      state.data = updated;
     },
 
     changeSearchTerm(state, action) {
@@ -30,4 +28,4 @@ const carSlice = createSlice({
 });
 
 export const { addCar, removeCar, changeSearchTerm } = carSlice.actions;
-export const carsReducer = carSlice.reducer;
+export const carReducer = carSlice.reducer;

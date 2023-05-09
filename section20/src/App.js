@@ -1,15 +1,22 @@
-import CarForm from "./components/CarForm";
-import CarList from "./components/CarList";
-import CarSearch from "./components/CarSearch";
-import CarValue from "./components/CarValue";
+import AddCarForm from "./components/AddCarForm";
+import ListOfCars from "./components/ListOfCars";
+import SearchCar from "./components/SearchCar";
+import TotalValueOfCars from "./components/TotalValueOfCars";
 
 function App() {
   return (
     <div>
-      <CarForm />
-      <CarSearch />
-      <CarList />
-      <CarValue />
+      <label>Add a car:</label>
+      <AddCarForm />
+      <hr />
+      <label>Search in Owned Cars:</label>
+      <SearchCar />
+      <hr />
+      <label>List of Owned Cars:</label>
+      <ListOfCars />
+      <hr />
+      <label>Total Value of Cars:</label>
+      <TotalValueOfCars />
     </div>
   );
 }
