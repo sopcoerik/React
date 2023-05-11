@@ -1,0 +1,30 @@
+{
+  "users": [
+    {
+      "name": "Dr. Leo Schneider",
+      "id": 1
+    },
+    {
+      "name": "Muriel Koss",
+      "id": 2
+    },
+    {
+      "name": "Esther Kulas",
+      "id": 3
+    }
+  ],
+  "albums": [
+    {
+      "title": "Refined Bronze Car",
+      "userId": 1,
+      "id": 1
+    }
+  ],
+  "photos": [
+    {
+      "albumId": 1,
+      "url": "https://loremflickr.com/150/150/abstract?lock=43189",
+      "id": 3
+    }
+  ]
+}
