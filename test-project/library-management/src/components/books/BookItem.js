@@ -2,9 +2,11 @@ import { useState } from "react";
 import { useBooksContext } from "../../hooks/useBooksContext";
 
 import AddBookModal from "./AddBookModal";
+import { useAuthorsContext } from "../../hooks/useAuthorsContext";
 
 function BookItem({ book }) {
   const { setBooks, books, deleteBook } = useBooksContext();
+  const { authors } = useAuthorsContext();
 
   const [isEdited, setIsEdited] = useState(false);
 
@@ -16,6 +18,7 @@ function BookItem({ book }) {
     setBooks(updatedBooks);
   };
 
+  const { name: bookAuthor } = authors.find((author) => author.id === book.id);
   const handleEditBook = () => {
     setIsEdited(true);
   };
@@ -23,7 +26,7 @@ function BookItem({ book }) {
     <>
       <tr>
         <td>{book.title}</td>
-        <td>{book.author}</td>
+        <td>{bookAuthor}</td>
         <td>{book.description}</td>
         <td>
           <button
