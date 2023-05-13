@@ -18,7 +18,9 @@ function BookItem({ book }) {
     setBooks(updatedBooks);
   };
 
-  const { name: bookAuthor } = authors.find((author) => author.id === book.id);
+  const { name: bookAuthor } = authors.find(
+    (author) => author.id === book.authorId
+  );
   const handleEditBook = () => {
     setIsEdited(true);
   };

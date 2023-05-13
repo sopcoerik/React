@@ -32,7 +32,10 @@ function BooksList() {
         <tbody>{renderedBooks}</tbody>
       </table>
       <div className="flex justify-end m-3">
-        <button className="border rounded px-3 py-1" onClick={handleAddBook}>
+        <button
+          className="border rounded hover:bg-blue-400 px-3 py-1"
+          onClick={handleAddBook}
+        >
           + Add Book
         </button>
       </div>
