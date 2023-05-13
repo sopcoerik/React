@@ -1,21 +1,25 @@
 import { useState } from "react";
 import { useBooksContext } from "../../hooks/useBooksContext";
+import { useAuthorsContext } from "../../hooks/useAuthorsContext";
 import axios from "axios";
+import Dropdown from "../utils/Dropdown";
 
 import "./form.css";
 function Form({ book, setIsEdited, handleCancelForm }) {
   const { setModalIsOpen, books, setBooks } = useBooksContext();
+  const { authors } = useAuthorsContext();
 
   const [title, setTitle] = useState(book?.title || "");
-  const [author, setAuthor] = useState(book?.author || "");
   const [description, setDescription] = useState(book?.description || "");
+  const [selectedAuthor, setSelectedAuthor] = useState("");
 
   const addBook = async () => {
     const response = await axios.post(
       "https://645e200d12e0a87ac0e837cd.mockapi.io/books",
       {
         title,
-        author,
+        authorId: selectedAuthor.id,
+        author: selectedAuthor.name,
         description,
       }
     );
@@ -28,7 +32,7 @@ function Form({ book, setIsEdited, handleCancelForm }) {
       `https://645e200d12e0a87ac0e837cd.mockapi.io/books/${book.id}`,
       {
         title,
-        author,
+        author: selectedAuthor.name,
         description,
       }
     );
@@ -43,10 +47,6 @@ function Form({ book, setIsEdited, handleCancelForm }) {
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
-  };
-
-  const handleAuthorChange = (e) => {
-    setAuthor(e.target.value);
   };
 
   const handleDescriptionChange = (e) => {
@@ -68,11 +68,10 @@ function Form({ book, setIsEdited, handleCancelForm }) {
           placeholder="Book Title"
           onChange={handleTitleChange}
         />
-        <input
-          value={author}
-          type="text"
-          placeholder="Book Author"
-          onChange={handleAuthorChange}
+        <Dropdown
+          options={authors}
+          selectedAuthor={selectedAuthor}
+          setSelectedAuthor={setSelectedAuthor}
         />
         <input
           value={description}
