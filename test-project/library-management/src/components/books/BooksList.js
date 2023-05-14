@@ -12,9 +12,9 @@ function BooksList() {
 
   const renderedBooks = books.map(
     (book) =>
-      (book.title.includes(searchTerm) ||
-        book.author.includes(searchTerm) ||
-        book.description.includes(searchTerm)) && (
+      (book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        book.description.toLowerCase().includes(searchTerm.toLowerCase())) && (
         <BookItem key={book.id} book={book} />
       )
   );

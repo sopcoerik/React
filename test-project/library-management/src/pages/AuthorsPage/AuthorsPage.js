@@ -1,14 +1,14 @@
 import AuthorsList from "../../components/authors/AuthorsList";
 import SearchAuthors from "../../components/authors/SearchAuthors";
 
-function AuthorsPage() {
+function AuthorsPage({ navigate }) {
   return (
     <div>
       <div>
         <SearchAuthors />
       </div>
       <div>
-        <AuthorsList />
+        <AuthorsList navigate={navigate} />
       </div>
     </div>
   );

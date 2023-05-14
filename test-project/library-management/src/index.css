@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.dark {
+  background-color: rgb(34, 32, 32);
+  color: #fff;
+}
+
+.dark input {
+  background-color: rgb(34, 32, 32);
+}

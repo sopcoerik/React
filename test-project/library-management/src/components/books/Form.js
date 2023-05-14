@@ -1,61 +1,84 @@
-import { useState } from "react";
+import { useReducer } from "react";
 import { useBooksContext } from "../../hooks/useBooksContext";
 import { useAuthorsContext } from "../../hooks/useAuthorsContext";
-import axios from "axios";
 import Dropdown from "../utils/Dropdown";
 
 import "./form.css";
 function Form({ book, setIsEdited, handleCancelForm }) {
-  const { setModalIsOpen, books, setBooks } = useBooksContext();
+  const { setModalIsOpen, addBook, editBook } = useBooksContext();
   const { authors } = useAuthorsContext();
 
-  const [title, setTitle] = useState(book?.title || "");
-  const [description, setDescription] = useState(book?.description || "");
-  const [selectedAuthor, setSelectedAuthor] = useState("");
+  const CHANGE_TITLE = "change_title";
+  const CHANGE_DESCRIPTION = "change_description";
+  const CHANGE_SELECTED_AUTHOR = "change_selected_author";
 
-  const addBook = async () => {
-    const response = await axios.post(
-      "https://645e200d12e0a87ac0e837cd.mockapi.io/books",
-      {
-        title,
-        authorId: selectedAuthor.id,
-        author: selectedAuthor.name,
-        description,
-      }
-    );
-
-    setBooks([...books, response.data]);
+  const formReducer = (state, action) => {
+    switch (action.type) {
+      case CHANGE_TITLE:
+        return {
+          title: action.payload,
+          description: state.description,
+          selectedAuthor: state.selectedAuthor,
+        };
+      case CHANGE_DESCRIPTION:
+        return {
+          title: state.title,
+          description: action.payload,
+          selectedAuthor: state.selectedAuthor,
+        };
+      case CHANGE_SELECTED_AUTHOR:
+        return {
+          title: state.title,
+          description: state.description,
+          selectedAuthor: action.payload,
+        };
+      default:
+        return;
+    }
   };
 
-  const editBook = async (book) => {
-    const response = await axios.put(
-      `https://645e200d12e0a87ac0e837cd.mockapi.io/books/${book.id}`,
-      {
-        title,
-        author: selectedAuthor.name,
-        description,
-      }
-    );
-
-    const findBook = books.find((book) => book.id === response.data.id);
-    const index = books.indexOf(findBook);
-    const updatedBooks = books.map((book, i) =>
-      i === index ? response.data : book
-    );
-    setBooks(updatedBooks);
-  };
+  const [state, dispatch] = useReducer(formReducer, {
+    title: book?.title || "",
+    description: book?.description || "",
+    selectedAuthor: {},
+  });
 
   const handleTitleChange = (e) => {
-    setTitle(e.target.value);
+    dispatch({
+      type: CHANGE_TITLE,
+      payload: e.target.value,
+    });
+  };
+
+  const setSelectedAuthor = (value) => {
+    dispatch({
+      type: CHANGE_SELECTED_AUTHOR,
+      payload: value,
+    });
   };
 
   const handleDescriptionChange = (e) => {
-    setDescription(e.target.value);
+    dispatch({
+      type: CHANGE_DESCRIPTION,
+      payload: e.target.value,
+    });
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    book ? editBook(book) : addBook();
+    book
+      ? editBook(
+          book,
+          state.title,
+          state.selectedAuthor.name,
+          state.description
+        )
+      : addBook(
+          state.title,
+          state.selectedAuthor.id,
+          state.selectedAuthor.name,
+          state.description
+        );
     setIsEdited ? setIsEdited(false) : setModalIsOpen(false);
   };
 
@@ -63,25 +86,27 @@ function Form({ book, setIsEdited, handleCancelForm }) {
     <div className="absolute form bg-white w-1/2 h-1/2 rounded border">
       <form onSubmit={handleFormSubmit}>
         <input
-          value={title}
+          value={state.title}
           type="text"
           placeholder="Book Title"
           onChange={handleTitleChange}
         />
         <Dropdown
           options={authors}
-          selectedAuthor={selectedAuthor}
+          selectedAuthor={state.selectedAuthor}
           setSelectedAuthor={setSelectedAuthor}
         />
         <input
-          value={description}
+          value={state.description}
           type="text"
           placeholder="Book Description"
           onChange={handleDescriptionChange}
         />
         <button>Submit</button>
       </form>
-      <button onClick={handleCancelForm}>Cancel</button>
+      <button onClick={handleCancelForm} className="m-2">
+        Cancel
+      </button>
     </div>
   );
 }

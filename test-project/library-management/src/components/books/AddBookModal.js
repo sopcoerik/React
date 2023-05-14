@@ -3,14 +3,17 @@ import Form from "./Form";
 import { useBooksContext } from "../../hooks/useBooksContext";
 
 function AddBookModal({ isOpen, book, setIsEdited }) {
-  const { books, setBooks, setModalIsOpen } = useBooksContext();
+  const { setModalIsOpen } = useBooksContext();
 
   if (!isOpen) {
     return null;
   }
 
   const handleCancelForm = (e) => {
-    if (e.target.classList.contains("top-0")) {
+    if (
+      e.target.classList.contains("bg-gray-300") ||
+      e.target.classList.contains("m-2")
+    ) {
       setIsEdited ? setIsEdited(false) : setModalIsOpen(false);
     }
   };
@@ -21,9 +24,6 @@ function AddBookModal({ isOpen, book, setIsEdited }) {
       onClick={handleCancelForm}
     >
       <Form
-        books={books}
-        setBooks={setBooks}
-        setModalIsOpen={setModalIsOpen}
         book={book}
         setIsEdited={setIsEdited}
         handleCancelForm={handleCancelForm}

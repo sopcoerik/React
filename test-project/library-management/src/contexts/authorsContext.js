@@ -7,6 +7,7 @@ function AuthorsProvider({ children }) {
   const [authors, setAuthors] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [toEdit, setToEdit] = useState("");
 
   const fetchAuthors = async () => {
     const response = await axios.get(
@@ -70,6 +71,8 @@ function AuthorsProvider({ children }) {
     editAuthor,
     searchTerm,
     setSearchTerm,
+    setToEdit,
+    toEdit,
   };
 
   return (

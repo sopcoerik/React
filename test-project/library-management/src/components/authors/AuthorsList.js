@@ -2,11 +2,17 @@ import { useState } from "react";
 import AddAuthorModal from "./AddAuthorModal";
 import { useAuthorsContext } from "../../hooks/useAuthorsContext";
 
-function AuthorsList() {
-  const { deleteAuthor, setModalIsOpen, authors, modalIsOpen, searchTerm } =
-    useAuthorsContext();
+function AuthorsList({ navigate }) {
+  const {
+    deleteAuthor,
+    setModalIsOpen,
+    authors,
+    modalIsOpen,
+    searchTerm,
+    setToEdit,
+  } = useAuthorsContext();
 
-  const [toEdit, setToEdit] = useState("");
+  // const [toEdit, setToEdit] = useState("");
 
   const handleDeleteAuthorClick = (author) => {
     deleteAuthor(author);
@@ -14,12 +20,14 @@ function AuthorsList() {
 
   const handleAddAuthorClick = () => {
     setToEdit("");
-    setModalIsOpen(true);
+    // setModalIsOpen(true);
+    navigate("/modal-authors-add");
   };
 
   const handleEditAuthorClick = (author) => {
     setToEdit(author);
-    setModalIsOpen(true);
+    navigate("/modal-authors-edit");
+    // setModalIsOpen(true);
   };
 
   const renderedAuthors = authors.map(
@@ -59,11 +67,11 @@ function AuthorsList() {
           + Add Author
         </button>
       </div>
-      <AddAuthorModal
+      {/* <AddAuthorModal
         isOpen={modalIsOpen}
         close={setModalIsOpen}
-        inputToEdit={toEdit}
-      />
+        // inputToEdit={toEdit}
+      /> */}
     </div>
   );
 }

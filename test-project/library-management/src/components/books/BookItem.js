@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useReducer } from "react";
 import { useBooksContext } from "../../hooks/useBooksContext";
 
 import AddBookModal from "./AddBookModal";
@@ -8,7 +8,21 @@ function BookItem({ book }) {
   const { setBooks, books, deleteBook } = useBooksContext();
   const { authors } = useAuthorsContext();
 
-  const [isEdited, setIsEdited] = useState(false);
+  const simpleReducer = (state, action) => {
+    switch (action.type) {
+      case "is_edited":
+        return {
+          isEdited: action.payload,
+        };
+
+      default:
+        return;
+    }
+  };
+
+  const [state, dispatch] = useReducer(simpleReducer, {
+    isEdited: false,
+  });
 
   const handleDeleteBook = (book) => {
     deleteBook(book);
@@ -18,17 +32,27 @@ function BookItem({ book }) {
     setBooks(updatedBooks);
   };
 
-  const { name: bookAuthor } = authors.find(
-    (author) => author.id === book.authorId
-  );
-  const handleEditBook = () => {
-    setIsEdited(true);
+  const bookAuthor = authors.find((author) => book.authorId === author.id);
+
+  const setIsEdited = (value) => {
+    dispatch({
+      type: "is_edited",
+      payload: value,
+    });
   };
+
+  const handleEditBook = () => {
+    dispatch({
+      type: "is_edited",
+      payload: true,
+    });
+  };
+
   return (
     <>
       <tr>
         <td>{book.title}</td>
-        <td>{bookAuthor}</td>
+        <td>{bookAuthor?.name}</td>
         <td>{book.description}</td>
         <td>
           <button
@@ -48,7 +72,11 @@ function BookItem({ book }) {
         </td>
       </tr>
 
-      <AddBookModal book={book} isOpen={isEdited} setIsEdited={setIsEdited} />
+      <AddBookModal
+        book={book}
+        isOpen={state.isEdited}
+        setIsEdited={setIsEdited}
+      />
     </>
   );
 }
