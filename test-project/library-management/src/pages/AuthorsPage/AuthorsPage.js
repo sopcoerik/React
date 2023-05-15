@@ -7,6 +7,7 @@ import { useAuthors } from "../../hooks/useAuthors";
 
 import Modal from "../../components/utils/Modal";
 import Form from "../../components/utils/Form";
+import SortAuthors from "../../components/authors/SortAuthors";
 
 function AuthorsPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -58,6 +59,9 @@ function AuthorsPage() {
     <div className="container mx-auto">
       <div>
         <SearchAuthors term={searchTerm} setTerm={setSearchTerm} />
+      </div>
+      <div>
+        <SortAuthors authors={authors} setAuthors={setAuthors} />
       </div>
       <div>
         <AuthorsList

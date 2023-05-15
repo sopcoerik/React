@@ -54,7 +54,7 @@ function AuthorsList({
   );
 
   return (
-    <div className={`${theme ? "bg-dark" : "bg-slate-200"} my-3 p-2`}>
+    <div className={`${theme ? "bg-dark" : "bg-slate-200"} -mt-4 p-2`}>
       <div>{renderedAuthors}</div>
       <div className="flex justify-end m-2">
         <button

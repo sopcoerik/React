@@ -11,6 +11,8 @@ function BooksPage() {
   const [modal, setModal] = useState(false);
   const [bookToEdit, setBookToEdit] = useState({});
   const [books, setBooks] = useState([]);
+  const [sortOrderTitle, setSortOrderTitle] = useState(1);
+  const [sortOrderAuthor, setSortOrderAuthor] = useState(1);
 
   const booksURL = "https://645e200d12e0a87ac0e837cd.mockapi.io/books";
 
@@ -37,6 +39,28 @@ function BooksPage() {
     setModal(true);
   };
 
+  const handleSortBooks = (books, sortBy) => {
+    sortBy === "title" &&
+      (sortOrderTitle === 1 ? setSortOrderTitle(-1) : setSortOrderTitle(1));
+    sortBy === "author" &&
+      (sortOrderAuthor === 1 ? setSortOrderAuthor(-1) : setSortOrderAuthor(1));
+    sortBooks(books, sortBy);
+  };
+
+  const sortBooks = (books, sortBy) => {
+    const copiedBooks = [...books];
+
+    copiedBooks.sort((a, b) => {
+      if (sortBy === "title") {
+        return a.title.localeCompare(b.title) * sortOrderTitle;
+      } else if (sortBy === "author") {
+        return a.author.localeCompare(b.author) * sortOrderAuthor;
+      }
+    });
+
+    setBooks(copiedBooks);
+  };
+
   return (
     <div className="container mx-auto">
       <div>
@@ -50,6 +74,9 @@ function BooksPage() {
           setBookToEdit={setBookToEdit}
           deleteBook={deleteBook}
           books={books}
+          handleSortBooks={handleSortBooks}
+          sortOrderTitle={sortOrderTitle}
+          sortOrderAuthor={sortOrderAuthor}
         />
       </div>
       {modal && (

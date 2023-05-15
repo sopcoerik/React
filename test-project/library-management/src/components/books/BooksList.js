@@ -1,5 +1,6 @@
 import { useThemeContext } from "../../hooks/useThemeContext";
 import BookItem from "./BookItem";
+import { GoChevronDown, GoChevronUp } from "react-icons/go";
 
 function BooksList({
   searchTerm,
@@ -8,6 +9,9 @@ function BooksList({
   setBookToEdit,
   deleteBook,
   books,
+  handleSortBooks,
+  sortOrderTitle,
+  sortOrderAuthor,
 }) {
   const { theme, handleTheme } = useThemeContext();
   const renderedBooks = books.map(
@@ -40,9 +44,26 @@ function BooksList({
       <table className="table-fixed w-full">
         <thead className="border-b border-gray-900">
           <tr>
-            <th>Title</th>
-            <th>Author</th>
+            <th>
+              <button
+                onClick={() => handleSortBooks(books, "title")}
+                className="flex"
+              >
+                {sortOrderTitle === 1 ? <GoChevronDown /> : <GoChevronUp />}{" "}
+                Title
+              </button>
+            </th>
+            <th>
+              <button
+                onClick={() => handleSortBooks(books, "author")}
+                className="flex"
+              >
+                {sortOrderAuthor === 1 ? <GoChevronDown /> : <GoChevronUp />}{" "}
+                Author
+              </button>
+            </th>
             <th>Description</th>
+            <th>Category</th>
           </tr>
         </thead>
         <tbody>{renderedBooks}</tbody>
