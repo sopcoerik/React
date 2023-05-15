@@ -1,23 +1,30 @@
 import { useState } from "react";
 
-import { useAuthors } from "../../hooks/useAuthors";
+import { useThemeContext } from "../../hooks/useThemeContext";
 
-function AuthorsList({ navigate, searchTerm }) {
+function AuthorsList({
+  searchTerm,
+  authors,
+  deleteAuthor,
+  setModal,
+  setAuthorName,
+}) {
   const [toEdit, setToEdit] = useState("");
-  const { deleteAuthor, authors } = useAuthors();
+
+  const { theme } = useThemeContext();
 
   const handleDeleteAuthorClick = (author) => {
     deleteAuthor(author);
   };
 
   const handleAddAuthorClick = () => {
-    setToEdit("");
-    navigate("/modal-authors-add");
+    setAuthorName("");
+    setModal(true);
   };
 
   const handleEditAuthorClick = (author) => {
-    setToEdit(author);
-    navigate("/modal-authors-edit");
+    setAuthorName(author);
+    setModal(true);
   };
 
   const renderedAuthors = authors.map(
@@ -25,19 +32,19 @@ function AuthorsList({ navigate, searchTerm }) {
       author.name.toLowerCase().includes(searchTerm.toLowerCase()) && (
         <div
           key={author.id}
-          className="m-2 border-b flex justify-between items-center"
+          className="m-2 border-b border-slate-300 flex justify-between items-center"
         >
           {author.name}
           <div>
             <button
               onClick={() => handleEditAuthorClick(author)}
-              className="px-3 py-1 border rounded hover:bg-blue-400 mb-2"
+              className="px-3 py-1 border border-slate-300 rounded hover:bg-blue-300 mb-2 hover:text-white"
             >
               Edit Author
             </button>
             <button
               onClick={() => handleDeleteAuthorClick(author)}
-              className="px-3 py-1 border rounded hover:bg-red-400 mb-2"
+              className="px-3 py-1 ml-3 border border-slate-300 rounded hover:bg-red-300 mb-2 hover:text-white"
             >
               Delete
             </button>
@@ -47,11 +54,11 @@ function AuthorsList({ navigate, searchTerm }) {
   );
 
   return (
-    <div>
+    <div className={`${theme ? "bg-dark" : "bg-slate-200"} my-3 p-2`}>
       <div>{renderedAuthors}</div>
       <div className="flex justify-end m-2">
         <button
-          className="px-3 py-1 border rounded hover:bg-blue-400"
+          className="px-3 py-1 border rounded hover:bg-blue-300 hover:text-white"
           onClick={handleAddAuthorClick}
         >
           + Add Author

@@ -1,13 +1,12 @@
-import { useThemeContext } from "./hooks/useThemeContext";
+import { Outlet } from "react-router-dom";
 import Header from "./pages/Header/Header";
-import AuthorsPage from "./pages/AuthorsPage/AuthorsPage";
+import { useThemeContext } from "./hooks/useThemeContext";
 function App() {
   const { theme } = useThemeContext();
-
   return (
-    <div className={`${theme === "dark" ? theme : ""} h-screen`}>
+    <div className={`bg-slate-100 h-screen ${theme ? theme : ""}`}>
       <Header />
-      <AuthorsPage />
+      <Outlet />
     </div>
   );
 }

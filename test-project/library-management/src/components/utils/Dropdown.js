@@ -1,9 +1,12 @@
 import { useReducer } from "react";
+import { useThemeContext } from "../../hooks/useThemeContext";
 
-function Dropdown({ options, setSelectedAuthor }) {
+function Dropdown({ options, book, setSelectedAuthor }) {
   const OPEN_DROPDOWN = "open_dropdown";
   const CHANGE_HEADER = "change_header";
   const CHANGE_ALL = "change_all_state";
+
+  const { theme } = useThemeContext();
 
   const dropdownReducer = (state, action) => {
     switch (action.type) {
@@ -52,16 +55,28 @@ function Dropdown({ options, setSelectedAuthor }) {
   };
 
   const availableOptions = options.map((option) => (
-    <div key={option.id} onClick={() => handleOptionClick(option)}>
+    <div
+      key={option.id}
+      onClick={() => handleOptionClick(option)}
+      className="hover:bg-slate-300"
+    >
       {option.name}
     </div>
   ));
 
   return (
-    <div className="relative">
-      <div onClick={handleDropdownClick}>{state.header}</div>
+    <div className="relative border rounded border-slate-200 py-3 hover:cursor-pointer w-full">
+      <div onClick={handleDropdownClick} className="px-1">
+        {state.header}
+      </div>
       {state.isOpen && (
-        <div className="absolute bg-white w-48">{availableOptions}</div>
+        <div
+          className={`absolute ${
+            theme === "dark" ? "bg-black text-white" : "bg-white text-black"
+          } w-full border rounded border-slate-200 px-1 py-3`}
+        >
+          {availableOptions}
+        </div>
       )}
     </div>
   );
