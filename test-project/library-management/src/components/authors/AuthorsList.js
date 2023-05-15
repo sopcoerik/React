@@ -1,7 +1,10 @@
-import { useAuthorsContext } from "../../hooks/useAuthorsContext";
+import { useState } from "react";
 
-function AuthorsList({ navigate }) {
-  const { deleteAuthor, authors, searchTerm, setToEdit } = useAuthorsContext();
+import { useAuthors } from "../../hooks/useAuthors";
+
+function AuthorsList({ navigate, searchTerm }) {
+  const [toEdit, setToEdit] = useState("");
+  const { deleteAuthor, authors } = useAuthors();
 
   const handleDeleteAuthorClick = (author) => {
     deleteAuthor(author);

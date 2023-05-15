@@ -8,7 +8,7 @@ import Header from "../../pages/Header/Header";
 import Modal from "./Modal";
 
 const Router = () => {
-  const { handleDarkTheme, isDark } = useThemeContext();
+  const { handleTheme, theme } = useThemeContext();
   const { toEdit } = useAuthorsContext();
 
   const [page, setPage] = useState("/");
@@ -38,11 +38,11 @@ const Router = () => {
       <div className="flex justify-end">
         <button
           className={`border rounded px-3 py-1 m-2 ${
-            isDark
+            theme === "dark"
               ? "hover:bg-white hover:text-black"
               : "hover:bg-black hover:text-white"
           }`}
-          onClick={handleDarkTheme}
+          onClick={handleTheme}
         >
           Dark Theme
         </button>

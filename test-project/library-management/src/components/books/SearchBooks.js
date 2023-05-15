@@ -1,17 +1,13 @@
-import { useBooksContext } from "../../hooks/useBooksContext";
-
-function SearchBooks() {
-  const { searchTerm, setSearchTerm } = useBooksContext();
-
+function SearchBooks({ term, setTerm }) {
   const handleSearchTermChange = (e) => {
-    setSearchTerm(e.target.value);
+    setTerm(e.target.value);
   };
 
   return (
     <div className="flex">
       <label>Search:</label>
       <input
-        value={searchTerm}
+        value={term}
         onChange={handleSearchTermChange}
         className="w-full border"
       />

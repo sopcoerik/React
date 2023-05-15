@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useAuthorsContext } from "../../hooks/useAuthorsContext";
+import { useAuthors } from "../../hooks/useAuthors";
 
 function AuthorForm({ toEdit, navigate }) {
   const [input, setInput] = useState(toEdit?.name || "");
 
-  const { editAuthor, addAuthor } = useAuthorsContext();
+  const { editAuthor, addAuthor } = useAuthors();
 
   const handleInputChange = (e) => {
     setInput(e.target.value);

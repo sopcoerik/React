@@ -1,9 +1,13 @@
-import Router from "./components/utils/Router";
-
+import { useThemeContext } from "./hooks/useThemeContext";
+import Header from "./pages/Header/Header";
+import AuthorsPage from "./pages/AuthorsPage/AuthorsPage";
 function App() {
+  const { theme } = useThemeContext();
+
   return (
-    <div>
-      <Router />
+    <div className={`${theme === "dark" ? theme : ""} h-screen`}>
+      <Header />
+      <AuthorsPage />
     </div>
   );
 }

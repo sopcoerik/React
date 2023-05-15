@@ -1,13 +1,8 @@
-import { createContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
-export const AuthorsContext = createContext();
-
-function AuthorsProvider({ children }) {
+export function useAuthors() {
   const [authors, setAuthors] = useState([]);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [toEdit, setToEdit] = useState("");
 
   const fetchAuthors = async () => {
     const response = await axios.get(
@@ -61,25 +56,11 @@ function AuthorsProvider({ children }) {
     setAuthors(updatedAuthors);
   };
 
-  const AuthorsContextValue = {
+  return {
     authors,
     setAuthors,
-    modalIsOpen,
-    setModalIsOpen,
-    deleteAuthor,
     addAuthor,
     editAuthor,
-    searchTerm,
-    setSearchTerm,
-    setToEdit,
-    toEdit,
+    deleteAuthor,
   };
-
-  return (
-    <AuthorsContext.Provider value={AuthorsContextValue}>
-      {children}
-    </AuthorsContext.Provider>
-  );
 }
-
-export default AuthorsProvider;

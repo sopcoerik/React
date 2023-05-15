@@ -1,14 +1,9 @@
 import BookItem from "./BookItem";
 import Panel from "./Panel";
-import AddBookModal from "./AddBookModal";
-import { useBooksContext } from "../../hooks/useBooksContext";
+import { useBooks } from "../../hooks/useBooks";
 
-function BooksList() {
-  const { modalIsOpen, setModalIsOpen, books, searchTerm } = useBooksContext();
-
-  const handleAddBook = () => {
-    setModalIsOpen(true);
-  };
+function BooksList({ searchTerm }) {
+  const { books } = useBooks();
 
   const renderedBooks = books.map(
     (book) =>
@@ -32,14 +27,10 @@ function BooksList() {
         <tbody>{renderedBooks}</tbody>
       </table>
       <div className="flex justify-end m-3">
-        <button
-          className="border rounded hover:bg-blue-400 px-3 py-1"
-          onClick={handleAddBook}
-        >
+        <button className="border rounded hover:bg-blue-400 px-3 py-1">
           + Add Book
         </button>
       </div>
-      <AddBookModal isOpen={modalIsOpen} />
     </Panel>
   );
 }

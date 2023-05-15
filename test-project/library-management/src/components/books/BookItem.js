@@ -1,12 +1,12 @@
 import { useReducer } from "react";
-import { useBooksContext } from "../../hooks/useBooksContext";
 
 import AddBookModal from "./AddBookModal";
-import { useAuthorsContext } from "../../hooks/useAuthorsContext";
+import { useBooks } from "../../hooks/useBooks";
+import { useAuthors } from "../../hooks/useAuthors";
 
 function BookItem({ book }) {
-  const { setBooks, books, deleteBook } = useBooksContext();
-  const { authors } = useAuthorsContext();
+  const { setBooks, books, deleteBook } = useBooks();
+  const { authors } = useAuthors();
 
   const simpleReducer = (state, action) => {
     switch (action.type) {
