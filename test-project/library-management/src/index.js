@@ -7,6 +7,7 @@ import ThemeProvider from "./contexts/themeContext";
 import App from "./App";
 import BooksPage from "./pages/BooksPage/BooksPage";
 import AuthorsPage from "./pages/AuthorsPage/AuthorsPage";
+import Categories from "./pages/CategoriesPage/CategoriesPage";
 
 import "./index.css";
 
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
         <App />
       </ThemeProvider>
     ),
+
     children: [
       {
         path: "/",
@@ -26,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: "/authors",
         element: <AuthorsPage />,
+      },
+      {
+        path: "/categories",
+        element: <Categories />,
       },
     ],
   },

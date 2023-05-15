@@ -30,6 +30,14 @@ function Header() {
         >
           <p className="mx-5 py-4">Authors</p>
         </Link>
+        <Link
+          to="/categories"
+          className={`hover:border-b hover:border-green-300 ${
+            theme === "dark" ? "bg-black" : "hover:bg-slate-300"
+          }`}
+        >
+          <p className="mx-5 py-4">Categories</p>
+        </Link>
       </div>
     </div>
   );

@@ -23,23 +23,32 @@ function Form({
   const { authors } = useAuthors();
   const booksURL = "https://645e200d12e0a87ac0e837cd.mockapi.io/books";
 
-  const addBook = async (title, authorId, author, description) => {
+  const addBook = async (title, authorId, author, description, categoryId) => {
     const response = await axios.post(booksURL, {
       title,
       authorId,
       author,
       description,
+      categoryId,
     });
 
     setBooks([...books, response.data]);
   };
 
-  const editBook = async (book, title, authorId, author, description) => {
+  const editBook = async (
+    book,
+    title,
+    authorId,
+    author,
+    description,
+    categoryId
+  ) => {
     const response = await axios.put(`${booksURL}/${book.id}`, {
       title,
       authorId,
       author,
       description,
+      categoryId,
     });
 
     const findBook = books.find((book) => book.id === response.data.id);
@@ -54,6 +63,7 @@ function Form({
   const CHANGE_DESCRIPTION = "change_description";
   const CHANGE_SELECTED_AUTHOR = "change_selected_author";
   const CHANGE_AUTHOR = "change_author";
+  const CHANGE_CATEGORY = "change_category";
 
   const formReducer = (state, action) => {
     switch (action.type) {
@@ -63,6 +73,7 @@ function Form({
           description: state.description,
           selectedAuthor: state.selectedAuthor,
           author: state.author,
+          // category: state.category,
         };
       case CHANGE_DESCRIPTION:
         return {
@@ -70,6 +81,7 @@ function Form({
           description: action.payload,
           selectedAuthor: state.selectedAuthor,
           author: state.author,
+          // category: state.category,
         };
       case CHANGE_SELECTED_AUTHOR:
         return {
@@ -77,6 +89,7 @@ function Form({
           description: state.description,
           selectedAuthor: action.payload,
           author: state.author,
+          // category: state.category,
         };
       case CHANGE_AUTHOR:
         return {
@@ -84,6 +97,15 @@ function Form({
           description: state.description,
           selectedAuthor: state.selectedAuthor,
           author: action.payload,
+          // category: state.category,
+        };
+      case CHANGE_CATEGORY:
+        return {
+          title: state.title,
+          description: state.description,
+          selectedAuthor: state.selectedAuthor,
+          author: state.author,
+          // category: action.payload,
         };
       default:
         return;
@@ -95,6 +117,7 @@ function Form({
     description: book?.description || "",
     selectedAuthor: {},
     author: authorObj?.name || "",
+    // category: book.category || "",
   });
 
   const handleTitleChange = (e) => {
@@ -121,6 +144,13 @@ function Form({
   const handleAuthorChange = (e) => {
     dispatch({
       type: CHANGE_AUTHOR,
+      payload: e.target.value,
+    });
+  };
+
+  const handleCategoryChange = (e) => {
+    dispatch({
+      type: CHANGE_CATEGORY,
       payload: e.target.value,
     });
   };
@@ -207,6 +237,15 @@ function Form({
           type="text"
           placeholder="Book Description"
           onChange={handleDescriptionChange}
+          className={`border rounded border-slate-200 px-1 py-3 ${
+            theme === "dark" ? "bg-black text-white" : "bg-white text-black"
+          }`}
+        />
+        <input
+          // value={state.category}
+          type="text"
+          placeholder="Book Category"
+          onChange={handleCategoryChange}
           className={`border rounded border-slate-200 px-1 py-3 ${
             theme === "dark" ? "bg-black text-white" : "bg-white text-black"
           }`}
