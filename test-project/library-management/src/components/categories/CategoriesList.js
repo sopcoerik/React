@@ -1,10 +1,17 @@
 import { useCategories } from "../../hooks/useCategories";
 import { useThemeContext } from "../../hooks/useThemeContext";
+import Loader from "../utils/Loader";
 
-function CategoriesList({ searchTerm, setModal, setCategory, deleteCategory }) {
+function CategoriesList({
+  searchTerm,
+  setModal,
+  setCategory,
+  deleteCategory,
+  categories,
+}) {
   const { theme } = useThemeContext();
   const {
-    state: { data, isLoading, error },
+    state: { isLoading, error },
   } = useCategories();
 
   const handleEditCategoryClick = (category) => {
@@ -20,7 +27,7 @@ function CategoriesList({ searchTerm, setModal, setCategory, deleteCategory }) {
     setModal(true);
   };
 
-  const renderedCategories = data.map(
+  const renderedCategories = categories.map(
     (category) =>
       category.name.toLowerCase().includes(searchTerm.toLowerCase()) && (
         <div
@@ -49,9 +56,18 @@ function CategoriesList({ searchTerm, setModal, setCategory, deleteCategory }) {
   let content;
 
   if (isLoading) {
-    content = <div>Is Loading...</div>;
+    content = (
+      <div className="w-full h-52 flex items-center justify-center">
+        Loading Data...
+        <Loader />
+      </div>
+    );
   } else if (error) {
-    content = <div>Error Loading Content...</div>;
+    content = (
+      <div className="w-full h-52 flex items-center justify-center text-red-900">
+        Error Loading Data...
+      </div>
+    );
   } else {
     content = <div>{renderedCategories}</div>;
   }

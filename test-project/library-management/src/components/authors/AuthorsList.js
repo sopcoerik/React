@@ -1,10 +1,17 @@
 import { useAuthors } from "../../hooks/useAuthors";
 import { useThemeContext } from "../../hooks/useThemeContext";
+import Loader from "../utils/Loader";
 
-function AuthorsList({ searchTerm, deleteAuthor, setModal, setAuthorName }) {
+function AuthorsList({
+  searchTerm,
+  deleteAuthor,
+  setModal,
+  setAuthorName,
+  authors,
+}) {
   const { theme } = useThemeContext();
   const {
-    state: { data: authors, isLoading, error },
+    state: { isLoading, error },
   } = useAuthors();
 
   const handleDeleteAuthorClick = (author) => {
@@ -50,9 +57,18 @@ function AuthorsList({ searchTerm, deleteAuthor, setModal, setAuthorName }) {
   let content;
 
   if (isLoading) {
-    content = <div>Loading Data...</div>;
+    content = (
+      <div className="w-full h-52 flex items-center justify-center">
+        Loading Data...
+        <Loader />
+      </div>
+    );
   } else if (error) {
-    content = <div>Error Loading Data...</div>;
+    content = (
+      <div className="w-full h-52 flex items-center justify-center text-red-900">
+        Error Loading Data...
+      </div>
+    );
   } else {
     content = <div>{renderedAuthors}</div>;
   }

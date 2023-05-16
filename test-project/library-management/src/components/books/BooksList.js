@@ -3,6 +3,7 @@ import BookItem from "./BookItem";
 import { GoChevronDown, GoChevronUp } from "react-icons/go";
 import { useAuthors } from "../../hooks/useAuthors";
 import { useCategories } from "../../hooks/useCategories";
+import Loader from "../utils/Loader";
 
 function BooksList({
   searchTerm,
@@ -59,27 +60,20 @@ function BooksList({
     setModal(true);
   };
 
-  const handleThemeChange = () => {
-    handleTheme();
-  };
-
   let content;
 
   if (isLoading) {
     content = (
-      <tbody>
-        <tr>
-          <td>Loading Data...</td>
-        </tr>
-      </tbody>
+      <div className="w-full h-52 flex items-center justify-center">
+        Loading Data...
+        <Loader />
+      </div>
     );
   } else if (error) {
     content = (
-      <tbody>
-        <tr>
-          <td>Error Loading Data...</td>
-        </tr>
-      </tbody>
+      <div className="w-full h-52 flex items-center justify-center text-red-900">
+        Error Loading Data...
+      </div>
     );
   } else {
     content = <tbody>{renderedBooks}</tbody>;
@@ -118,25 +112,18 @@ function BooksList({
             <th>Category</th>
           </tr>
         </thead>
-        {content}
+        {!isLoading && !error && content}
       </table>
-      <div className="flex justify-end m-3">
-        <button
-          className={`border rounded ${
-            theme === "dark"
-              ? "hover:bg-white hover:text-black"
-              : "hover:bg-black hover:text-white"
-          } px-3 py-1 border-slate-500 mr-2`}
-          onClick={handleThemeChange}
-        >
-          Dark Theme
-        </button>
-        <button
-          className="border rounded hover:bg-blue-300 px-3 py-1 border-slate-500 hover:text-white"
-          onClick={handleAddBook}
-        >
-          + Add Book
-        </button>
+      <div className="flex flex-col m-3">
+        <div>{(isLoading || error) && content}</div>
+        <div className="flex justify-end">
+          <button
+            className="border rounded hover:bg-blue-300 px-3 py-1 border-slate-500 hover:text-white"
+            onClick={handleAddBook}
+          >
+            + Add Book
+          </button>
+        </div>
       </div>
     </div>
   );

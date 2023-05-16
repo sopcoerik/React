@@ -20,8 +20,8 @@ function CategoriesPage() {
     const response = await axios.post(baseURL, {
       name,
     });
-    const newArray = [...data, response.data];
-    setData(newArray);
+
+    setData([...data, response.data]);
   };
 
   const editCategory = async (category, name) => {
@@ -36,7 +36,7 @@ function CategoriesPage() {
     const updatedCategories = data.map((currentCategory, i) =>
       i === index ? response.data : currentCategory
     );
-    setData(updatedCategories);
+    setData([...updatedCategories]);
   };
 
   const deleteCategory = async (category) => {
@@ -45,7 +45,7 @@ function CategoriesPage() {
     const updatedCategories = data.filter(
       (currCategory) => category.id !== currCategory.id
     );
-    setData(updatedCategories);
+    setData([...updatedCategories]);
   };
 
   return (
@@ -60,6 +60,7 @@ function CategoriesPage() {
           setModal={setModal}
           setCategory={setCategory}
           deleteCategory={deleteCategory}
+          categories={data}
         />
       </div>
       {modal && (
