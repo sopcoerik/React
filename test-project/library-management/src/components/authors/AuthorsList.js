@@ -1,17 +1,11 @@
-import { useState } from "react";
-
+import { useAuthors } from "../../hooks/useAuthors";
 import { useThemeContext } from "../../hooks/useThemeContext";
 
-function AuthorsList({
-  searchTerm,
-  authors,
-  deleteAuthor,
-  setModal,
-  setAuthorName,
-}) {
-  const [toEdit, setToEdit] = useState("");
-
+function AuthorsList({ searchTerm, deleteAuthor, setModal, setAuthorName }) {
   const { theme } = useThemeContext();
+  const {
+    state: { data: authors, isLoading, error },
+  } = useAuthors();
 
   const handleDeleteAuthorClick = (author) => {
     deleteAuthor(author);
@@ -53,9 +47,19 @@ function AuthorsList({
       )
   );
 
+  let content;
+
+  if (isLoading) {
+    content = <div>Loading Data...</div>;
+  } else if (error) {
+    content = <div>Error Loading Data...</div>;
+  } else {
+    content = <div>{renderedAuthors}</div>;
+  }
+
   return (
     <div className={`${theme ? "bg-dark" : "bg-slate-200"} -mt-4 p-2`}>
-      <div>{renderedAuthors}</div>
+      {content}
       <div className="flex justify-end m-2">
         <button
           className="px-3 py-1 border rounded hover:bg-blue-300 hover:text-white"

@@ -11,7 +11,10 @@ import SortAuthors from "../../components/authors/SortAuthors";
 
 function AuthorsPage() {
   const [searchTerm, setSearchTerm] = useState("");
-  const { authors, setAuthors } = useAuthors();
+  const {
+    state: { data },
+    setData,
+  } = useAuthors();
   const [modal, setModal] = useState(false);
   const [authorObj, setAuthorName] = useState({});
 
@@ -23,7 +26,7 @@ function AuthorsPage() {
       }
     );
 
-    setAuthors([...authors, response.data]);
+    setData([...data, response.data]);
   };
 
   const editAuthor = async (author, name) => {
@@ -34,14 +37,14 @@ function AuthorsPage() {
       }
     );
 
-    const authorToReplace = authors.find(
+    const authorToReplace = data.find(
       (currentAuthor) => currentAuthor.id === author.id
     );
-    const index = authors.indexOf(authorToReplace);
-    const updatedAuthors = authors.map((currentAuthor, i) =>
+    const index = data.indexOf(authorToReplace);
+    const updatedAuthors = data.map((currentAuthor, i) =>
       i === index ? response.data : currentAuthor
     );
-    setAuthors(updatedAuthors);
+    setData(updatedAuthors);
   };
 
   const deleteAuthor = async (author) => {
@@ -49,10 +52,10 @@ function AuthorsPage() {
       `https://645e200d12e0a87ac0e837cd.mockapi.io/authors/${author.id}`
     );
 
-    const updatedAuthors = authors.filter(
+    const updatedAuthors = data.filter(
       (currentAuthor) => currentAuthor.id !== author.id
     );
-    setAuthors(updatedAuthors);
+    setData(updatedAuthors);
   };
 
   return (
@@ -61,13 +64,13 @@ function AuthorsPage() {
         <SearchAuthors term={searchTerm} setTerm={setSearchTerm} />
       </div>
       <div>
-        <SortAuthors authors={authors} setAuthors={setAuthors} />
+        <SortAuthors authors={data} setAuthors={setData} />
       </div>
       <div>
         <AuthorsList
           searchTerm={searchTerm}
-          authors={authors}
-          setAuthors={setAuthors}
+          authors={data}
+          setAuthors={setData}
           deleteAuthor={deleteAuthor}
           setModal={setModal}
           setAuthorName={setAuthorName}

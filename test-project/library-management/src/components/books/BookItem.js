@@ -1,13 +1,13 @@
-import { useAuthors } from "../../hooks/useAuthors";
-
-function BookItem({ book, handleEditBook, deleteBook }) {
-  const { authors } = useAuthors();
-
+function BookItem({
+  book,
+  handleEditBook,
+  deleteBook,
+  bookAuthor,
+  bookCategory,
+}) {
   const handleDeleteBook = (book) => {
     deleteBook(book);
   };
-
-  const bookAuthor = authors.find((author) => book.authorId === author.id);
 
   return (
     <>
@@ -15,6 +15,7 @@ function BookItem({ book, handleEditBook, deleteBook }) {
         <td>{book.title}</td>
         <td>{bookAuthor?.name}</td>
         <td>{book.description}</td>
+        <td>{bookCategory?.name}</td>
         <td>
           <button
             className="border rounded hover:bg-blue-300 hover:text-white px-2 py-1 border-slate-500 m-2"

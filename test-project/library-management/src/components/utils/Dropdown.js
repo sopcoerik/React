@@ -1,7 +1,13 @@
 import { useReducer } from "react";
 import { useThemeContext } from "../../hooks/useThemeContext";
 
-function Dropdown({ options, book, setSelectedAuthor }) {
+function Dropdown({
+  options,
+  setSelectedAuthor,
+  setSelectedCategory,
+  category,
+  author,
+}) {
   const OPEN_DROPDOWN = "open_dropdown";
   const CHANGE_HEADER = "change_header";
   const CHANGE_ALL = "change_all_state";
@@ -32,7 +38,9 @@ function Dropdown({ options, book, setSelectedAuthor }) {
 
   const [state, dispatch] = useReducer(dropdownReducer, {
     isOpen: false,
-    header: "Available authors...",
+    header:
+      (author && "Available authors...") ||
+      (category && "Available categories..."),
   });
 
   const handleDropdownClick = () => {
@@ -43,7 +51,9 @@ function Dropdown({ options, book, setSelectedAuthor }) {
   };
 
   const handleOptionClick = (option) => {
-    setSelectedAuthor(option);
+    setSelectedCategory
+      ? setSelectedCategory(option)
+      : setSelectedAuthor(option);
 
     dispatch({
       type: CHANGE_ALL,

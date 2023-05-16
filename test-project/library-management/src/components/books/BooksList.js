@@ -1,6 +1,8 @@
 import { useThemeContext } from "../../hooks/useThemeContext";
 import BookItem from "./BookItem";
 import { GoChevronDown, GoChevronUp } from "react-icons/go";
+import { useAuthors } from "../../hooks/useAuthors";
+import { useCategories } from "../../hooks/useCategories";
 
 function BooksList({
   searchTerm,
@@ -10,23 +12,68 @@ function BooksList({
   deleteBook,
   books,
   handleSortBooks,
-  sortOrderTitle,
-  sortOrderAuthor,
+  sortOrder,
+  isLoading,
+  error,
+  filtered,
 }) {
   const { theme, handleTheme } = useThemeContext();
-  const renderedBooks = books.map(
-    (book) =>
-      (book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        book.description.toLowerCase().includes(searchTerm.toLowerCase())) && (
-        <BookItem
-          key={book.id}
-          book={book}
-          handleEditBook={handleEditBook}
-          deleteBook={deleteBook}
-        />
-      )
-  );
+
+  const {
+    state: { data: authors },
+  } = useAuthors();
+  const {
+    state: { data: categories },
+  } = useCategories();
+
+  const mappingFunction = (array) => {
+    return array.map((book) => {
+      const bookAuthor = authors.find((author) => book.authorId === author.id);
+      const bookCategory = categories.find(
+        (category) => book.categoryId === category.id
+      );
+      return (
+        (book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          book.description
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())) && (
+          <BookItem
+            key={book.id}
+            book={book}
+            handleEditBook={handleEditBook}
+            deleteBook={deleteBook}
+            bookAuthor={bookAuthor}
+            bookCategory={bookCategory}
+          />
+        )
+      );
+    });
+  };
+
+  const renderedBooks =
+    filtered.length === 0 ? mappingFunction(books) : mappingFunction(filtered);
+  // books.map((book) => {
+  //   const bookAuthor = authors.find((author) => book.authorId === author.id);
+  //   const bookCategory = categories.find(
+  //     (category) => book.categoryId === category.id
+  //   );
+  //   return (
+  //     (book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       book.description.toLowerCase().includes(searchTerm.toLowerCase())) && (
+  //       <BookItem
+  //         key={book.id}
+  //         book={book}
+  //         handleEditBook={handleEditBook}
+  //         deleteBook={deleteBook}
+  //         bookAuthor={bookAuthor}
+  //         bookCategory={bookCategory}
+  //       />
+  //     )
+  //   );
+  // });
+  console.log(renderedBooks);
 
   const handleAddBook = () => {
     setBookToEdit(undefined);
@@ -36,6 +83,28 @@ function BooksList({
   const handleThemeChange = () => {
     handleTheme();
   };
+
+  let content;
+
+  if (isLoading) {
+    content = (
+      <tbody>
+        <tr>
+          <td>Loading Data...</td>
+        </tr>
+      </tbody>
+    );
+  } else if (error) {
+    content = (
+      <tbody>
+        <tr>
+          <td>Error Loading Data...</td>
+        </tr>
+      </tbody>
+    );
+  } else {
+    content = <tbody>{renderedBooks}</tbody>;
+  }
 
   return (
     <div
@@ -49,7 +118,7 @@ function BooksList({
                 onClick={() => handleSortBooks(books, "title")}
                 className="flex"
               >
-                {sortOrderTitle === 1 ? <GoChevronDown /> : <GoChevronUp />}{" "}
+                {sortOrder.title === 1 ? <GoChevronDown /> : <GoChevronUp />}
                 Title
               </button>
             </th>
@@ -58,7 +127,7 @@ function BooksList({
                 onClick={() => handleSortBooks(books, "author")}
                 className="flex"
               >
-                {sortOrderAuthor === 1 ? <GoChevronDown /> : <GoChevronUp />}{" "}
+                {sortOrder.author === 1 ? <GoChevronDown /> : <GoChevronUp />}
                 Author
               </button>
             </th>
@@ -66,7 +135,7 @@ function BooksList({
             <th>Category</th>
           </tr>
         </thead>
-        <tbody>{renderedBooks}</tbody>
+        {content}
       </table>
       <div className="flex justify-end m-3">
         <button

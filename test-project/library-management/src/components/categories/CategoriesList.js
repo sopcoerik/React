@@ -1,18 +1,26 @@
 import { useCategories } from "../../hooks/useCategories";
 import { useThemeContext } from "../../hooks/useThemeContext";
 
-function CategoriesList({ searchTerm, addCategory }) {
+function CategoriesList({ searchTerm, setModal, setCategory, deleteCategory }) {
   const { theme } = useThemeContext();
-  const { categories } = useCategories();
+  const {
+    state: { data, isLoading, error },
+  } = useCategories();
 
-  const handleEditCategoryClick = () => {};
-  const handleDeleteCategoryClick = () => {};
-
-  const handleAddCategoryClick = () => {
-    addCategory(searchTerm);
+  const handleEditCategoryClick = (category) => {
+    setCategory(category);
+    setModal(true);
+  };
+  const handleDeleteCategoryClick = (category) => {
+    deleteCategory(category);
   };
 
-  const renderedCategories = categories.map(
+  const handleAddCategoryClick = () => {
+    setCategory("");
+    setModal(true);
+  };
+
+  const renderedCategories = data.map(
     (category) =>
       category.name.toLowerCase().includes(searchTerm.toLowerCase()) && (
         <div
@@ -38,9 +46,19 @@ function CategoriesList({ searchTerm, addCategory }) {
       )
   );
 
+  let content;
+
+  if (isLoading) {
+    content = <div>Is Loading...</div>;
+  } else if (error) {
+    content = <div>Error Loading Content...</div>;
+  } else {
+    content = <div>{renderedCategories}</div>;
+  }
+
   return (
     <div className={`${theme ? "bg-dark" : "bg-slate-200"} -mt-4 p-2`}>
-      <div>{renderedCategories}</div>
+      {content}
       <div className="flex justify-end m-2">
         <button
           className="px-3 py-1 border rounded hover:bg-blue-300 hover:text-white"

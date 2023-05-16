@@ -7,7 +7,7 @@ import ThemeProvider from "./contexts/themeContext";
 import App from "./App";
 import BooksPage from "./pages/BooksPage/BooksPage";
 import AuthorsPage from "./pages/AuthorsPage/AuthorsPage";
-import Categories from "./pages/CategoriesPage/CategoriesPage";
+import CategoriesPage from "./pages/CategoriesPage/CategoriesPage";
 
 import "./index.css";
 
@@ -31,7 +31,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/categories",
-        element: <Categories />,
+        element: <CategoriesPage />,
       },
     ],
   },

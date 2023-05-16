@@ -3,18 +3,25 @@ import CategoriesList from "../../components/categories/CategoriesList";
 import SearchCategories from "../../components/categories/SearchCategories";
 import { useCategories } from "../../hooks/useCategories";
 import axios from "axios";
+import Modal from "../../components/utils/Modal";
+import Form from "../../components/utils/Form";
 
-function Categories() {
+function CategoriesPage() {
   const [searchTerm, setSearchTerm] = useState("");
-  const { categories, setCategories } = useCategories();
+  const {
+    state: { data },
+    setData,
+  } = useCategories();
   const baseURL = "https://645e200d12e0a87ac0e837cd.mockapi.io/categories";
+  const [modal, setModal] = useState(false);
+  const [categoryObj, setCategory] = useState({});
 
   const addCategory = async (name) => {
     const response = await axios.post(baseURL, {
       name,
     });
-
-    setCategories([...categories, response.data]);
+    const newArray = [...data, response.data];
+    setData(newArray);
   };
 
   const editCategory = async (category, name) => {
@@ -22,14 +29,23 @@ function Categories() {
       name,
     });
 
-    const categoryToReplace = categories.find(
-      (currentAuthor) => currentAuthor.id === category.id
+    const categoryToReplace = data.find(
+      (currentCategory) => currentCategory.id === category.id
     );
-    const index = categories.indexOf(categoryToReplace);
-    const updatedAuthors = categories.map((currentAuthor, i) =>
-      i === index ? response.data : currentAuthor
+    const index = data.indexOf(categoryToReplace);
+    const updatedCategories = data.map((currentCategory, i) =>
+      i === index ? response.data : currentCategory
     );
-    setCategories(updatedAuthors);
+    setData(updatedCategories);
+  };
+
+  const deleteCategory = async (category) => {
+    await axios.delete(`${baseURL}/${category.id}`);
+
+    const updatedCategories = data.filter(
+      (currCategory) => category.id !== currCategory.id
+    );
+    setData(updatedCategories);
   };
 
   return (
@@ -38,10 +54,27 @@ function Categories() {
         <SearchCategories term={searchTerm} setTerm={setSearchTerm} />
       </div>
       <div className="container mx-auto">
-        <CategoriesList searchTerm={searchTerm} addCategory={addCategory} />
+        <CategoriesList
+          searchTerm={searchTerm}
+          addCategory={addCategory}
+          setModal={setModal}
+          setCategory={setCategory}
+          deleteCategory={deleteCategory}
+        />
       </div>
+      {modal && (
+        <Modal setModal={setModal}>
+          <Form
+            setModal={setModal}
+            addCategory={addCategory}
+            editCategory={editCategory}
+            categoryToEdit={categoryObj}
+            category
+          />
+        </Modal>
+      )}
     </div>
   );
 }
 
-export default Categories;
+export default CategoriesPage;
