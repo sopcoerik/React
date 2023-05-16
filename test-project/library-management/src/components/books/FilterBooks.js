@@ -12,19 +12,13 @@ function FilterBooks({ books, getFilteredBooks, filtered }) {
     const newCheck = books.filter((book) => book.categoryId === id);
     const present = (book) => filtered.includes(book);
 
-    if (!checked && newCheck.some(present)) {
+    if ((!checked || checked) && newCheck.some(present)) {
       const unchecked = filtered.filter((book) => book.categoryId !== id);
-      console.log(unchecked);
       getFilteredBooks(unchecked);
     } else if (!checked || !newCheck.some(present)) {
       setChecked(true);
       const newFilteredBooks = Array.from(new Set([...filtered, ...newCheck]));
       getFilteredBooks(newFilteredBooks);
-    } else if (checked && newCheck.some(present)) {
-      setChecked(false);
-      const unchecked = filtered.filter((book) => book.categoryId !== id);
-      console.log(unchecked);
-      getFilteredBooks(unchecked);
     }
   };
 

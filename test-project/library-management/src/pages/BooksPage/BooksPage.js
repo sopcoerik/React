@@ -104,7 +104,7 @@ function BooksPage() {
     setModal(true);
   };
 
-  const handleSortBooks = (books, sortBy) => {
+  const handleSortBooks = (books, sortBy, isFiltered) => {
     sortBy === "author"
       ? sortOrder[sortBy] === 1
         ? setSortOrder({ [sortBy]: -1, title: sortOrder.title })
@@ -113,10 +113,10 @@ function BooksPage() {
       ? setSortOrder({ [sortBy]: -1, author: sortOrder.author })
       : setSortOrder({ [sortBy]: 1, author: sortOrder.author });
 
-    sortBooks(books, sortBy);
+    sortBooks(isFiltered ? filtered : books, sortBy, isFiltered);
   };
 
-  const sortBooks = (books, sortBy) => {
+  const sortBooks = (books, sortBy, isFiltered) => {
     const copiedBooks = [...books];
     const availableSortingProperties = ["title", "author"];
 
@@ -128,13 +128,13 @@ function BooksPage() {
       return a[sortBy].localeCompare(b[sortBy]) * sortOrder[sortBy];
     });
 
-    setData(copiedBooks);
+    isFiltered ? setFiltered(copiedBooks) : setData(copiedBooks);
   };
 
   const getFilteredBooks = (filteredBooks) => {
     setFiltered(filteredBooks);
   };
-  console.log(filtered);
+
   return (
     <div className="container mx-auto">
       <div>
@@ -161,6 +161,7 @@ function BooksPage() {
           isLoading={state.isLoading}
           error={state.error}
           filtered={filtered}
+          setData={setData}
         />
       </div>
       {modal && (

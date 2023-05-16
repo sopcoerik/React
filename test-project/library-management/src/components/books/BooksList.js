@@ -53,27 +53,6 @@ function BooksList({
 
   const renderedBooks =
     filtered.length === 0 ? mappingFunction(books) : mappingFunction(filtered);
-  // books.map((book) => {
-  //   const bookAuthor = authors.find((author) => book.authorId === author.id);
-  //   const bookCategory = categories.find(
-  //     (category) => book.categoryId === category.id
-  //   );
-  //   return (
-  //     (book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //       book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //       book.description.toLowerCase().includes(searchTerm.toLowerCase())) && (
-  //       <BookItem
-  //         key={book.id}
-  //         book={book}
-  //         handleEditBook={handleEditBook}
-  //         deleteBook={deleteBook}
-  //         bookAuthor={bookAuthor}
-  //         bookCategory={bookCategory}
-  //       />
-  //     )
-  //   );
-  // });
-  console.log(renderedBooks);
 
   const handleAddBook = () => {
     setBookToEdit(undefined);
@@ -115,7 +94,9 @@ function BooksList({
           <tr>
             <th>
               <button
-                onClick={() => handleSortBooks(books, "title")}
+                onClick={() =>
+                  handleSortBooks(books, "title", filtered.length > 0 && true)
+                }
                 className="flex"
               >
                 {sortOrder.title === 1 ? <GoChevronDown /> : <GoChevronUp />}
@@ -124,7 +105,9 @@ function BooksList({
             </th>
             <th>
               <button
-                onClick={() => handleSortBooks(books, "author")}
+                onClick={() =>
+                  handleSortBooks(books, "author", filtered.length > 0 && true)
+                }
                 className="flex"
               >
                 {sortOrder.author === 1 ? <GoChevronDown /> : <GoChevronUp />}
