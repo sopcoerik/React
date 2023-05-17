@@ -12,6 +12,7 @@ function AuthorsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const {
     state: { data },
+    sortAuthors,
     addAuthor,
     editAuthor,
     deleteAuthor,
@@ -25,7 +26,7 @@ function AuthorsPage() {
         <SearchAuthors term={searchTerm} setTerm={setSearchTerm} />
       </div>
       <div>
-        <SortAuthors authors={data} />
+        <SortAuthors authors={data} sortAuthors={sortAuthors} />
       </div>
       <div>
         <AuthorsList

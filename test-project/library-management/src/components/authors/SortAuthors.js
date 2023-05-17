@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { GoChevronDown, GoChevronUp } from "react-icons/go";
-import { useAuthors } from "../../hooks/useAuthors";
 
-function SortAuthors({ authors }) {
+function SortAuthors({ authors, sortAuthors }) {
   const authorsCopy = [...authors];
   const [sortOrder, setSortOrder] = useState(1);
-  const { sortAuthors } = useAuthors();
 
   authorsCopy.sort((a, b) => a.name.localeCompare(b.name) * sortOrder);
 

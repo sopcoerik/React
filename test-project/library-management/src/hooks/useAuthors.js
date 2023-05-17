@@ -206,6 +206,7 @@ export function useAuthors() {
 
   return {
     state,
+    setAuthors,
     sortAuthors,
     addAuthor,
     editAuthor,
