@@ -2,28 +2,29 @@ import { useCallback, useEffect, useReducer } from "react";
 import axios from "axios";
 
 export function useAuthors() {
-  const IS_LOADING = "is_loading";
-  const SET_DATA = "set_data";
-  const SET_ERROR = "set_error";
+  const LOAD_AUTHORS = "LOAD_AUTHORS";
+  const LOAD_AUTHORS_SUCCESS = "LOAD_AUTHORS_SUCCESS";
+  const LOAD_AUTHORS_ERROR = "LOAD_AUTHORS_ERROR";
 
   const authorsReducer = (state, action) => {
     switch (action.type) {
-      case IS_LOADING:
+      case LOAD_AUTHORS:
         return {
-          isLoading: action.payload,
-          data: state.data,
-          error: state.error,
+          ...state,
+          isLoading: true,
+          error: null,
         };
-      case SET_DATA:
+      case LOAD_AUTHORS_SUCCESS:
         return {
+          ...state,
           isLoading: false,
+          error: null,
           data: action.payload,
-          error: state.error,
         };
-      case SET_ERROR:
+      case LOAD_AUTHORS_ERROR:
         return {
+          ...state,
           isLoading: false,
-          data: state.data,
           error: action.payload,
         };
       default:
@@ -31,23 +32,22 @@ export function useAuthors() {
     }
   };
 
-  const setData = (data) => {
+  const setAuthors = (data) => {
     dispatch({
-      type: SET_DATA,
+      type: LOAD_AUTHORS_SUCCESS,
       payload: data,
     });
   };
 
-  const setIsLoading = (boolean) => {
+  const setAuthorsLoading = () => {
     dispatch({
-      type: IS_LOADING,
-      payload: boolean,
+      type: LOAD_AUTHORS,
     });
   };
 
-  const setError = (err) => {
+  const setAuthorsError = (err) => {
     dispatch({
-      type: SET_ERROR,
+      type: LOAD_AUTHORS_ERROR,
       payload: err,
     });
   };
@@ -60,14 +60,14 @@ export function useAuthors() {
 
   const fetchAuthors = useCallback(async () => {
     try {
-      setIsLoading(true);
+      setAuthorsLoading();
       const response = await axios.get(
         "https://645e200d12e0a87ac0e837cd.mockapi.io/authors"
       );
 
-      setData(response.data);
+      setAuthors(response.data);
     } catch (err) {
-      setError(err);
+      setAuthorsError(err);
     }
   }, []);
 
@@ -77,6 +77,6 @@ export function useAuthors() {
 
   return {
     state,
-    setData,
+    setAuthors,
   };
 }
