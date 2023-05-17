@@ -5,6 +5,7 @@ import { useCategories } from "../../hooks/useCategories";
 import axios from "axios";
 import Modal from "../../components/utils/Modal";
 import Form from "../../components/utils/Form";
+import SortCategories from "../../components/categories/SortCategories";
 
 function CategoriesPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -52,6 +53,9 @@ function CategoriesPage() {
     <div>
       <div className="container mx-auto">
         <SearchCategories term={searchTerm} setTerm={setSearchTerm} />
+      </div>
+      <div className="container mx-auto">
+        <SortCategories categories={data} setCategories={setData} />
       </div>
       <div className="container mx-auto">
         <CategoriesList

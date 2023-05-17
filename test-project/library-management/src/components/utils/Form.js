@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 import { useAuthors } from "../../hooks/useAuthors";
 import { useCategories } from "../../hooks/useCategories";
 
@@ -32,6 +32,8 @@ function Form({
     state: { data: categories },
   } = useCategories();
   const booksURL = "https://645e200d12e0a87ac0e837cd.mockapi.io/books";
+
+  const [isOpen, setIsOpen] = useState(true);
 
   const addBook = async (title, authorId, author, description, categoryId) => {
     const response = await axios.post(booksURL, {
@@ -223,7 +225,7 @@ function Form({
     <div
       className={`rounded border ${
         theme === "dark" ? "text-white bg-black" : "bg-white"
-      } absolute min-w-600 min-h-300 left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4`}
+      } absolute min-w-600 min-h-300 left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 frm`}
     >
       <form
         onSubmit={handleFormSubmit}

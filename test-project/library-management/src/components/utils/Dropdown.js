@@ -7,6 +7,7 @@ function Dropdown({
   setSelectedCategory,
   category,
   author,
+  dropdownClose,
 }) {
   const OPEN_DROPDOWN = "open_dropdown";
   const CHANGE_HEADER = "change_header";
@@ -43,7 +44,7 @@ function Dropdown({
       (category && "Available categories..."),
   });
 
-  const handleDropdownClick = () => {
+  const handleDropdownClick = (e) => {
     dispatch({
       type: OPEN_DROPDOWN,
       payload: !state.isOpen,
@@ -75,7 +76,7 @@ function Dropdown({
   ));
 
   return (
-    <div className="relative border rounded border-slate-200 py-3 hover:cursor-pointer w-full">
+    <div className="relative border rounded border-slate-200 py-3 hover:cursor-pointer w-full dropdown">
       <div onClick={handleDropdownClick} className="px-1">
         {state.header}
       </div>
@@ -83,7 +84,7 @@ function Dropdown({
         <div
           className={`absolute ${
             theme === "dark" ? "bg-black text-white" : "bg-white text-black"
-          } w-full border rounded border-slate-200 px-1 py-3`}
+          } w-full border rounded border-slate-200 px-1 py-3 z-10 overflow-auto max-h-24`}
         >
           {availableOptions}
         </div>
