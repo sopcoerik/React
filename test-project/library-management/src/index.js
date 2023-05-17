@@ -8,6 +8,7 @@ import App from "./App";
 import BooksPage from "./pages/BooksPage/BooksPage";
 import AuthorsPage from "./pages/AuthorsPage/AuthorsPage";
 import CategoriesPage from "./pages/CategoriesPage/CategoriesPage";
+import NewPage from "./pages/NewPage/NewPage";
 
 import "./index.css";
 
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: "/categories",
         element: <CategoriesPage />,
+      },
+      {
+        path: "/newpage",
+        element: <NewPage />,
       },
     ],
   },

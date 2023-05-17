@@ -18,7 +18,7 @@ function BooksList({
   error,
   filtered,
 }) {
-  const { theme, handleTheme } = useThemeContext();
+  const { theme } = useThemeContext();
 
   const {
     state: { data: authors },

@@ -45,6 +45,14 @@ function Header() {
           >
             <p className="mx-5 py-4">Categories</p>
           </Link>
+          <Link
+            to="/newpage"
+            className={`hover:border-b hover:border-green-300 ${
+              theme === "dark" ? "bg-black" : "hover:bg-slate-300"
+            }`}
+          >
+            <p className="mx-5 py-4">New Page</p>
+          </Link>
         </div>
       </div>
       <div className="relative w-20 -translate-y-2/4 -translate-x-2/4">
