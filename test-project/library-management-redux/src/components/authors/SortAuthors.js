@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { GoChevronDown, GoChevronUp } from "react-icons/go";
 
-function SortAuthors({ authors, sortAuthors }) {
+function SortAuthors({ authors, setSortedAuthors }) {
   const authorsCopy = [...authors];
   const [sortOrder, setSortOrder] = useState(1);
 
@@ -9,7 +9,7 @@ function SortAuthors({ authors, sortAuthors }) {
 
   const handleListSort = () => {
     sortOrder === 1 ? setSortOrder(-1) : setSortOrder(1);
-    sortAuthors(authorsCopy);
+    setSortedAuthors(authorsCopy);
   };
 
   return (

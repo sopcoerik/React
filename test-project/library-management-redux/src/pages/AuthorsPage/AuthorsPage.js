@@ -2,52 +2,86 @@ import { useState } from "react";
 
 import AuthorsList from "../../components/authors/AuthorsList";
 import SearchAuthors from "../../components/authors/SearchAuthors";
-import { useAuthors } from "../../hooks/useAuthors";
 
 import Modal from "../../components/utils/Modal";
 import Form from "../../components/utils/Form";
 import SortAuthors from "../../components/authors/SortAuthors";
+import Loader from "../../components/utils/Loader";
+
+import {
+  useFetchAuthorsQuery,
+  useAddAuthorsMutation,
+  useEditAuthorMutation,
+  useDeleteAuthorsMutation,
+} from "../../store";
 
 function AuthorsPage() {
+  const { data, isLoading, error } = useFetchAuthorsQuery();
+
+  const [addNewAuthor, addNewAuthorResponse] = useAddAuthorsMutation();
+  const { isLoading: addIsLoading } = addNewAuthorResponse;
+
+  const [editAuthor, editAuthorResponse] = useEditAuthorMutation();
+  const { isLoading: editIsLoading } = editAuthorResponse;
+
+  const [deleteAuthor, deleteResponse] = useDeleteAuthorsMutation();
+  const { isLoading: deleteIsLoading } = deleteResponse;
+
   const [searchTerm, setSearchTerm] = useState("");
-  const {
-    state: { data },
-    sortAuthors,
-    addAuthor,
-    editAuthor,
-    deleteAuthor,
-  } = useAuthors();
   const [modal, setModal] = useState(false);
-  const [authorObj, setAuthorName] = useState({});
+  const [authorToEdit, setAuthorToEdit] = useState({});
+  const [sortedAuthors, setSortedAuthors] = useState([]);
+
+  let content;
+
+  if (isLoading) {
+    content = (
+      <div className="w-full h-56 flex justify-center items-center">
+        Loading Data...
+        <Loader />
+      </div>
+    );
+  } else if (error) {
+    content = <div>Error Loading Authors...</div>;
+  } else {
+    content = (
+      <div>
+        <div>
+          <SortAuthors authors={data} setSortedAuthors={setSortedAuthors} />
+        </div>
+        <div>
+          <AuthorsList
+            searchTerm={searchTerm}
+            authors={sortedAuthors.length > 0 ? sortedAuthors : data}
+            setModal={setModal}
+            setAuthorToEdit={setAuthorToEdit}
+            deleteAuthor={deleteAuthor}
+            addIsLoading={addIsLoading}
+            editIsLoading={editIsLoading}
+            deleteIsLoading={deleteIsLoading}
+          />
+        </div>
+        {modal && (
+          <Modal setModal={setModal}>
+            <Form
+              setModal={setModal}
+              author
+              authorToEdit={authorToEdit}
+              addAuthor={addNewAuthor}
+              editAuthor={editAuthor}
+            />
+          </Modal>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto">
       <div>
         <SearchAuthors term={searchTerm} setTerm={setSearchTerm} />
       </div>
-      <div>
-        <SortAuthors authors={data} sortAuthors={sortAuthors} />
-      </div>
-      <div>
-        <AuthorsList
-          searchTerm={searchTerm}
-          authors={data}
-          deleteAuthor={deleteAuthor}
-          setModal={setModal}
-          setAuthorName={setAuthorName}
-        />
-      </div>
-      {modal && (
-        <Modal setModal={setModal}>
-          <Form
-            setModal={setModal}
-            author
-            authorObj={authorObj}
-            editAuthor={editAuthor}
-            addAuthor={addAuthor}
-          />
-        </Modal>
-      )}
+      {content}
     </div>
   );
 }

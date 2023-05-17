@@ -1,107 +1,40 @@
-import { useState, useEffect, useReducer, useCallback } from "react";
-import axios from "axios";
+import { useState } from "react";
 
 import SearchBooks from "../../components/books/SearchBooks";
 import BooksList from "../../components/books/BooksList";
 import Modal from "../../components/utils/Modal";
 import Form from "../../components/utils/Form";
 import FilterBooks from "../../components/books/FilterBooks";
+import {
+  useFetchBooksQuery,
+  useDeleteBookMutation,
+  useAddBooksMutation,
+  useEditBookMutation,
+} from "../../store";
 
 function BooksPage() {
+  const { data, isLoading, error } = useFetchBooksQuery();
+  const [deleteBook, deleteResponse] = useDeleteBookMutation();
+  const { isLoading: deleteIsLoading } = deleteResponse;
+
+  const [addBook, addResponse] = useAddBooksMutation();
+  const { isLoading: addIsLoading } = addResponse;
+
+  const [editBook, editResponse] = useEditBookMutation();
+  const { isLoading: editIsLoading } = editResponse;
+
   const [searchTerm, setSearchTerm] = useState("");
   const [modal, setModal] = useState(false);
   const [bookToEdit, setBookToEdit] = useState({});
-  const [filtered, setFiltered] = useState([]);
+  const [filteredArray, setFilteredArray] = useState([]);
+  const [sortedBooks, setSortedBooks] = useState([]);
   const [sortOrder, setSortOrder] = useState({
     title: 1,
     author: 1,
   });
-
-  const booksURL = "https://645e200d12e0a87ac0e837cd.mockapi.io/books";
-
-  const IS_LOADING = "is_loading";
-  const SET_DATA = "set_data";
-  const SET_ERROR = "set_error";
-
-  const booksReducer = (state, action) => {
-    switch (action.type) {
-      case IS_LOADING:
-        return {
-          isLoading: action.payload,
-          data: state.data,
-          error: state.error,
-        };
-      case SET_DATA:
-        return {
-          isLoading: false,
-          data: action.payload,
-          error: state.error,
-        };
-      case SET_ERROR:
-        return {
-          isLoading: false,
-          data: state.data,
-          error: action.payload,
-        };
-      default:
-        return;
-    }
-  };
-
-  const [state, dispatch] = useReducer(booksReducer, {
-    isLoading: false,
-    data: [],
-    error: null,
-  });
-
-  const setData = (data) => {
-    dispatch({
-      type: SET_DATA,
-      payload: data,
-    });
-  };
-
-  const setIsLoading = (boolean) => {
-    dispatch({
-      type: IS_LOADING,
-      payload: boolean,
-    });
-  };
-
-  const setError = (err) => {
-    dispatch({
-      type: SET_ERROR,
-      payload: err,
-    });
-  };
-
-  const fetchBooks = useCallback(async () => {
-    try {
-      setIsLoading(true);
-
-      const response = await axios.get(booksURL);
-
-      setData(response.data);
-    } catch (err) {
-      setError(err);
-    }
-  }, []);
-
-  const deleteBook = async (book) => {
-    await axios.delete(`${booksURL}/${book.id}`);
-    const updatedBooks = state.data.filter(
-      (currentBook) => currentBook.id !== book.id
-    );
-    setData(updatedBooks);
-  };
-
-  useEffect(() => {
-    fetchBooks();
-  }, [fetchBooks]);
-
   const handleEditBook = (book) => {
-    setBookToEdit(book);
     setModal(true);
+    setBookToEdit(book);
   };
 
   const handleSortBooks = (books, sortBy, isFiltered) => {
@@ -113,7 +46,7 @@ function BooksPage() {
       ? setSortOrder({ [sortBy]: -1, author: sortOrder.author })
       : setSortOrder({ [sortBy]: 1, author: sortOrder.author });
 
-    sortBooks(isFiltered ? filtered : books, sortBy, isFiltered);
+    sortBooks(books, sortBy, isFiltered);
   };
 
   const sortBooks = (books, sortBy, isFiltered) => {
@@ -128,11 +61,11 @@ function BooksPage() {
       return a[sortBy].localeCompare(b[sortBy]) * sortOrder[sortBy];
     });
 
-    isFiltered ? setFiltered(copiedBooks) : setData(copiedBooks);
+    isFiltered ? setFilteredArray(copiedBooks) : setSortedBooks(copiedBooks);
   };
 
   const getFilteredBooks = (filteredBooks) => {
-    setFiltered(filteredBooks);
+    setFilteredArray(filteredBooks);
   };
 
   return (
@@ -142,35 +75,41 @@ function BooksPage() {
       </div>
       <div>
         <FilterBooks
-          books={state.data}
-          setBooks={setData}
+          books={data}
           getFilteredBooks={getFilteredBooks}
-          filtered={filtered}
+          filteredArray={filteredArray}
         />
       </div>
       <div>
-        <BooksList
-          searchTerm={searchTerm}
-          setModal={setModal}
-          handleEditBook={handleEditBook}
-          setBookToEdit={setBookToEdit}
-          deleteBook={deleteBook}
-          books={state.data}
-          handleSortBooks={handleSortBooks}
-          sortOrder={sortOrder}
-          isLoading={state.isLoading}
-          error={state.error}
-          filtered={filtered}
-          setData={setData}
-        />
+        {!isLoading && (
+          <BooksList
+            searchTerm={searchTerm}
+            books={
+              (filteredArray.length > 0 && filteredArray) ||
+              (sortedBooks.length > 0 && sortedBooks) ||
+              data
+            }
+            setModal={setModal}
+            handleEditBook={handleEditBook}
+            setBookToEdit={setBookToEdit}
+            handleSortBooks={handleSortBooks}
+            sortOrder={sortOrder}
+            deleteBook={deleteBook}
+            filteredArray={filteredArray}
+            addIsLoading={addIsLoading}
+            editIsLoading={editIsLoading}
+            deleteIsLoading={deleteIsLoading}
+          />
+        )}
       </div>
       {modal && (
         <Modal setModal={setModal}>
           <Form
             setModal={setModal}
             book={bookToEdit}
-            books={state.data}
-            setBooks={setData}
+            books={data}
+            addBook={addBook}
+            editBook={editBook}
           />
         </Modal>
       )}

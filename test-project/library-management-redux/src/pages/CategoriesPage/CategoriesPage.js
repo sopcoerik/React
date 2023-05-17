@@ -6,67 +6,68 @@ import axios from "axios";
 import Modal from "../../components/utils/Modal";
 import Form from "../../components/utils/Form";
 import SortCategories from "../../components/categories/SortCategories";
+import {
+  useFetchCategoriesQuery,
+  useAddCategoryMutation,
+  useEditCategoryMutation,
+  useDeleteCategoryMutation,
+} from "../../store";
+import Loader from "../../components/utils/Loader";
 
 function CategoriesPage() {
+  const { data, isLoading, error } = useFetchCategoriesQuery();
+
+  const [addCategory, addResponse] = useAddCategoryMutation();
+  const { isLoading: addIsLoading } = addResponse;
+
+  const [editCategory, editResponse] = useEditCategoryMutation();
+  const { isLoading: editIsLoading } = editResponse;
+
+  const [deleteCategory, deleteResponse] = useDeleteCategoryMutation();
+  const { isLoading: deleteIsLoading } = deleteResponse;
+
   const [searchTerm, setSearchTerm] = useState("");
-  const {
-    state: { data },
-    setData,
-  } = useCategories();
-  const baseURL = "https://645e200d12e0a87ac0e837cd.mockapi.io/categories";
+
+  const [sortedCategories, setSortedCategories] = useState([]);
+
   const [modal, setModal] = useState(false);
   const [categoryObj, setCategory] = useState({});
-
-  const addCategory = async (name) => {
-    const response = await axios.post(baseURL, {
-      name,
-    });
-
-    setData([...data, response.data]);
-  };
-
-  const editCategory = async (category, name) => {
-    const response = await axios.put(`${baseURL}/${category.id}`, {
-      name,
-    });
-
-    const categoryToReplace = data.find(
-      (currentCategory) => currentCategory.id === category.id
-    );
-    const index = data.indexOf(categoryToReplace);
-    const updatedCategories = data.map((currentCategory, i) =>
-      i === index ? response.data : currentCategory
-    );
-    setData([...updatedCategories]);
-  };
-
-  const deleteCategory = async (category) => {
-    await axios.delete(`${baseURL}/${category.id}`);
-
-    const updatedCategories = data.filter(
-      (currCategory) => category.id !== currCategory.id
-    );
-    setData([...updatedCategories]);
-  };
 
   return (
     <div>
       <div className="container mx-auto">
         <SearchCategories term={searchTerm} setTerm={setSearchTerm} />
       </div>
-      <div className="container mx-auto">
-        <SortCategories categories={data} setCategories={setData} />
-      </div>
-      <div className="container mx-auto">
-        <CategoriesList
-          searchTerm={searchTerm}
-          addCategory={addCategory}
-          setModal={setModal}
-          setCategory={setCategory}
-          deleteCategory={deleteCategory}
-          categories={data}
-        />
-      </div>
+      {isLoading && (
+        <div className="container mx-auto">
+          <div className="h-56 flex justify-center items-center">
+            Loading Data...
+            <Loader />
+          </div>
+        </div>
+      )}
+      {!isLoading && (
+        <div>
+          <div className="container mx-auto">
+            <SortCategories
+              categories={data}
+              setSortedCategories={setSortedCategories}
+            />
+          </div>
+          <div className="container mx-auto">
+            <CategoriesList
+              searchTerm={searchTerm}
+              setModal={setModal}
+              setCategory={setCategory}
+              deleteCategory={deleteCategory}
+              categories={sortedCategories.length > 0 ? sortedCategories : data}
+              addIsLoading={addIsLoading}
+              editIsLoading={editIsLoading}
+              deleteIsLoading={deleteIsLoading}
+            />
+          </div>
+        </div>
+      )}
       {modal && (
         <Modal setModal={setModal}>
           <Form

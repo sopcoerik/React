@@ -7,16 +7,17 @@ import Loader from "../utils/Loader";
 
 function BooksList({
   searchTerm,
+  books,
   setModal,
   handleEditBook,
   setBookToEdit,
-  deleteBook,
-  books,
   handleSortBooks,
   sortOrder,
-  isLoading,
-  error,
-  filtered,
+  filteredArray,
+  deleteBook,
+  addIsLoading,
+  editIsLoading,
+  deleteIsLoading,
 }) {
   const { theme } = useThemeContext();
 
@@ -43,41 +44,23 @@ function BooksList({
             key={book.id}
             book={book}
             handleEditBook={handleEditBook}
-            deleteBook={deleteBook}
             bookAuthor={bookAuthor}
             bookCategory={bookCategory}
+            deleteBook={deleteBook}
+            editIsLoading={editIsLoading}
+            deleteIsLoading={deleteIsLoading}
           />
         )
       );
     });
   };
 
-  const renderedBooks =
-    filtered.length === 0 ? mappingFunction(books) : mappingFunction(filtered);
+  const renderedBooks = mappingFunction(books);
 
   const handleAddBook = () => {
     setBookToEdit(undefined);
     setModal(true);
   };
-
-  let content;
-
-  if (isLoading) {
-    content = (
-      <div className="w-full h-52 flex items-center justify-center">
-        Loading Data...
-        <Loader />
-      </div>
-    );
-  } else if (error) {
-    content = (
-      <div className="w-full h-52 flex items-center justify-center text-red-900">
-        Error Loading Data...
-      </div>
-    );
-  } else {
-    content = <tbody>{renderedBooks}</tbody>;
-  }
 
   return (
     <div
@@ -89,22 +72,30 @@ function BooksList({
             <th>
               <button
                 onClick={() =>
-                  handleSortBooks(books, "title", filtered.length > 0 && true)
+                  handleSortBooks(
+                    books,
+                    "title",
+                    filteredArray.length > 0 && true
+                  )
                 }
                 className="flex"
               >
-                {sortOrder.title === 1 ? <GoChevronDown /> : <GoChevronUp />}
+                {sortOrder?.title === 1 ? <GoChevronDown /> : <GoChevronUp />}
                 Title
               </button>
             </th>
             <th>
               <button
                 onClick={() =>
-                  handleSortBooks(books, "author", filtered.length > 0 && true)
+                  handleSortBooks(
+                    books,
+                    "author",
+                    filteredArray.length > 0 && true
+                  )
                 }
                 className="flex"
               >
-                {sortOrder.author === 1 ? <GoChevronDown /> : <GoChevronUp />}
+                {sortOrder?.author === 1 ? <GoChevronDown /> : <GoChevronUp />}
                 Author
               </button>
             </th>
@@ -112,16 +103,16 @@ function BooksList({
             <th>Category</th>
           </tr>
         </thead>
-        {!isLoading && !error && content}
+        <tbody>{renderedBooks}</tbody>
       </table>
       <div className="flex flex-col m-3">
-        <div>{(isLoading || error) && content}</div>
         <div className="flex justify-end">
           <button
             className="border rounded hover:bg-blue-300 px-3 py-1 border-slate-500 hover:text-white"
             onClick={handleAddBook}
+            disabled={addIsLoading}
           >
-            + Add Book
+            {addIsLoading ? <Loader /> : "+ Add Book"}
           </button>
         </div>
       </div>

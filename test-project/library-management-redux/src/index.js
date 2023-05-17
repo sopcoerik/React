@@ -3,6 +3,9 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import ThemeProvider from "./contexts/themeContext";
+import { Provider } from "react-redux";
+
+import { store } from "./store";
 
 import App from "./App";
 import BooksPage from "./pages/BooksPage/BooksPage";
@@ -16,9 +19,11 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <ThemeProvider>
-        <App />
-      </ThemeProvider>
+      <Provider store={store}>
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>
+      </Provider>
     ),
 
     children: [

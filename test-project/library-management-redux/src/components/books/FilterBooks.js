@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useCategories } from "../../hooks/useCategories";
 
-function FilterBooks({ books, getFilteredBooks, filtered }) {
+function FilterBooks({ books, getFilteredBooks, filteredArray }) {
   const [checked, setChecked] = useState(false);
 
   const {
@@ -10,17 +10,25 @@ function FilterBooks({ books, getFilteredBooks, filtered }) {
 
   const handleCheckboxChange = (id) => {
     const newCheck = books.filter((book) => book.categoryId === id);
-    const present = (book) => filtered.includes(book);
+    const present = (book) => filteredArray.includes(book);
 
-    if ((!checked || checked) && newCheck.some(present)) {
-      const unchecked = filtered.filter((book) => book.categoryId !== id);
-      getFilteredBooks(unchecked);
-    } else if (!checked || !newCheck.some(present)) {
+    if (newCheck && !newCheck.some(present)) {
       setChecked(true);
-      const newFilteredBooks = Array.from(new Set([...filtered, ...newCheck]));
-      getFilteredBooks(newFilteredBooks);
+      getFilteredBooks([...filteredArray, ...newCheck]);
+    } else if (
+      (newCheck && newCheck.some(present)) ||
+      (newCheck && checked === false)
+    ) {
+      setChecked(false);
+      const unchecked = filteredArray.filter(
+        (book) => !newCheck.includes(book)
+      );
+      getFilteredBooks(unchecked);
     }
   };
+
+  console.log(filteredArray);
+  console.log(checked);
 
   const renderedCategories = categories.map((category) => (
     <div key={category.id}>

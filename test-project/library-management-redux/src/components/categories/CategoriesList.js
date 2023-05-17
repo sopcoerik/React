@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useCategories } from "../../hooks/useCategories";
 import { useThemeContext } from "../../hooks/useThemeContext";
 import Loader from "../utils/Loader";
@@ -8,18 +9,18 @@ function CategoriesList({
   setCategory,
   deleteCategory,
   categories,
+  addIsLoading,
+  editIsLoading,
+  deleteIsLoading,
 }) {
   const { theme } = useThemeContext();
-  const {
-    state: { isLoading, error },
-  } = useCategories();
 
   const handleEditCategoryClick = (category) => {
     setCategory(category);
     setModal(true);
   };
-  const handleDeleteCategoryClick = (category) => {
-    deleteCategory(category);
+  const handleDeleteCategoryClick = (id) => {
+    deleteCategory(id);
   };
 
   const handleAddCategoryClick = () => {
@@ -39,48 +40,32 @@ function CategoriesList({
             <button
               onClick={() => handleEditCategoryClick(category)}
               className="px-3 py-1 border border-slate-300 rounded hover:bg-blue-300 mb-2 hover:text-white"
+              disabled={editIsLoading}
             >
-              Edit Category
+              {editIsLoading ? <Loader /> : "Edit Category"}
             </button>
             <button
-              onClick={() => handleDeleteCategoryClick(category)}
+              onClick={() => handleDeleteCategoryClick(category.id)}
               className="px-3 py-1 ml-3 border border-slate-300 rounded hover:bg-red-300 mb-2 hover:text-white"
+              disabled={deleteIsLoading}
             >
-              Delete
+              {deleteIsLoading ? <Loader /> : "Delete"}
             </button>
           </div>
         </div>
       )
   );
 
-  let content;
-
-  if (isLoading) {
-    content = (
-      <div className="w-full h-52 flex items-center justify-center">
-        Loading Data...
-        <Loader />
-      </div>
-    );
-  } else if (error) {
-    content = (
-      <div className="w-full h-52 flex items-center justify-center text-red-900">
-        Error Loading Data...
-      </div>
-    );
-  } else {
-    content = <div>{renderedCategories}</div>;
-  }
-
   return (
     <div className={`${theme ? "bg-dark" : "bg-slate-200"} -mt-4 p-2`}>
-      {content}
+      <div>{renderedCategories}</div>
       <div className="flex justify-end m-2">
         <button
           className="px-3 py-1 border rounded hover:bg-blue-300 hover:text-white"
           onClick={handleAddCategoryClick}
+          disabled={addIsLoading}
         >
-          + Add Category
+          {addIsLoading ? <Loader /> : "+ Add Category"}
         </button>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import { createPortal } from "react-dom";
 import { useThemeContext } from "../../hooks/useThemeContext";
+
 function Modal({ children, setModal }) {
   const { theme } = useThemeContext();
 

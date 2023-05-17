@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { useReducer, useState } from "react";
+import { useReducer } from "react";
 import { useAuthors } from "../../hooks/useAuthors";
 import { useCategories } from "../../hooks/useCategories";
 
@@ -12,16 +12,16 @@ import { useThemeContext } from "../../hooks/useThemeContext";
 function Form({
   book,
   setModal,
-  setBooks,
-  books,
   author,
-  authorObj,
+  authorToEdit,
   editAuthor,
   addAuthor = undefined,
   addCategory,
   editCategory,
   categoryToEdit,
   category,
+  addBook,
+  editBook,
 }) {
   const { theme } = useThemeContext();
 
@@ -31,23 +31,18 @@ function Form({
   const {
     state: { data: categories },
   } = useCategories();
-  const booksURL = "https://645e200d12e0a87ac0e837cd.mockapi.io/books";
 
-  const [isOpen, setIsOpen] = useState(true);
-
-  const addBook = async (title, authorId, author, description, categoryId) => {
-    const response = await axios.post(booksURL, {
+  const handleAddBook = (title, authorId, author, description, categoryId) => {
+    addBook({
       title,
       authorId,
       author,
       description,
       categoryId,
     });
-
-    setBooks([...books, response.data]);
   };
 
-  const editBook = async (
+  const handleEditBook = (
     book,
     title,
     authorId,
@@ -55,20 +50,14 @@ function Form({
     description,
     categoryId
   ) => {
-    const response = await axios.put(`${booksURL}/${book.id}`, {
+    editBook({
+      id: book.id,
       title,
       authorId,
       author,
       description,
       categoryId,
     });
-
-    const findBook = books.find((book) => book.id === response.data.id);
-    const index = books.indexOf(findBook);
-    const updatedBooks = books.map((book, i) =>
-      i === index ? response.data : book
-    );
-    setBooks(updatedBooks);
   };
 
   const CHANGE_TITLE = "change_title";
@@ -143,7 +132,7 @@ function Form({
     title: book?.title || "",
     description: book?.description || "",
     selectedAuthor: {},
-    author: authorObj?.name || "",
+    author: authorToEdit?.name || "",
     category: categoryToEdit?.name || "",
     selectedCategory: categoryToEdit || {},
   });
@@ -193,12 +182,13 @@ function Form({
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
-    (categoryToEdit && editCategory(categoryToEdit, state.category)) ||
+    (categoryToEdit &&
+      editCategory({ categoryToEdit, newCategory: state.category })) ||
       (addCategory && addCategory(state.category)) ||
-      (authorObj && editAuthor(authorObj, state.author)) ||
+      (authorToEdit && editAuthor({ authorToEdit, newName: state.author })) ||
       (addAuthor && addAuthor(state.author)) ||
       (book
-        ? editBook(
+        ? handleEditBook(
             book,
             state.title,
             state.selectedAuthor.id,
@@ -206,7 +196,7 @@ function Form({
             state.description,
             state.selectedCategory.id
           )
-        : addBook(
+        : handleAddBook(
             state.title,
             state.selectedAuthor.id,
             state.selectedAuthor.name,
