@@ -14,7 +14,7 @@ function Header() {
     <div
       className={`container mx-auto ${
         theme === "dark" ? "bg-black" : "bg-slate-200"
-      } flex justify-between items-center h-16`}
+      } flex justify-around items-center h-16`}
     >
       <div className="flex items-center">
         <div className="text-lg font-bold px-2">
@@ -55,7 +55,7 @@ function Header() {
           </Link>
         </div>
       </div>
-      <div className="relative w-20 -translate-y-2/4 -translate-x-2/4">
+      <div className="relative w-20 -translate-y-2/4 translate-x-2/4">
         <input
           className={`opacity-0 absolute z-10 left-2/4 -translate-x-2/4 -translate-y-2/4 h-9 w-9 cursor-pointer rounded-full bg-gray-400`}
           onClick={handleThemeChange}
@@ -67,6 +67,20 @@ function Header() {
           ) : (
             <BsSun className="h-full w-full" />
           )}
+        </div>
+      </div>
+      <div
+        className={`flex flex-col justify-around items-center h-16 ${
+          theme === "dark"
+            ? "bg-zinc-800 text-white"
+            : " bg-slate-400 text-slate-200"
+        }`}
+      >
+        <div className="hover:bg-slate-700 py-1 px-3 cursor-pointer w-24 text-center">
+          <Link to="/signup">Sign Up</Link>
+        </div>
+        <div className="hover:bg-slate-700 py-1 px-3 cursor-pointer w-24 text-center">
+          <Link to="/login">Log In</Link>
         </div>
       </div>
     </div>

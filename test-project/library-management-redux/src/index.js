@@ -14,6 +14,8 @@ import CategoriesPage from "./pages/CategoriesPage/CategoriesPage";
 import NewPage from "./pages/NewPage/NewPage";
 
 import "./index.css";
+import SignUpPage from "./pages/SignUpPage/SignUpPage";
+import LogInPage from "./pages/LoginPage/LoginPage";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +44,14 @@ const router = createBrowserRouter([
       {
         path: "/newpage",
         element: <NewPage />,
+      },
+      {
+        path: "/signup",
+        element: <SignUpPage />,
+      },
+      {
+        path: "/login",
+        element: <LogInPage />,
       },
     ],
   },
