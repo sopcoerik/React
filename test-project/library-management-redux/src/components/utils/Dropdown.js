@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import { useThemeContext } from "../../hooks/useThemeContext";
+import { useTheme } from "../../hooks/useTheme";
 
 function Dropdown({
   options,
@@ -13,7 +13,7 @@ function Dropdown({
   const CHANGE_HEADER = "change_header";
   const CHANGE_ALL = "change_all_state";
 
-  const { theme } = useThemeContext();
+  const theme = useTheme();
 
   const dropdownReducer = (state, action) => {
     switch (action.type) {

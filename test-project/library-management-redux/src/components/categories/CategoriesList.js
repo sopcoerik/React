@@ -1,6 +1,4 @@
-import { useState } from "react";
-import { useCategories } from "../../hooks/useCategories";
-import { useThemeContext } from "../../hooks/useThemeContext";
+import { useTheme } from "../../hooks/useTheme";
 import Loader from "../utils/Loader";
 
 function CategoriesList({
@@ -13,7 +11,7 @@ function CategoriesList({
   editIsLoading,
   deleteIsLoading,
 }) {
-  const { theme } = useThemeContext();
+  const theme = useTheme();
 
   const handleEditCategoryClick = (category) => {
     setCategory(category);
@@ -57,7 +55,11 @@ function CategoriesList({
   );
 
   return (
-    <div className={`${theme ? "bg-dark" : "bg-slate-200"} -mt-4 p-2`}>
+    <div
+      className={`${
+        theme === "dark" ? "bg-black text-white" : "bg-slate-200"
+      } -mt-4 p-2`}
+    >
       <div>{renderedCategories}</div>
       <div className="flex justify-end m-2">
         <button

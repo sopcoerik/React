@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -22,9 +22,7 @@ const router = createBrowserRouter([
     path: "/",
     element: (
       <Provider store={store}>
-        <ThemeProvider>
-          <App />
-        </ThemeProvider>
+        <App />
       </Provider>
     ),
 

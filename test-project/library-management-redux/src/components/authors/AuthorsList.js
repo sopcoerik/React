@@ -1,5 +1,6 @@
-import { useThemeContext } from "../../hooks/useThemeContext";
 import Loader from "../utils/Loader";
+import { useTheme } from "../../hooks/useTheme";
+import { useSelector } from "react-redux";
 
 function AuthorsList({
   searchTerm,
@@ -10,8 +11,9 @@ function AuthorsList({
   addIsLoading,
   editIsLoading,
   deleteIsLoading,
+  activeUser,
 }) {
-  const { theme } = useThemeContext();
+  const theme = useTheme();
 
   const handleDeleteAuthorClick = (id) => {
     deleteAuthor(id);
@@ -35,34 +37,44 @@ function AuthorsList({
           className="m-2 border-b border-slate-300 flex justify-between items-center"
         >
           {author.name}
-          <div>
-            <button
-              onClick={() => handleEditAuthorClick(author)}
-              className="px-3 py-1 border border-slate-300 rounded hover:bg-blue-300 mb-2 hover:text-white"
-            >
-              {editIsLoading ? <Loader /> : "Edit Author"}
-            </button>
-            <button
-              onClick={() => handleDeleteAuthorClick(author.id)}
-              className="px-3 py-1 ml-3 border border-slate-300 rounded hover:bg-red-300 mb-2 hover:text-white"
-            >
-              {deleteIsLoading ? <Loader /> : "Delete"}
-            </button>
+          <div className="h-10">
+            {activeUser && (
+              <>
+                <button
+                  onClick={() => handleEditAuthorClick(author)}
+                  className="px-3 py-1 border border-slate-300 rounded hover:bg-blue-300 mb-2 hover:text-white"
+                >
+                  {editIsLoading ? <Loader /> : "Edit Author"}
+                </button>
+                <button
+                  onClick={() => handleDeleteAuthorClick(author.id)}
+                  className="px-3 py-1 ml-3 border border-slate-300 rounded hover:bg-red-300 mb-2 hover:text-white"
+                >
+                  {deleteIsLoading ? <Loader /> : "Delete"}
+                </button>
+              </>
+            )}
           </div>
         </div>
       )
   );
 
   return (
-    <div className={`${theme ? "bg-dark" : "bg-slate-200"} -mt-4 p-2`}>
+    <div
+      className={`${
+        theme === "dark" ? "bg-black text-white" : "bg-slate-200"
+      } -mt-4 p-2`}
+    >
       {renderedAuthors}
       <div className="flex justify-end m-2">
-        <button
-          className="px-3 py-1 border rounded hover:bg-blue-300 hover:text-white"
-          onClick={handleAddAuthorClick}
-        >
-          {addIsLoading ? <Loader /> : "+ Add Author"}
-        </button>
+        {activeUser && (
+          <button
+            className="px-3 py-1 border rounded hover:bg-blue-300 hover:text-white"
+            onClick={handleAddAuthorClick}
+          >
+            {addIsLoading ? <Loader /> : "+ Add Author"}
+          </button>
+        )}
       </div>
     </div>
   );

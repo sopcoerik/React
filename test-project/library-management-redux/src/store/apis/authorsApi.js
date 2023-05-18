@@ -22,28 +22,25 @@ const authorsApi = createApi({
 
       addAuthors: builder.mutation({
         invalidatesTags: [{ type: "Authors", id: "AUTHORS" }],
-        query: (name) => {
+        query: (author) => {
           return {
             url: "/authors",
             method: "POST",
             body: {
-              name,
+              ...author,
             },
           };
         },
       }),
 
       editAuthor: builder.mutation({
-        invalidatesTags: (res, err, { authorToEdit }) => [
-          { type: "Author", id: authorToEdit.id },
-        ],
-        query: ({ authorToEdit, newName }) => {
+        invalidatesTags: (res, err, { id }) => [{ type: "Author", id }],
+        query: ({ id, newAuthor }) => {
           return {
-            url: `/authors/${authorToEdit.id}`,
+            url: `/authors/${id}`,
             method: "PUT",
             body: {
-              ...authorToEdit,
-              name: newName,
+              ...newAuthor,
             },
           };
         },

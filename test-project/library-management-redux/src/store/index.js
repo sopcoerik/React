@@ -5,10 +5,15 @@ import { booksApi } from "./apis/booksApi";
 import { categoriesApi } from "./apis/categoriesApi";
 import { usersApi } from "./apis/usersApi";
 
+import { ThemeReducer } from "./slices/themeSlice";
+
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
+import { ActiveUserReducer } from "./slices/activeUserSlice";
 
 const store = configureStore({
   reducer: {
+    activeUser: ActiveUserReducer,
+    theme: ThemeReducer,
     [authorsApi.reducerPath]: authorsApi.reducer,
     [booksApi.reducerPath]: booksApi.reducer,
     [categoriesApi.reducerPath]: categoriesApi.reducer,
@@ -31,3 +36,5 @@ export * from "./apis/authorsApi";
 export * from "./apis/booksApi";
 export * from "./apis/categoriesApi";
 export * from "./apis/usersApi";
+export { setTheme } from "./slices/themeSlice";
+export { addActiveUser } from "./slices/activeUserSlice";

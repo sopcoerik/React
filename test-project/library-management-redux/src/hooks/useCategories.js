@@ -77,8 +77,5 @@ export function useCategories() {
 
   return {
     state,
-    setIsLoading,
-    setData,
-    setError,
   };
 }

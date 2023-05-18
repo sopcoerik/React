@@ -8,6 +8,8 @@ import Form from "../../components/utils/Form";
 import SortAuthors from "../../components/authors/SortAuthors";
 import Loader from "../../components/utils/Loader";
 
+import { useSelector } from "react-redux";
+
 import {
   useFetchAuthorsQuery,
   useAddAuthorsMutation,
@@ -32,6 +34,8 @@ function AuthorsPage() {
   const [authorToEdit, setAuthorToEdit] = useState({});
   const [sortedAuthors, setSortedAuthors] = useState([]);
 
+  const activeUser = useSelector((state) => state.activeUser.activeUser);
+
   let content;
 
   if (isLoading) {
@@ -47,7 +51,9 @@ function AuthorsPage() {
     content = (
       <div>
         <div>
-          <SortAuthors authors={data} setSortedAuthors={setSortedAuthors} />
+          {activeUser && (
+            <SortAuthors authors={data} setSortedAuthors={setSortedAuthors} />
+          )}
         </div>
         <div>
           <AuthorsList
@@ -59,6 +65,7 @@ function AuthorsPage() {
             addIsLoading={addIsLoading}
             editIsLoading={editIsLoading}
             deleteIsLoading={deleteIsLoading}
+            activeUser={activeUser}
           />
         </div>
         {modal && (

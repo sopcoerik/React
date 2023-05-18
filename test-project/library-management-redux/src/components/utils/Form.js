@@ -1,5 +1,3 @@
-import axios from "axios";
-
 import { useReducer } from "react";
 import { useAuthors } from "../../hooks/useAuthors";
 import { useCategories } from "../../hooks/useCategories";
@@ -7,7 +5,7 @@ import { useCategories } from "../../hooks/useCategories";
 import Dropdown from "./Dropdown";
 
 import "./form.css";
-import { useThemeContext } from "../../hooks/useThemeContext";
+import { useTheme } from "../../hooks/useTheme";
 
 function Form({
   book,
@@ -23,7 +21,7 @@ function Form({
   addBook,
   editBook,
 }) {
-  const { theme } = useThemeContext();
+  const theme = useTheme();
 
   const {
     state: { data: authors },
@@ -185,8 +183,12 @@ function Form({
     (categoryToEdit &&
       editCategory({ categoryToEdit, newCategory: state.category })) ||
       (addCategory && addCategory(state.category)) ||
-      (authorToEdit && editAuthor({ authorToEdit, newName: state.author })) ||
-      (addAuthor && addAuthor(state.author)) ||
+      (authorToEdit &&
+        editAuthor({
+          id: authorToEdit.id,
+          newAuthor: { name: state.author },
+        })) ||
+      (addAuthor && addAuthor({ name: state.author })) ||
       (book
         ? handleEditBook(
             book,

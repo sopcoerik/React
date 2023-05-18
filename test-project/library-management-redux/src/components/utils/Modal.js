@@ -1,8 +1,8 @@
 import { createPortal } from "react-dom";
-import { useThemeContext } from "../../hooks/useThemeContext";
+import { useTheme } from "../../hooks/useTheme";
 
 function Modal({ children, setModal }) {
-  const { theme } = useThemeContext();
+  const theme = useTheme();
 
   const handleModalClick = (e) => {
     if (e.target.classList.contains("modal")) {

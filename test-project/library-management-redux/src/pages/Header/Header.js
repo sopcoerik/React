@@ -1,19 +1,31 @@
 import { Link } from "react-router-dom";
-import { useThemeContext } from "../../hooks/useThemeContext";
 import { FaCloudMoon } from "react-icons/fa";
 import { BsSun } from "react-icons/bs";
+import { setTheme } from "../../store";
+import { useTheme } from "../../hooks/useTheme";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { removeActiveUser } from "../../store/slices/activeUserSlice";
 
 function Header() {
-  const { theme, handleTheme } = useThemeContext();
+  const dispatch = useDispatch();
 
   const handleThemeChange = () => {
-    handleTheme();
+    dispatch(setTheme(theme === "dark" ? "light" : "dark"));
   };
+
+  const handleLogOut = () => {
+    dispatch(removeActiveUser());
+  };
+
+  const theme = useTheme();
+  const activeUser = useSelector((state) => state.activeUser.activeUser);
+  console.log(activeUser);
 
   return (
     <div
       className={`container mx-auto ${
-        theme === "dark" ? "bg-black" : "bg-slate-200"
+        theme === "dark" ? "bg-black text-white" : "bg-slate-200"
       } flex justify-around items-center h-16`}
     >
       <div className="flex items-center">
@@ -76,11 +88,29 @@ function Header() {
             : " bg-slate-400 text-slate-200"
         }`}
       >
-        <div className="hover:bg-slate-700 py-1 px-3 cursor-pointer w-24 text-center">
-          <Link to="/signup">Sign Up</Link>
+        <div
+          className={`${
+            !activeUser ? "hover:bg-slate-700" : "bg-slate-700"
+          } py-1 px-3 cursor-pointer w-24 text-center`}
+        >
+          {activeUser ? (
+            <p>Hi, {activeUser.name}</p>
+          ) : (
+            <Link to="/signup">Sign Up</Link>
+          )}
         </div>
-        <div className="hover:bg-slate-700 py-1 px-3 cursor-pointer w-24 text-center">
-          <Link to="/login">Log In</Link>
+        <div
+          className={`${
+            !activeUser ? "hover:bg-slate-700" : "hover:bg-slate-500"
+          }  py-1 px-3 cursor-pointer w-24 text-center`}
+        >
+          {activeUser ? (
+            <Link to="/login" onClick={handleLogOut}>
+              Log Out
+            </Link>
+          ) : (
+            <Link to="/login">Log In</Link>
+          )}
         </div>
       </div>
     </div>

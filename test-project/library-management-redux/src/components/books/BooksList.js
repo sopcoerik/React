@@ -1,9 +1,10 @@
-import { useThemeContext } from "../../hooks/useThemeContext";
 import BookItem from "./BookItem";
 import { GoChevronDown, GoChevronUp } from "react-icons/go";
 import { useAuthors } from "../../hooks/useAuthors";
 import { useCategories } from "../../hooks/useCategories";
 import Loader from "../utils/Loader";
+import { useTheme } from "../../hooks/useTheme";
+import { useSelector } from "react-redux";
 
 function BooksList({
   searchTerm,
@@ -19,7 +20,7 @@ function BooksList({
   editIsLoading,
   deleteIsLoading,
 }) {
-  const { theme } = useThemeContext();
+  const theme = useTheme();
 
   const {
     state: { data: authors },
@@ -64,7 +65,9 @@ function BooksList({
 
   return (
     <div
-      className={`${theme === "dark" ? "bg-black" : "bg-slate-200"} my-3 p-2`}
+      className={`${
+        theme === "dark" ? "bg-black text-white" : "bg-slate-200"
+      } my-3 p-2`}
     >
       <table className="table-fixed w-full">
         <thead className="border-b border-gray-900">

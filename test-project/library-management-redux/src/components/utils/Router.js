@@ -1,5 +1,4 @@
 import { useState, useTransition } from "react";
-import { useThemeContext } from "../../hooks/useThemeContext";
 import { useAuthorsContext } from "../../hooks/useAuthorsContext";
 
 import MainPage from "../../pages/MainPage/MainPage";
@@ -8,7 +7,6 @@ import Header from "../../pages/Header/Header";
 import Modal from "./Modal";
 
 const Router = () => {
-  const { handleTheme, theme } = useThemeContext();
   const { toEdit } = useAuthorsContext();
 
   const [page, setPage] = useState("/");
@@ -35,18 +33,6 @@ const Router = () => {
   return (
     <div>
       <Header navigate={navigate} />
-      <div className="flex justify-end">
-        <button
-          className={`border rounded px-3 py-1 m-2 ${
-            theme === "dark"
-              ? "hover:bg-white hover:text-black"
-              : "hover:bg-black hover:text-white"
-          }`}
-          onClick={handleTheme}
-        >
-          Dark Theme
-        </button>
-      </div>
       {content}
     </div>
   );

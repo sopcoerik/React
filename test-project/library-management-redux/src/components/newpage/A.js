@@ -1,9 +1,9 @@
 import { useAuthors } from "../../hooks/useAuthors";
 import Loader from "../utils/Loader";
-import { useThemeContext } from "../../hooks/useThemeContext";
+import { useTheme } from "../../hooks/useTheme";
 
 function A() {
-  const { theme } = useThemeContext();
+  const theme = useTheme();
 
   const {
     state: { data, isLoading },
@@ -22,12 +22,12 @@ function A() {
   }
 
   return (
-    <div>
+    <div className={`${theme === "dark" && "bg-black text-white"}`}>
       <p className="text-xl font-bold mb-5">A</p>
       <button
         onClick={reloadAuthors}
         className={`rounded border bg-slate-100 border-black mb-5 py-1 px-3 ${
-          theme === "dark" && "text-black"
+          theme === "dark" && "text-white bg-gray-700 border-white"
         }`}
       >
         Reload Authors

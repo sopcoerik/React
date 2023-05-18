@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useCategories } from "../../hooks/useCategories";
+import { useTheme } from "../../hooks/useTheme";
 
 function FilterBooks({ books, getFilteredBooks, filteredArray }) {
   const [checked, setChecked] = useState(false);
-
+  const theme = useTheme();
   const {
     state: { data: categories },
   } = useCategories();
@@ -27,9 +28,6 @@ function FilterBooks({ books, getFilteredBooks, filteredArray }) {
     }
   };
 
-  console.log(filteredArray);
-  console.log(checked);
-
   const renderedCategories = categories.map((category) => (
     <div key={category.id}>
       <input
@@ -41,7 +39,7 @@ function FilterBooks({ books, getFilteredBooks, filteredArray }) {
   ));
 
   return (
-    <div>
+    <div className={`${theme === "dark" ? "bg-black text-white" : ""}`}>
       <div>
         <label>Filter Books By Category: &nbsp;</label>
         <div className={`flex justify-around flex-wrap`}>

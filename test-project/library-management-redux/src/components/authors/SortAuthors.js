@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { GoChevronDown, GoChevronUp } from "react-icons/go";
+import { useTheme } from "../../hooks/useTheme";
 
 function SortAuthors({ authors, setSortedAuthors }) {
   const authorsCopy = [...authors];
   const [sortOrder, setSortOrder] = useState(1);
+  const theme = useTheme();
 
   authorsCopy.sort((a, b) => a.name.localeCompare(b.name) * sortOrder);
 
@@ -13,7 +15,7 @@ function SortAuthors({ authors, setSortedAuthors }) {
   };
 
   return (
-    <div>
+    <div className={`${theme === "dark" && "bg-black text-white"}`}>
       <button onClick={handleListSort} className="flex items-center">
         Sort |{sortOrder === 1 ? <GoChevronDown /> : <GoChevronUp />}
       </button>

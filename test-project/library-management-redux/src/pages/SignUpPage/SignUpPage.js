@@ -1,12 +1,18 @@
 import { useState } from "react";
 import { useCreateUserMutation } from "../../store/apis/usersApi";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function SignUpPage() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [createUser, creationResponse] = useCreateUserMutation();
+  const [createUser] = useCreateUserMutation();
+  const navigate = useNavigate();
+
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -19,11 +25,13 @@ function SignUpPage() {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     createUser({
+      name,
       email,
       password,
     });
     setEmail("");
     setPassword("");
+    navigate("/login");
   };
 
   return (
@@ -35,6 +43,16 @@ function SignUpPage() {
         <div className="w-4/6 h-0.5 bg-gray-200 mb-24" />
         <div className="w-96 flex justify-center items-center">
           <form onSubmit={handleFormSubmit}>
+            <div className="flex flex-col mb-8">
+              <label>Name:</label>
+              <input
+                type="text"
+                placeholder="Enter Your Name"
+                className="border border-gray-200 py-1 px-3"
+                value={name}
+                onChange={handleNameChange}
+              />
+            </div>
             <div className="flex flex-col mb-8">
               <label>E-mail:</label>
               <input
