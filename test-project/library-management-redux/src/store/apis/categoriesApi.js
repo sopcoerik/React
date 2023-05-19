@@ -26,29 +26,25 @@ const categoriesApi = createApi({
 
       addCategory: builder.mutation({
         invalidatesTags: [{ type: "Categories", id: "CATEGORY" }],
-        query: (name) => {
+        query: (category) => {
           return {
             url: "/categories",
             method: "POST",
             body: {
-              name,
+              ...category,
             },
           };
         },
       }),
 
       editCategory: builder.mutation({
-        invalidatesTags: (result, error, { categoryToEdit }) => [
-          { type: "Category", id: categoryToEdit.id },
-        ],
-        query: ({ categoryToEdit, newCategory }) => {
-          console.log(categoryToEdit);
+        invalidatesTags: (result, error, { id }) => [{ type: "Category", id }],
+        query: ({ id, newCategory }) => {
           return {
-            url: `/categories/${categoryToEdit.id}`,
+            url: `/categories/${id}`,
             method: "PUT",
             body: {
-              ...categoryToEdit,
-              name: newCategory,
+              ...newCategory,
             },
           };
         },

@@ -51,9 +51,7 @@ function AuthorsPage() {
     content = (
       <div>
         <div>
-          {activeUser && (
-            <SortAuthors authors={data} setSortedAuthors={setSortedAuthors} />
-          )}
+          <SortAuthors authors={data} setSortedAuthors={setSortedAuthors} />
         </div>
         <div>
           <AuthorsList
@@ -76,6 +74,7 @@ function AuthorsPage() {
               authorToEdit={authorToEdit}
               addAuthor={addNewAuthor}
               editAuthor={editAuthor}
+              activeUser={activeUser}
             />
           </Modal>
         )}

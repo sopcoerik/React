@@ -14,7 +14,7 @@ function Modal({ children, setModal }) {
     <div
       className={`absolute ${
         theme === "dark" ? "bg-gray-900" : "bg-white"
-      } inset-0 opacity-70 modal`}
+      } inset-0 opacity-70 modal  overflow-hidden`}
       onClick={handleModalClick}
     >
       {children}

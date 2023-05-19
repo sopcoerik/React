@@ -20,6 +20,7 @@ function Form({
   category,
   addBook,
   editBook,
+  activeUser,
 }) {
   const theme = useTheme();
 
@@ -29,34 +30,6 @@ function Form({
   const {
     state: { data: categories },
   } = useCategories();
-
-  const handleAddBook = (title, authorId, author, description, categoryId) => {
-    addBook({
-      title,
-      authorId,
-      author,
-      description,
-      categoryId,
-    });
-  };
-
-  const handleEditBook = (
-    book,
-    title,
-    authorId,
-    author,
-    description,
-    categoryId
-  ) => {
-    editBook({
-      id: book.id,
-      title,
-      authorId,
-      author,
-      description,
-      categoryId,
-    });
-  };
 
   const CHANGE_TITLE = "change_title";
   const CHANGE_DESCRIPTION = "change_description";
@@ -126,15 +99,6 @@ function Form({
     }
   };
 
-  const [state, dispatch] = useReducer(formReducer, {
-    title: book?.title || "",
-    description: book?.description || "",
-    selectedAuthor: {},
-    author: authorToEdit?.name || "",
-    category: categoryToEdit?.name || "",
-    selectedCategory: categoryToEdit || {},
-  });
-
   const handleTitleChange = (e) => {
     dispatch({
       type: CHANGE_TITLE,
@@ -177,34 +141,55 @@ function Form({
     });
   };
 
+  const [state, dispatch] = useReducer(formReducer, {
+    title: book?.title || "",
+    description: book?.description || "",
+    selectedAuthor: {},
+    author: authorToEdit?.name || "",
+    category: categoryToEdit?.name || "",
+    selectedCategory: categoryToEdit || {},
+  });
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
     (categoryToEdit &&
-      editCategory({ categoryToEdit, newCategory: state.category })) ||
-      (addCategory && addCategory(state.category)) ||
+      editCategory({
+        id: categoryToEdit.id,
+        newCategory: { name: state.category, createdById: activeUser.id },
+      })) ||
+      (addCategory &&
+        addCategory({
+          name: state.category,
+          createdById: activeUser.id,
+        })) ||
       (authorToEdit &&
         editAuthor({
           id: authorToEdit.id,
-          newAuthor: { name: state.author },
+          newAuthor: { name: state.author, createdById: activeUser.id },
         })) ||
-      (addAuthor && addAuthor({ name: state.author })) ||
+      (addAuthor &&
+        addAuthor({ name: state.author, createdById: activeUser.id })) ||
       (book
-        ? handleEditBook(
-            book,
-            state.title,
-            state.selectedAuthor.id,
-            state.selectedAuthor.name,
-            state.description,
-            state.selectedCategory.id
-          )
-        : handleAddBook(
-            state.title,
-            state.selectedAuthor.id,
-            state.selectedAuthor.name,
-            state.description,
-            state.selectedCategory.id
-          ));
+        ? editBook({
+            id: book.id,
+            newBook: {
+              title: state.title,
+              authorId: state.selectedAuthor.id,
+              author: state.selectedAuthor.name,
+              description: state.description,
+              categoryId: state.selectedCategory.id,
+              createdById: activeUser.id,
+            },
+          })
+        : addBook({
+            title: state.title,
+            authorId: state.selectedAuthor.id,
+            author: state.selectedAuthor.name,
+            description: state.description,
+            categoryId: state.selectedCategory.id,
+            createdById: activeUser.id,
+          }));
 
     setModal(false);
   };

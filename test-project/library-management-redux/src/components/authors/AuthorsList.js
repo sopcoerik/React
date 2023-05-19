@@ -1,6 +1,5 @@
 import Loader from "../utils/Loader";
 import { useTheme } from "../../hooks/useTheme";
-import { useSelector } from "react-redux";
 
 function AuthorsList({
   searchTerm,
@@ -63,8 +62,9 @@ function AuthorsList({
     <div
       className={`${
         theme === "dark" ? "bg-black text-white" : "bg-slate-200"
-      } -mt-4 p-2`}
+      } p-2`}
     >
+      <div className="p-2 font-bold text-lg">Name</div>
       {renderedAuthors}
       <div className="flex justify-end m-2">
         {activeUser && (

@@ -16,3 +16,8 @@ th {
 
   padding: 10px 0;
 }
+
+.x-boss:hover .x {
+  transition: all 0.1s ease-in-out;
+  background-color: rgb(211, 129, 129);
+}

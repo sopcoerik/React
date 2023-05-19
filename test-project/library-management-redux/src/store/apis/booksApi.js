@@ -34,13 +34,13 @@ const booksApi = createApi({
       }),
 
       editBook: builder.mutation({
-        invalidatesTags: (res, err, book) => [{ type: "Book", id: book.id }],
-        query: (book) => {
+        invalidatesTags: (res, err, id) => [{ type: "Book", id }],
+        query: ({ id, newBook }) => {
           return {
-            url: `/books/${book.id}`,
+            url: `/books/${id}`,
             method: "PUT",
             body: {
-              ...book,
+              ...newBook,
             },
           };
         },

@@ -1,21 +1,23 @@
 import { useState } from "react";
 import CategoriesList from "../../components/categories/CategoriesList";
 import SearchCategories from "../../components/categories/SearchCategories";
-import { useCategories } from "../../hooks/useCategories";
-import axios from "axios";
+
 import Modal from "../../components/utils/Modal";
 import Form from "../../components/utils/Form";
 import SortCategories from "../../components/categories/SortCategories";
+import { useSelector } from "react-redux";
+
 import {
   useFetchCategoriesQuery,
   useAddCategoryMutation,
   useEditCategoryMutation,
   useDeleteCategoryMutation,
 } from "../../store";
+
 import Loader from "../../components/utils/Loader";
 
 function CategoriesPage() {
-  const { data, isLoading, error } = useFetchCategoriesQuery();
+  const { data, isLoading } = useFetchCategoriesQuery();
 
   const [addCategory, addResponse] = useAddCategoryMutation();
   const { isLoading: addIsLoading } = addResponse;
@@ -33,6 +35,8 @@ function CategoriesPage() {
   const [modal, setModal] = useState(false);
   const [categoryObj, setCategory] = useState({});
 
+  const activeUser = useSelector((state) => state.activeUser.activeUser);
+
   return (
     <div>
       <div className="container mx-auto">
@@ -47,14 +51,14 @@ function CategoriesPage() {
         </div>
       )}
       {!isLoading && (
-        <div>
-          <div className="container mx-auto">
+        <div className="container mx-auto">
+          <div>
             <SortCategories
               categories={data}
               setSortedCategories={setSortedCategories}
             />
           </div>
-          <div className="container mx-auto">
+          <div>
             <CategoriesList
               searchTerm={searchTerm}
               setModal={setModal}
@@ -64,6 +68,7 @@ function CategoriesPage() {
               addIsLoading={addIsLoading}
               editIsLoading={editIsLoading}
               deleteIsLoading={deleteIsLoading}
+              activeUser={activeUser}
             />
           </div>
         </div>
@@ -76,6 +81,7 @@ function CategoriesPage() {
             editCategory={editCategory}
             categoryToEdit={categoryObj}
             category
+            activeUser={activeUser}
           />
         </Modal>
       )}

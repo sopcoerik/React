@@ -101,7 +101,9 @@ function Header() {
         </div>
         <div
           className={`${
-            !activeUser ? "hover:bg-slate-700" : "hover:bg-slate-500"
+            !activeUser
+              ? "hover:bg-slate-700"
+              : "hover:bg-slate-500 hover:text-white"
           }  py-1 px-3 cursor-pointer w-24 text-center`}
         >
           {activeUser ? (

@@ -4,7 +4,6 @@ import { useAuthors } from "../../hooks/useAuthors";
 import { useCategories } from "../../hooks/useCategories";
 import Loader from "../utils/Loader";
 import { useTheme } from "../../hooks/useTheme";
-import { useSelector } from "react-redux";
 
 function BooksList({
   searchTerm,
@@ -19,6 +18,9 @@ function BooksList({
   addIsLoading,
   editIsLoading,
   deleteIsLoading,
+  activeUser,
+  handleReview,
+  handleBookDetailWindowState,
 }) {
   const theme = useTheme();
 
@@ -50,6 +52,9 @@ function BooksList({
             deleteBook={deleteBook}
             editIsLoading={editIsLoading}
             deleteIsLoading={deleteIsLoading}
+            activeUser={activeUser}
+            handleReview={handleReview}
+            handleBookDetailWindowState={handleBookDetailWindowState}
           />
         )
       );
@@ -67,7 +72,7 @@ function BooksList({
     <div
       className={`${
         theme === "dark" ? "bg-black text-white" : "bg-slate-200"
-      } my-3 p-2`}
+      } my-3 px-5 py-7`}
     >
       <table className="table-fixed w-full">
         <thead className="border-b border-gray-900">
@@ -110,13 +115,15 @@ function BooksList({
       </table>
       <div className="flex flex-col m-3">
         <div className="flex justify-end">
-          <button
-            className="border rounded hover:bg-blue-300 px-3 py-1 border-slate-500 hover:text-white"
-            onClick={handleAddBook}
-            disabled={addIsLoading}
-          >
-            {addIsLoading ? <Loader /> : "+ Add Book"}
-          </button>
+          {activeUser && (
+            <button
+              className="border rounded hover:bg-blue-300 px-3 py-1 border-slate-500 hover:text-white"
+              onClick={handleAddBook}
+              disabled={addIsLoading}
+            >
+              {addIsLoading ? <Loader /> : "+ Add Book"}
+            </button>
+          )}
         </div>
       </div>
     </div>

@@ -22,12 +22,12 @@ function A() {
   }
 
   return (
-    <div className={`${theme === "dark" && "bg-black text-white"}`}>
+    <div className={`${theme === "dark" && "text-white"}`}>
       <p className="text-xl font-bold mb-5">A</p>
       <button
         onClick={reloadAuthors}
         className={`rounded border bg-slate-100 border-black mb-5 py-1 px-3 ${
-          theme === "dark" && "text-white bg-gray-700 border-white"
+          theme === "dark" && "text-black bg-gray-700 border-white"
         }`}
       >
         Reload Authors

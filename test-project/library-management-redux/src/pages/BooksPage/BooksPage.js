@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 import SearchBooks from "../../components/books/SearchBooks";
 import BooksList from "../../components/books/BooksList";
@@ -10,10 +11,19 @@ import {
   useDeleteBookMutation,
   useAddBooksMutation,
   useEditBookMutation,
+  useAddReviewMutation,
 } from "../../store";
 
+import { useFetchReviewsQuery } from "../../store";
+import { useFetchUsersQuery } from "../../store";
+import { useFetchCategoriesQuery } from "../../store";
+import { useFetchAuthorsQuery } from "../../store";
+
+import BookReview from "../../components/books/BookReview";
+import BookDetail from "../../components/books/BookDetail";
+
 function BooksPage() {
-  const { data, isLoading, error } = useFetchBooksQuery();
+  const { data, isLoading } = useFetchBooksQuery();
   const [deleteBook, deleteResponse] = useDeleteBookMutation();
   const { isLoading: deleteIsLoading } = deleteResponse;
 
@@ -22,6 +32,8 @@ function BooksPage() {
 
   const [editBook, editResponse] = useEditBookMutation();
   const { isLoading: editIsLoading } = editResponse;
+
+  const [addReview] = useAddReviewMutation();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [modal, setModal] = useState(false);
@@ -32,6 +44,38 @@ function BooksPage() {
     title: 1,
     author: 1,
   });
+
+  const [reviewWindow, setReviewWindow] = useState(false);
+  const [bookDetailWindow, setBookDetailWindow] = useState(false);
+  const [reviewedBookId, setReviewedBookId] = useState(null);
+  const [bookToView, setBookToView] = useState(null);
+  const { data: users } = useFetchUsersQuery();
+  const { data: categories } = useFetchCategoriesQuery();
+  const { data: authors } = useFetchAuthorsQuery();
+
+  const { data: reviews, isLoading: reviewsAreLoading } =
+    useFetchReviewsQuery();
+
+  const handleReviewWindowState = (id) => {
+    if (reviewWindow === false) {
+      setReviewedBookId(id);
+    } else {
+      setReviewedBookId(null);
+    }
+    setReviewWindow(!reviewWindow);
+  };
+
+  const handleBookDetailWindowState = (book) => {
+    if (bookDetailWindow === false) {
+      setBookToView(book);
+    } else {
+      setBookToView(null);
+    }
+    setBookDetailWindow(!bookDetailWindow);
+  };
+
+  const activeUser = useSelector((state) => state.activeUser.activeUser);
+
   const handleEditBook = (book) => {
     setModal(true);
     setBookToEdit(book);
@@ -99,19 +143,45 @@ function BooksPage() {
             addIsLoading={addIsLoading}
             editIsLoading={editIsLoading}
             deleteIsLoading={deleteIsLoading}
+            activeUser={activeUser}
+            handleReview={handleReviewWindowState}
+            handleBookDetailWindowState={handleBookDetailWindowState}
           />
         )}
       </div>
+      {reviewWindow && <Modal setModal={setReviewWindow} />}
+      {reviewWindow && (
+        <BookReview
+          setReviewWindow={setReviewWindow}
+          activeUser={activeUser}
+          addReview={addReview}
+          reviewedBookId={reviewedBookId}
+        />
+      )}
+
+      {bookDetailWindow && <Modal setModal={handleBookDetailWindowState} />}
+      {bookDetailWindow && (
+        <BookDetail
+          handleBookDetailWindowState={handleBookDetailWindowState}
+          bookToView={bookToView}
+          reviews={reviews}
+          users={users}
+          activeUser={activeUser}
+          categories={categories}
+          authors={authors}
+        />
+      )}
+
+      {modal && <Modal setModal={setModal} />}
       {modal && (
-        <Modal setModal={setModal}>
-          <Form
-            setModal={setModal}
-            book={bookToEdit}
-            books={data}
-            addBook={addBook}
-            editBook={editBook}
-          />
-        </Modal>
+        <Form
+          setModal={setModal}
+          book={bookToEdit}
+          books={data}
+          addBook={addBook}
+          editBook={editBook}
+          activeUser={activeUser}
+        />
       )}
     </div>
   );

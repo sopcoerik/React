@@ -4,6 +4,7 @@ import { authorsApi } from "./apis/authorsApi";
 import { booksApi } from "./apis/booksApi";
 import { categoriesApi } from "./apis/categoriesApi";
 import { usersApi } from "./apis/usersApi";
+import { reviewsApi } from "./apis/reviewsApi";
 
 import { ThemeReducer } from "./slices/themeSlice";
 
@@ -18,13 +19,15 @@ const store = configureStore({
     [booksApi.reducerPath]: booksApi.reducer,
     [categoriesApi.reducerPath]: categoriesApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
+    [reviewsApi.reducerPath]: reviewsApi.reducer,
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware()
       .concat(authorsApi.middleware)
       .concat(booksApi.middleware)
       .concat(categoriesApi.middleware)
-      .concat(usersApi.middleware);
+      .concat(usersApi.middleware)
+      .concat(reviewsApi.middleware);
   },
 });
 
@@ -36,5 +39,6 @@ export * from "./apis/authorsApi";
 export * from "./apis/booksApi";
 export * from "./apis/categoriesApi";
 export * from "./apis/usersApi";
+export * from "./apis/reviewsApi";
 export { setTheme } from "./slices/themeSlice";
 export { addActiveUser } from "./slices/activeUserSlice";
