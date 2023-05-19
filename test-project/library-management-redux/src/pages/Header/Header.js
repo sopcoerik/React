@@ -7,6 +7,8 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { removeActiveUser } from "../../store/slices/activeUserSlice";
 
+import { CgProfile } from "react-icons/cg";
+
 function Header() {
   const dispatch = useDispatch();
 
@@ -81,6 +83,13 @@ function Header() {
           )}
         </div>
       </div>
+
+      <div>
+        <Link to="/user">
+          <CgProfile className="text-3xl" />
+        </Link>
+      </div>
+
       <div
         className={`flex flex-col justify-around items-center h-16 ${
           theme === "dark"

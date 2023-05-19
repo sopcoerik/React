@@ -74,7 +74,9 @@ function BookDetail({
               <textarea
                 value={editInput}
                 onChange={handleEditInputChange}
-                className="w-full h-10"
+                className={`w-full h-10 ${
+                  theme === "dark" ? theme : "bg-white text-black"
+                }`}
               ></textarea>
               <button className="border p-0.5">Edit</button>
             </form>

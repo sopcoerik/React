@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -16,6 +16,7 @@ import NewPage from "./pages/NewPage/NewPage";
 import "./index.css";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import LogInPage from "./pages/LoginPage/LoginPage";
+import UserPage from "./pages/UserPage/UserPage";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <LogInPage />,
+      },
+      {
+        path: "/user",
+        element: <UserPage />,
       },
     ],
   },
