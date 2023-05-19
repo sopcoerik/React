@@ -36,8 +36,13 @@ function BookDetail({
   const [editReview] = useEditReviewMutation();
 
   const handleEditReview = (review) => {
-    setReviewToEdit(review);
-    setEditInput(review.text);
+    if (!reviewToEdit) {
+      setReviewToEdit(review);
+      setEditInput(review.text);
+    } else {
+      setReviewToEdit(null);
+      setEditInput(null);
+    }
   };
 
   const handleEditInputChange = (e) => {
@@ -65,24 +70,27 @@ function BookDetail({
     return (
       <div
         key={review.id}
-        className="w-full border py-1 px-1 h-24 overflow-auto"
+        className="w-full border py-1 px-1 h-28 overflow-auto"
       >
         <p className="font-bold">{user.name}</p>
-        <div className="pl-2">
-          {reviewToEdit ? (
-            <form onSubmit={handleEditFormSubmit}>
-              <textarea
-                value={editInput}
-                onChange={handleEditInputChange}
-                className={`w-full h-10 ${
-                  theme === "dark" ? theme : "bg-white text-black"
-                }`}
-              ></textarea>
-              <button className="border p-0.5">Edit</button>
-            </form>
-          ) : (
-            <p>{review.text}</p>
-          )}
+        <div className="pl-2 relative">
+          <form onSubmit={handleEditFormSubmit}>
+            <textarea
+              className="w-full h-full"
+              disabled={!reviewToEdit || reviewToEdit.id !== review.id}
+              value={
+                (reviewToEdit?.createdById === review.createdById &&
+                  editInput) ||
+                review.text
+              }
+              onChange={handleEditInputChange}
+            ></textarea>
+            {reviewToEdit?.createdById === review.createdById && editInput && (
+              <button className="border p-0.5 bg-white text-xs absolute bottom-0 right-0 -translate-x-2/4 -translate-y-2/4">
+                Save
+              </button>
+            )}
+          </form>
         </div>
         {activeUser.id === user.id && (
           <div className="flex gap-1 mt-2">
@@ -131,7 +139,7 @@ function BookDetail({
           <div className="h-full w-2/4 p-12">
             <div className="w-full h-1/6 border-b border-gray-300 mt-2">
               <h3 className="text-lg font-bold">
-                Title: <p className="font-light">{bookToView.title}</p>
+                Title: <p className="font-light italic">{bookToView.title}</p>
               </h3>
             </div>
             <div className="w-full h-1/6 border-b border-gray-300 mt-2">
@@ -147,9 +155,7 @@ function BookDetail({
             <div className="w-full h-1/6 border-b border-gray-300 mt-2">
               <h3 className="text-lg font-bold">
                 Description:
-                <p className="italic pl-3 font-light">
-                  {bookToView.description}
-                </p>
+                <p className="pl-3 font-light">{bookToView.description}</p>
               </h3>
             </div>
           </div>

@@ -26,7 +26,7 @@ function LogInPage() {
     const userMatch = data.find(
       (user) => user.password === password && user.email === email
     );
-    console.log(userMatch);
+
     if (userMatch) {
       setEmail("");
       setPassword("");

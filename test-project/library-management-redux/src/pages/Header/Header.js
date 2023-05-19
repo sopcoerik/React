@@ -22,7 +22,6 @@ function Header() {
 
   const theme = useTheme();
   const activeUser = useSelector((state) => state.activeUser.activeUser);
-  console.log(activeUser);
 
   return (
     <div
