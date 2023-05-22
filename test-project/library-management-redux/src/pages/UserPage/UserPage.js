@@ -1,9 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useTheme } from "../../hooks/useTheme";
-import { useEffect, useState } from "react";
 import { useUpdateUserMutation } from "../../store";
 import { useNavigate } from "react-router-dom";
 import { removeActiveUser } from "../../store/slices/activeUserSlice";
+import Input from "../../components/utils/Input";
+
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 function UserPage() {
   const activeUser = useSelector((state) => state.activeUser.activeUser);
@@ -16,32 +19,6 @@ function UserPage() {
 
   const [updateUser] = useUpdateUserMutation();
 
-  const [user, setUser] = useState(activeUser);
-  const [repeatedPassword, setRepeatedPassword] = useState(
-    activeUser?.password
-  );
-  const [valid, setValid] = useState(false);
-
-  const validatePassword = (e) => {
-    if (e.target.type === "password") {
-      return;
-    } else {
-      repeatedPassword === user.password ? setValid(true) : setValid(false);
-    }
-  };
-
-  useEffect(() => {
-    const cleaner = () => {
-      document.removeEventListener("click", validatePassword);
-    };
-
-    document.addEventListener("click", validatePassword);
-
-    return () => {
-      cleaner();
-    };
-  });
-
   if (!activeUser) {
     return (
       <div className="container mx-auto text-center py-10 text-xl font-bold">
@@ -50,24 +27,20 @@ function UserPage() {
     );
   }
 
-  const handleFormInputChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
-  };
-
-  const handleRepeatPasswordChange = (e) => {
-    setRepeatedPassword(e.target.value);
-  };
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    updateUser({
-      id: activeUser.id,
-      updatedUser: { ...user },
-    });
-
-    navigate("/login");
-    dispatch(removeActiveUser());
-  };
+  const EditSchema = Yup.object().shape({
+    name: Yup.string()
+      .min(2, "Too Short!")
+      .max(50, "Too Long!")
+      .required("Required"),
+    email: Yup.string().email("Invalid Email").required("Required"),
+    password: Yup.string()
+      .min(2, "Too Short!")
+      .max(12, "Too Long!")
+      .required("Required"),
+    confirmPassword: Yup.string("Passwords must match")
+      .oneOf([Yup.ref("password"), null], "Passwords must match!")
+      .required("Required"),
+  });
 
   return (
     <div className={"container mx-auto"}>
@@ -79,75 +52,92 @@ function UserPage() {
             <h1 className="font-bold text-2xl py-3">Your Profile</h1>
           </div>
           <div>
-            <form onSubmit={handleFormSubmit}>
-              <div className="flex flex-col">
-                <label className="text-lg font-bold">Name:</label>
-                <input
-                  name="name"
-                  type="text"
-                  className={`${
-                    theme === "dark" ? theme : "bg-inherit text-black"
-                  } outline-none`}
-                  value={user.name}
-                  onChange={handleFormInputChange}
-                />
-              </div>
-              <div className="flex flex-col">
-                <label className="text-lg font-bold">Email:</label>
-                <input
-                  name="email"
-                  type="email"
-                  className={`${
-                    theme === "dark" ? theme : "bg-inherit text-black"
-                  } outline-none`}
-                  value={user.email}
-                  onChange={handleFormInputChange}
-                />
-              </div>
-              <div className="flex flex-col">
-                <label className="text-lg font-bold">Password:</label>
-                <input
-                  name="password"
-                  type="password"
-                  className={`${
-                    theme === "dark" ? theme : "bg-inherit text-black"
-                  } outline-none`}
-                  value={user.password}
-                  onChange={handleFormInputChange}
-                />
-              </div>
-              <div className="flex flex-col">
-                <label className="text-lg font-bold">Repeat Password:</label>
-                <input
-                  name="password"
-                  type="password"
-                  className={`${
-                    theme === "dark" ? theme : "bg-inherit text-black"
-                  } outline-none`}
-                  value={repeatedPassword}
-                  onChange={handleRepeatPasswordChange}
-                />
-                <div>
-                  <label>Password Match:</label>
-                  <div
-                    className={`w-8 h-3 ${
-                      user.password === repeatedPassword
-                        ? "bg-green-400"
-                        : "bg-red-400"
-                    }`}
+            <Formik
+              initialValues={{
+                name: activeUser.name,
+                email: activeUser.email,
+                password: activeUser.password,
+                confirmPassword: "",
+              }}
+              validationSchema={EditSchema}
+              onSubmit={(values, { resetForm }) => {
+                updateUser({
+                  id: activeUser.id,
+                  updatedUser: { ...activeUser, ...values },
+                });
+
+                navigate("/login");
+                dispatch(removeActiveUser());
+
+                resetForm({
+                  values: {
+                    name: "",
+                    email: "",
+                    password: "",
+                    confirmPassword: "",
+                  },
+                });
+              }}
+            >
+              <Form className="flex flex-col gap-5">
+                <div className="flex flex-col">
+                  <div>
+                    <label className="text-xl font-bold">Name</label>
+                  </div>
+                  <Field type="text" name="name" className="py-1 px-2" />
+                  <ErrorMessage name="name" />
+                </div>
+
+                <div className="flex flex-col">
+                  <div>
+                    <label className="text-xl font-bold">Email</label>
+                  </div>
+                  <Field type="email" name="email" className="py-1 px-2" />
+                  <ErrorMessage name="email" />
+                </div>
+
+                <div className="flex flex-col">
+                  <div>
+                    <label className="text-xl font-bold">Password</label>
+                  </div>
+                  <Field
+                    type="password"
+                    name="password"
+                    className="py-1 px-2"
+                  />
+                  <ErrorMessage name="password" />
+                </div>
+
+                <div className="flex flex-col">
+                  <div>
+                    <label className="text-xl font-bold">
+                      Confirm Password
+                    </label>
+                  </div>
+                  <Field
+                    type="password"
+                    name="confirmPassword"
+                    className="py-1 px-2"
+                    component={Input}
+                  />
+                  <ErrorMessage
+                    name="confirmPassword"
+                    render={(message) => (
+                      <p className="text-red-300">{message}</p>
+                    )}
                   />
                 </div>
-              </div>
 
-              <button
-                className={`border ${
-                  (user === activeUser || !valid) && "bg-gray-200"
-                } rounded px-3 py-1 mt-3`}
-                disabled={user === activeUser || !valid}
-              >
-                Save
-              </button>
-            </form>
+                <div>
+                  <button
+                    type="submit"
+                    className="border rounded py-1 px-3 hover:bg-slate-100"
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              </Form>
+            </Formik>
           </div>
         </div>
       )}

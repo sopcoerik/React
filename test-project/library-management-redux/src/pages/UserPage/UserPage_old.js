@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useUpdateUserMutation } from "../../store";
 import { useNavigate } from "react-router-dom";
 import { removeActiveUser } from "../../store/slices/activeUserSlice";
+import Input from "../../components/utils/Input";
 
 function UserPage() {
   const activeUser = useSelector((state) => state.activeUser.activeUser);
@@ -26,7 +27,7 @@ function UserPage() {
     if (e.target.type === "password") {
       return;
     } else {
-      repeatedPassword === user.password ? setValid(true) : setValid(false);
+      repeatedPassword === user?.password ? setValid(true) : setValid(false);
     }
   };
 
@@ -80,73 +81,50 @@ function UserPage() {
           </div>
           <div>
             <form onSubmit={handleFormSubmit}>
-              <div className="flex flex-col">
-                <label className="text-lg font-bold">Name:</label>
-                <input
-                  name="name"
-                  type="text"
-                  className={`${
-                    theme === "dark" ? theme : "bg-inherit text-black"
-                  } outline-none`}
-                  value={user.name}
-                  onChange={handleFormInputChange}
-                />
-              </div>
-              <div className="flex flex-col">
-                <label className="text-lg font-bold">Email:</label>
-                <input
-                  name="email"
-                  type="email"
-                  className={`${
-                    theme === "dark" ? theme : "bg-inherit text-black"
-                  } outline-none`}
-                  value={user.email}
-                  onChange={handleFormInputChange}
-                />
-              </div>
-              <div className="flex flex-col">
-                <label className="text-lg font-bold">Password:</label>
-                <input
-                  name="password"
-                  type="password"
-                  className={`${
-                    theme === "dark" ? theme : "bg-inherit text-black"
-                  } outline-none`}
-                  value={user.password}
-                  onChange={handleFormInputChange}
-                />
-              </div>
-              <div className="flex flex-col">
-                <label className="text-lg font-bold">Repeat Password:</label>
-                <input
-                  name="password"
-                  type="password"
-                  className={`${
-                    theme === "dark" ? theme : "bg-inherit text-black"
-                  } outline-none`}
-                  value={repeatedPassword}
-                  onChange={handleRepeatPasswordChange}
-                />
-                <div>
-                  <label>Password Match:</label>
-                  <div
-                    className={`w-8 h-3 ${
-                      user.password === repeatedPassword
-                        ? "bg-green-400"
-                        : "bg-red-400"
-                    }`}
-                  />
-                </div>
-              </div>
+              <Input
+                name="name"
+                type="text"
+                value={user.name}
+                onInputChange={handleFormInputChange}
+                label="Name:"
+              />
+              <Input
+                name="email"
+                type="email"
+                value={user.email}
+                onInputChange={handleFormInputChange}
+                label="Email:"
+              />
 
-              <button
-                className={`border ${
-                  (user === activeUser || !valid) && "bg-gray-200"
-                } rounded px-3 py-1 mt-3`}
-                disabled={user === activeUser || !valid}
-              >
-                Save
-              </button>
+              <Input
+                name="password"
+                type="password"
+                value={user.password}
+                onInputChange={handleFormInputChange}
+                label="Password:"
+                invalid={!valid}
+              />
+
+              <Input
+                name="confirmPassword"
+                type="password"
+                value={repeatedPassword}
+                onInputChange={handleRepeatPasswordChange}
+                label="Confirm Password:"
+                error={!valid && "Passwords must match"}
+                invalid={!valid}
+              />
+
+              <div>
+                {valid && (
+                  <button
+                    type="submit"
+                    className={`border rounded px-3 py-1 mt-3`}
+                  >
+                    Save
+                  </button>
+                )}
+              </div>
             </form>
           </div>
         </div>
