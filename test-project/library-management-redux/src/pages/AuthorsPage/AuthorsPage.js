@@ -1,11 +1,9 @@
 import { useState } from "react";
 
 import AuthorsList from "../../components/authors/AuthorsList";
-import SearchAuthors from "../../components/authors/SearchAuthors";
 
 import Modal from "../../components/common/Modal";
 import Form from "../../components/common/Form";
-import SortAuthors from "../../components/authors/SortAuthors";
 import Loader from "../../components/common/Loader";
 
 import { useSelector } from "react-redux";
@@ -29,10 +27,8 @@ function AuthorsPage() {
   const [deleteAuthor, deleteResponse] = useDeleteAuthorsMutation();
   const { isLoading: deleteIsLoading } = deleteResponse;
 
-  const [searchTerm, setSearchTerm] = useState("");
   const [modal, setModal] = useState(false);
   const [authorToEdit, setAuthorToEdit] = useState({});
-  const [sortedAuthors, setSortedAuthors] = useState([]);
 
   const activeUser = useSelector((state) => state.activeUser.activeUser);
 
@@ -51,12 +47,8 @@ function AuthorsPage() {
     content = (
       <div>
         <div>
-          <SortAuthors authors={data} setSortedAuthors={setSortedAuthors} />
-        </div>
-        <div>
           <AuthorsList
-            searchTerm={searchTerm}
-            authors={sortedAuthors.length > 0 ? sortedAuthors : data}
+            authors={data}
             setModal={setModal}
             setAuthorToEdit={setAuthorToEdit}
             deleteAuthor={deleteAuthor}
@@ -82,14 +74,7 @@ function AuthorsPage() {
     );
   }
 
-  return (
-    <div className="container mx-auto">
-      <div>
-        <SearchAuthors term={searchTerm} setTerm={setSearchTerm} />
-      </div>
-      {content}
-    </div>
-  );
+  return <div className="container mx-auto">{content}</div>;
 }
 
 export default AuthorsPage;

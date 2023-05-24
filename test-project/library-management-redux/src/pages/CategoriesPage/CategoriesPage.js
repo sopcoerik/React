@@ -1,10 +1,8 @@
 import { useState } from "react";
 import CategoriesList from "../../components/categories/CategoriesList";
-import SearchCategories from "../../components/categories/SearchCategories";
 
 import Modal from "../../components/common/Modal";
 import Form from "../../components/common/Form";
-import SortCategories from "../../components/categories/SortCategories";
 import { useSelector } from "react-redux";
 
 import {
@@ -28,10 +26,6 @@ function CategoriesPage() {
   const [deleteCategory, deleteResponse] = useDeleteCategoryMutation();
   const { isLoading: deleteIsLoading } = deleteResponse;
 
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const [sortedCategories, setSortedCategories] = useState([]);
-
   const [modal, setModal] = useState(false);
   const [categoryObj, setCategory] = useState({});
 
@@ -39,9 +33,6 @@ function CategoriesPage() {
 
   return (
     <div>
-      <div className="container mx-auto">
-        <SearchCategories term={searchTerm} setTerm={setSearchTerm} />
-      </div>
       {isLoading && (
         <div className="container mx-auto">
           <div className="h-56 flex justify-center items-center">
@@ -53,18 +44,11 @@ function CategoriesPage() {
       {!isLoading && (
         <div className="container mx-auto">
           <div>
-            <SortCategories
-              categories={data}
-              setSortedCategories={setSortedCategories}
-            />
-          </div>
-          <div>
             <CategoriesList
-              searchTerm={searchTerm}
               setModal={setModal}
               setCategory={setCategory}
               deleteCategory={deleteCategory}
-              categories={sortedCategories.length > 0 ? sortedCategories : data}
+              categories={data}
               addIsLoading={addIsLoading}
               editIsLoading={editIsLoading}
               deleteIsLoading={deleteIsLoading}

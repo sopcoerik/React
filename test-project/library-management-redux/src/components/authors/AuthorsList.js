@@ -2,7 +2,6 @@ import Loader from "../common/Loader";
 import { useTheme } from "../../hooks/useTheme";
 
 function AuthorsList({
-  searchTerm,
   setModal,
   setAuthorToEdit,
   authors,
@@ -28,35 +27,32 @@ function AuthorsList({
     setModal(true);
   };
 
-  const renderedAuthors = authors.map(
-    (author) =>
-      author.name.toLowerCase().includes(searchTerm.toLowerCase()) && (
-        <div
-          key={author.id}
-          className="m-2 border-b border-slate-300 flex justify-between items-center"
-        >
-          {author.name}
-          <div className="h-10">
-            {activeUser && (
-              <>
-                <button
-                  onClick={() => handleEditAuthorClick(author)}
-                  className="px-3 py-1 border border-slate-300 rounded hover:bg-blue-300 mb-2 hover:text-white"
-                >
-                  {editIsLoading ? <Loader /> : "Edit Author"}
-                </button>
-                <button
-                  onClick={() => handleDeleteAuthorClick(author.id)}
-                  className="px-3 py-1 ml-3 border border-slate-300 rounded hover:bg-red-300 mb-2 hover:text-white"
-                >
-                  {deleteIsLoading ? <Loader /> : "Delete"}
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      )
-  );
+  const renderedAuthors = authors.map((author) => (
+    <div
+      key={author.id}
+      className="m-2 border-b border-slate-300 flex justify-between items-center"
+    >
+      {author.name}
+      <div className="h-10">
+        {activeUser && (
+          <>
+            <button
+              onClick={() => handleEditAuthorClick(author)}
+              className="px-3 py-1 border border-slate-300 rounded hover:bg-blue-300 mb-2 hover:text-white"
+            >
+              {editIsLoading ? <Loader /> : "Edit Author"}
+            </button>
+            <button
+              onClick={() => handleDeleteAuthorClick(author.id)}
+              className="px-3 py-1 ml-3 border border-slate-300 rounded hover:bg-red-300 mb-2 hover:text-white"
+            >
+              {deleteIsLoading ? <Loader /> : "Delete"}
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  ));
 
   return (
     <div

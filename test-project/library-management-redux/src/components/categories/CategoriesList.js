@@ -2,7 +2,6 @@ import { useTheme } from "../../hooks/useTheme";
 import Loader from "../common/Loader";
 
 function CategoriesList({
-  searchTerm,
   setModal,
   setCategory,
   deleteCategory,
@@ -27,37 +26,34 @@ function CategoriesList({
     setModal(true);
   };
 
-  const renderedCategories = categories.map(
-    (category) =>
-      category.name.toLowerCase().includes(searchTerm.toLowerCase()) && (
-        <div
-          key={category.id}
-          className="m-2 border-b border-slate-300 flex justify-between items-center"
-        >
-          {category.name}
-          <div className="h-10">
-            {activeUser && (
-              <>
-                <button
-                  onClick={() => handleEditCategoryClick(category)}
-                  className="px-3 py-1 border border-slate-300 rounded hover:bg-blue-300 mb-2 hover:text-white"
-                  disabled={editIsLoading}
-                >
-                  {editIsLoading ? <Loader /> : "Edit Category"}
-                </button>
-                <button
-                  onClick={() => handleDeleteCategoryClick(category.id)}
-                  className="px-3 py-1 ml-3 border border-slate-300 rounded hover:bg-red-300 mb-2 hover:text-white"
-                  disabled={deleteIsLoading}
-                >
-                  {deleteIsLoading ? <Loader /> : "Delete"}
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      )
-  );
+  const renderedCategories = categories.map((category) => (
+    <div
+      key={category.id}
+      className="m-2 border-b border-slate-300 flex justify-between items-center"
+    >
+      {category.name}
+      <div className="h-10">
+        {activeUser && (
+          <>
+            <button
+              onClick={() => handleEditCategoryClick(category)}
+              className="px-3 py-1 border border-slate-300 rounded hover:bg-blue-300 mb-2 hover:text-white"
+              disabled={editIsLoading}
+            >
+              {editIsLoading ? <Loader /> : "Edit Category"}
+            </button>
+            <button
+              onClick={() => handleDeleteCategoryClick(category.id)}
+              className="px-3 py-1 ml-3 border border-slate-300 rounded hover:bg-red-300 mb-2 hover:text-white"
+              disabled={deleteIsLoading}
+            >
+              {deleteIsLoading ? <Loader /> : "Delete"}
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  ));
 
   return (
     <div
