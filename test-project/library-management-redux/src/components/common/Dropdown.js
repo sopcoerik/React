@@ -28,6 +28,12 @@ function Dropdown({
     setSelectedCategory
       ? setSelectedCategory(option)
       : setSelectedAuthor(option);
+
+    setState({
+      ...state,
+      isOpen: false,
+      header: option.name,
+    });
   };
 
   const availableOptions = options.map((option) => (

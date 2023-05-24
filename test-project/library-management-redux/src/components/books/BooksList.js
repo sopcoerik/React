@@ -1,4 +1,3 @@
-import BookItem from "./BookItem";
 import { GoChevronDown, GoChevronUp } from "react-icons/go";
 import Loader from "../common/Loader";
 import { useTheme } from "../../hooks/useTheme";
@@ -7,47 +6,16 @@ import Button from "../common/Button";
 function BooksList({
   books,
   setModal,
-  handleEditBook,
   setBookToEdit,
   sorting,
   setSorting,
-  deleteBook,
   addIsLoading,
-  editIsLoading,
-  deleteIsLoading,
   activeUser,
-  handleBookDetailWindowState,
   setPage,
   page,
-  authors,
-  categories,
+  renderedBooks,
 }) {
   const theme = useTheme();
-
-  const mappingFunction = (array) => {
-    return array.map((book) => {
-      const bookAuthor = authors?.find((author) => book.authorId === author.id);
-      const bookCategory = categories?.find(
-        (category) => book.categoryId === category.id
-      );
-      return (
-        <BookItem
-          key={book.id}
-          book={book}
-          handleEditBook={handleEditBook}
-          bookAuthor={bookAuthor}
-          bookCategory={bookCategory}
-          deleteBook={deleteBook}
-          editIsLoading={editIsLoading}
-          deleteIsLoading={deleteIsLoading}
-          activeUser={activeUser}
-          handleBookDetailWindowState={handleBookDetailWindowState}
-        />
-      );
-    });
-  };
-
-  const renderedBooks = mappingFunction(books);
 
   const handleAddBook = () => {
     setBookToEdit(undefined);

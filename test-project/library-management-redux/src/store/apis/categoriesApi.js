@@ -9,6 +9,7 @@ const categoriesApi = createApi({
     return {
       fetchCategories: builder.query({
         providesTags: (result) => {
+          console.log(result);
           const tags = [
             ...result.map((res) => ({ type: "Category", id: res.id })),
             { type: "Categories", id: "CATEGORY" },

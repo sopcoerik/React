@@ -21,3 +21,8 @@ th {
   transition: all 0.1s ease-in-out;
   background-color: rgb(211, 129, 129);
 }
+
+.modal {
+  min-width: 400px;
+  min-height: 200px;
+}

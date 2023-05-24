@@ -13,7 +13,7 @@ const booksApi = createApi({
           { type: "Books", id: "BOOKS" },
         ],
         query: ({ term, catId = "", sortBy = "", order = "asc", page }) =>
-          `/books?filter=${term}&sortBy=${sortBy}&order=${order}&page=${page}&limit=5`,
+          `/books?search=${term}&categoryId=${catId}&sortBy=${sortBy}&order=${order}&page=${page}&limit=5`,
       }),
 
       addBooks: builder.mutation({

@@ -23,12 +23,13 @@ function BookItem({
     deleteBook(book.id);
   };
 
-  const { data: favorites, isLoading: favoritesLoading } =
-    useFetchFavoritesQuery(activeUser && { userId: activeUser?.id });
+  const { data: favorites } = useFetchFavoritesQuery(
+    activeUser && { userId: activeUser?.id }
+  );
 
   const [favorite, setFavorite] = useState(false);
-  const [addFavorite, addFavoriteResponse] = useAddFavoriteMutation();
-  const [deleteFavorite, deleteFavoriteResponse] = useDeleteFavoriteMutation();
+  const [addFavorite] = useAddFavoriteMutation();
+  const [deleteFavorite] = useDeleteFavoriteMutation();
 
   const bookPresent =
     activeUser &&

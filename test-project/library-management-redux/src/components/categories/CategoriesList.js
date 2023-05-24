@@ -1,20 +1,16 @@
 import { useTheme } from "../../hooks/useTheme";
-import Loader from "../common/Loader";
 
 function CategoriesList({
   setModal,
-  setCategory,
+  setCategoryToEditId,
   deleteCategory,
   categories,
-  addIsLoading,
-  editIsLoading,
-  deleteIsLoading,
   activeUser,
 }) {
   const theme = useTheme();
 
-  const handleEditCategoryClick = (category) => {
-    setCategory(category);
+  const handleEditCategoryClick = (id) => {
+    setCategoryToEditId(id);
     setModal(true);
   };
   const handleDeleteCategoryClick = (id) => {
@@ -22,11 +18,11 @@ function CategoriesList({
   };
 
   const handleAddCategoryClick = () => {
-    setCategory("");
+    setCategoryToEditId(null);
     setModal(true);
   };
 
-  const renderedCategories = categories.map((category) => (
+  const renderedCategories = categories?.map((category) => (
     <div
       key={category.id}
       className="m-2 border-b border-slate-300 flex justify-between items-center"
@@ -36,18 +32,16 @@ function CategoriesList({
         {activeUser && (
           <>
             <button
-              onClick={() => handleEditCategoryClick(category)}
+              onClick={() => handleEditCategoryClick(category.id)}
               className="px-3 py-1 border border-slate-300 rounded hover:bg-blue-300 mb-2 hover:text-white"
-              disabled={editIsLoading}
             >
-              {editIsLoading ? <Loader /> : "Edit Category"}
+              Edit Category
             </button>
             <button
               onClick={() => handleDeleteCategoryClick(category.id)}
               className="px-3 py-1 ml-3 border border-slate-300 rounded hover:bg-red-300 mb-2 hover:text-white"
-              disabled={deleteIsLoading}
             >
-              {deleteIsLoading ? <Loader /> : "Delete"}
+              Delete
             </button>
           </>
         )}
@@ -68,9 +62,8 @@ function CategoriesList({
           <button
             className="px-3 py-1 border rounded hover:bg-blue-300 hover:text-white"
             onClick={handleAddCategoryClick}
-            disabled={addIsLoading}
           >
-            {addIsLoading ? <Loader /> : "+ Add Category"}
+            + Add Category
           </button>
         )}
       </div>

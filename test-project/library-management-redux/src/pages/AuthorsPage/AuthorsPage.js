@@ -2,9 +2,9 @@ import { useState } from "react";
 
 import AuthorsList from "../../components/authors/AuthorsList";
 
-import Modal from "../../components/common/Modal";
-import Form from "../../components/common/Form";
 import Loader from "../../components/common/Loader";
+import Modal from "../../components/common/Modal";
+import Overlay from "../../components/common/Overlay";
 
 import { useSelector } from "react-redux";
 
@@ -14,23 +14,42 @@ import {
   useEditAuthorMutation,
   useDeleteAuthorsMutation,
 } from "../../store";
+import { useTheme } from "../../hooks/useTheme";
 
 function AuthorsPage() {
+  const theme = useTheme();
+
   const { data, isLoading, error } = useFetchAuthorsQuery();
 
-  const [addNewAuthor, addNewAuthorResponse] = useAddAuthorsMutation();
-  const { isLoading: addIsLoading } = addNewAuthorResponse;
+  const [addNewAuthor] = useAddAuthorsMutation();
 
-  const [editAuthor, editAuthorResponse] = useEditAuthorMutation();
-  const { isLoading: editIsLoading } = editAuthorResponse;
+  const [editAuthor] = useEditAuthorMutation();
 
-  const [deleteAuthor, deleteResponse] = useDeleteAuthorsMutation();
-  const { isLoading: deleteIsLoading } = deleteResponse;
+  const [deleteAuthor] = useDeleteAuthorsMutation();
 
-  const [modal, setModal] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [authorToEdit, setAuthorToEdit] = useState({});
 
+  const [authorInput, setAuthorInput] = useState(authorToEdit.name || "");
+
   const activeUser = useSelector((state) => state.activeUser.activeUser);
+
+  const handleFormInputsChange = (e) => {
+    setAuthorInput(e.target.value);
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+
+    authorToEdit
+      ? editAuthor({
+          id: authorToEdit.id,
+          newAuthor: { name: authorInput, createdById: activeUser.id },
+        })
+      : addNewAuthor({ name: authorInput, createdById: activeUser.id });
+
+    setModalIsOpen(false);
+  };
 
   let content;
 
@@ -49,27 +68,27 @@ function AuthorsPage() {
         <div>
           <AuthorsList
             authors={data}
-            setModal={setModal}
+            setModal={setModalIsOpen}
             setAuthorToEdit={setAuthorToEdit}
             deleteAuthor={deleteAuthor}
-            addIsLoading={addIsLoading}
-            editIsLoading={editIsLoading}
-            deleteIsLoading={deleteIsLoading}
             activeUser={activeUser}
           />
         </div>
-        {modal && (
-          <Modal setModal={setModal}>
-            <Form
-              setModal={setModal}
-              author
-              authorToEdit={authorToEdit}
-              addAuthor={addNewAuthor}
-              editAuthor={editAuthor}
-              activeUser={activeUser}
+        <Overlay isOpen={modalIsOpen} setModal={setModalIsOpen} />
+        <Modal isOpen={modalIsOpen} onOk={handleFormSubmit}>
+          <form className="p-10 flex flex-col gap-5 items-center">
+            <input
+              value={authorInput}
+              name="author"
+              type="text"
+              placeholder="Author Name"
+              onChange={handleFormInputsChange}
+              className={`border rounded border-slate-200 px-1 py-3 ${
+                theme === "dark" ? "bg-black text-white" : "bg-white text-black"
+              }`}
             />
-          </Modal>
-        )}
+          </form>
+        </Modal>
       </div>
     );
   }

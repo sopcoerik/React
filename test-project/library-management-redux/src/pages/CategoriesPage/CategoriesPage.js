@@ -2,8 +2,9 @@ import { useState } from "react";
 import CategoriesList from "../../components/categories/CategoriesList";
 
 import Modal from "../../components/common/Modal";
-import Form from "../../components/common/Form";
+import Overlay from "../../components/common/Overlay";
 import { useSelector } from "react-redux";
+import { useTheme } from "../../hooks/useTheme";
 
 import {
   useFetchCategoriesQuery,
@@ -15,25 +16,51 @@ import {
 import Loader from "../../components/common/Loader";
 
 function CategoriesPage() {
-  const { data, isLoading } = useFetchCategoriesQuery();
+  const theme = useTheme();
 
-  const [addCategory, addResponse] = useAddCategoryMutation();
-  const { isLoading: addIsLoading } = addResponse;
+  const { data: categories, categoriesAreLoading } = useFetchCategoriesQuery();
 
-  const [editCategory, editResponse] = useEditCategoryMutation();
-  const { isLoading: editIsLoading } = editResponse;
+  const [addCategory] = useAddCategoryMutation();
 
-  const [deleteCategory, deleteResponse] = useDeleteCategoryMutation();
-  const { isLoading: deleteIsLoading } = deleteResponse;
+  const [editCategory] = useEditCategoryMutation();
 
-  const [modal, setModal] = useState(false);
-  const [categoryObj, setCategory] = useState({});
+  const [deleteCategory] = useDeleteCategoryMutation();
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [categoryToEditId, setCategoryToEditId] = useState({});
 
   const activeUser = useSelector((state) => state.activeUser.activeUser);
 
+  const categoryToEdit = categories.find((cat) => cat.id === categoryToEditId);
+
+  const [categoryInput, setCategoryInput] = useState(
+    categoryToEdit?.name || ""
+  );
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+
+    categoryToEditId
+      ? editCategory({
+          id: categoryToEditId,
+          newCategory: { name: categoryInput, createdById: activeUser.id },
+        })
+      : addCategory &&
+        addCategory({
+          name: categoryInput,
+          createdById: activeUser.id,
+        });
+
+    setModalIsOpen(false);
+  };
+
+  const handleFormInputsChange = (e) => {
+    setCategoryInput(e.target.value);
+  };
+
   return (
     <div>
-      {isLoading && (
+      {categoriesAreLoading && (
         <div className="container mx-auto">
           <div className="h-56 flex justify-center items-center">
             Loading Data...
@@ -41,34 +68,39 @@ function CategoriesPage() {
           </div>
         </div>
       )}
-      {!isLoading && (
+      {!categoriesAreLoading && (
         <div className="container mx-auto">
           <div>
             <CategoriesList
-              setModal={setModal}
-              setCategory={setCategory}
+              setModal={setModalIsOpen}
+              setCategoryToEditId={setCategoryToEditId}
               deleteCategory={deleteCategory}
-              categories={data}
-              addIsLoading={addIsLoading}
-              editIsLoading={editIsLoading}
-              deleteIsLoading={deleteIsLoading}
+              categories={categories}
               activeUser={activeUser}
             />
           </div>
         </div>
       )}
-      {modal && (
-        <Modal setModal={setModal}>
-          <Form
-            setModal={setModal}
-            addCategory={addCategory}
-            editCategory={editCategory}
-            categoryToEdit={categoryObj}
-            category
-            activeUser={activeUser}
+
+      <Overlay isOpen={modalIsOpen} setModal={setModalIsOpen} />
+      <Modal
+        isOpen={modalIsOpen}
+        onOk={handleFormSubmit}
+        onCancel={() => setModalIsOpen(false)}
+      >
+        <form className="p-10 flex flex-col gap-5 items-center">
+          <input
+            value={categoryInput}
+            name="category"
+            type="text"
+            placeholder="Category Name"
+            onChange={handleFormInputsChange}
+            className={`border rounded border-slate-200 px-1 py-3 ${
+              theme === "dark" ? "bg-black text-white" : "bg-white text-black"
+            }`}
           />
-        </Modal>
-      )}
+        </form>
+      </Modal>
     </div>
   );
 }

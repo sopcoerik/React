@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { FaCloudMoon } from "react-icons/fa";
 import { BsSun } from "react-icons/bs";
-import { setTheme, useGetAllBooksQuery } from "../../store";
+import { setTheme } from "../../store";
 import { useTheme } from "../../hooks/useTheme";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -31,8 +31,9 @@ function Header() {
   const theme = useTheme();
   const activeUser = useSelector((state) => state.activeUser.activeUser);
 
-  const { data: favorites, isLoading: favoritesLoading } =
-    useFetchFavoritesQuery(activeUser && { userId: activeUser?.id });
+  const { data: favorites } = useFetchFavoritesQuery(
+    activeUser && { userId: activeUser?.id }
+  );
 
   const { data: authors } = useFetchAuthorsQuery();
   const { data: books } = useFetchBooksQuery();
