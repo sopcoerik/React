@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useUpdateUserMutation } from "../../store";
 import { useNavigate } from "react-router-dom";
 import { removeActiveUser } from "../../store/slices/activeUserSlice";
-import Input from "../../components/utils/Input";
+import Input from "../../components/common/Input";
 
 function UserPage() {
   const activeUser = useSelector((state) => state.activeUser.activeUser);

@@ -2,19 +2,17 @@ import BookItem from "./BookItem";
 import { GoChevronDown, GoChevronUp } from "react-icons/go";
 import { useAuthors } from "../../hooks/useAuthors";
 import { useCategories } from "../../hooks/useCategories";
-import Loader from "../utils/Loader";
+import Loader from "../common/Loader";
 import { useTheme } from "../../hooks/useTheme";
-import Button from "../utils/Button";
+import Button from "../common/Button";
 
 function BooksList({
-  searchTerm,
   books,
   setModal,
   handleEditBook,
   setBookToEdit,
-  handleSortBooks,
-  sortOrder,
-  filteredArray,
+  sorting,
+  setSorting,
   deleteBook,
   addIsLoading,
   editIsLoading,
@@ -45,24 +43,18 @@ function BooksList({
         (category) => book.categoryId === category.id
       );
       return (
-        (book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          book.description
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase())) && (
-          <BookItem
-            key={book.id}
-            book={book}
-            handleEditBook={handleEditBook}
-            bookAuthor={bookAuthor}
-            bookCategory={bookCategory}
-            deleteBook={deleteBook}
-            editIsLoading={editIsLoading}
-            deleteIsLoading={deleteIsLoading}
-            activeUser={activeUser}
-            handleBookDetailWindowState={handleBookDetailWindowState}
-          />
-        )
+        <BookItem
+          key={book.id}
+          book={book}
+          handleEditBook={handleEditBook}
+          bookAuthor={bookAuthor}
+          bookCategory={bookCategory}
+          deleteBook={deleteBook}
+          editIsLoading={editIsLoading}
+          deleteIsLoading={deleteIsLoading}
+          activeUser={activeUser}
+          handleBookDetailWindowState={handleBookDetailWindowState}
+        />
       );
     });
   };
@@ -86,30 +78,38 @@ function BooksList({
             <th>
               <button
                 onClick={() =>
-                  handleSortBooks(
-                    books,
-                    "title",
-                    filteredArray.length > 0 && true
-                  )
+                  setSorting({
+                    sortBy: "title",
+                    sortOrder: sorting.sortOrder === 1 ? -1 : 1,
+                  })
                 }
                 className="flex"
               >
-                {sortOrder.title === 1 ? <GoChevronDown /> : <GoChevronUp />}
+                {sorting.sortBy === "title" &&
+                  (sorting.sortOrder === 1 ? (
+                    <GoChevronDown />
+                  ) : (
+                    <GoChevronUp />
+                  ))}
                 Title
               </button>
             </th>
             <th>
               <button
                 onClick={() =>
-                  handleSortBooks(
-                    books,
-                    "author",
-                    filteredArray.length > 0 && true
-                  )
+                  setSorting({
+                    sortBy: "author",
+                    sortOrder: sorting.sortOrder === 1 ? -1 : 1,
+                  })
                 }
                 className="flex"
               >
-                {sortOrder.author === 1 ? <GoChevronDown /> : <GoChevronUp />}
+                {sorting.sortBy === "author" &&
+                  (sorting.sortOrder === 1 ? (
+                    <GoChevronDown />
+                  ) : (
+                    <GoChevronUp />
+                  ))}
                 Author
               </button>
             </th>

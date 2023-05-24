@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import SearchBooks from "../../components/books/SearchBooks";
@@ -12,6 +12,7 @@ import {
   useAddBooksMutation,
   useEditBookMutation,
   useAddReviewMutation,
+  useGetAllBooksQuery,
 } from "../../store";
 
 import { useFetchReviewsQuery } from "../../store";
@@ -26,34 +27,17 @@ function BooksPage() {
   const activeUser = useSelector((state) => state.activeUser.activeUser);
 
   const [page, setPage] = useState(1);
-
-  // Search
-  const [searchTerm, setSearchTerm] = useState("");
-  // done
-
-  //Sort
-  const [sorting, setSorting] = useState({
-    sortBy: "author",
-    sortOrder: "desc",
-  });
-  // done
-
-  // Filter
-  const [selectedCategoriesIds, setSelectedCategoriesIds] = useState([""]);
-  const { data: categories, isLoading: categoriesAreLoading } =
-    useFetchCategoriesQuery();
-
-  const { data: books, isLoading: booksAreLoading } = useFetchBooksQuery({
-    term: searchTerm,
-    catId: selectedCategoriesIds[0],
-    sortBy: sorting.sortBy,
-    order: sorting.sortOrder,
-    page,
+  const [sortOrder, setSortOrder] = useState({
+    title: 1,
+    author: 1,
   });
 
-  // Other
+  const { data, isLoading } = useFetchBooksQuery(page);
+
   const [deleteBook, deleteResponse] = useDeleteBookMutation();
   const { isLoading: deleteIsLoading } = deleteResponse;
+
+  const { data: allBooks } = useGetAllBooksQuery();
 
   const [addBook, addResponse] = useAddBooksMutation();
   const { isLoading: addIsLoading } = addResponse;
@@ -63,14 +47,18 @@ function BooksPage() {
 
   const [addReview] = useAddReviewMutation();
 
+  const [searchTerm, setSearchTerm] = useState("");
   const [modal, setModal] = useState(false);
   const [bookToEdit, setBookToEdit] = useState({});
+  const [filteredArray, setFilteredArray] = useState([]);
+  const [sortedBooks, setSortedBooks] = useState([]);
 
   const [reviewWindow, setReviewWindow] = useState(false);
   const [bookDetailWindow, setBookDetailWindow] = useState(false);
   const [reviewedBookId, setReviewedBookId] = useState(null);
   const [bookToView, setBookToView] = useState(null);
   const { data: users } = useFetchUsersQuery();
+  const { data: categories } = useFetchCategoriesQuery();
   const { data: authors } = useFetchAuthorsQuery();
 
   const { data: reviews } = useFetchReviewsQuery();
@@ -98,6 +86,41 @@ function BooksPage() {
     setBookToEdit(book);
   };
 
+  const handleSortBooks = (books, newSortBy, isFiltered) => {
+    newSortBy === "author"
+      ? sortOrder[newSortBy] === 1
+        ? setSortOrder({ [newSortBy]: -1, title: sortOrder.title })
+        : setSortOrder({ [newSortBy]: 1, title: sortOrder.title })
+      : sortOrder[newSortBy] === 1
+      ? setSortOrder({ [newSortBy]: -1, author: sortOrder.author })
+      : setSortOrder({ [newSortBy]: 1, author: sortOrder.author });
+
+    sortBooks(books, newSortBy, isFiltered);
+  };
+
+  const sortBooks = (books, newSortBy, isFiltered) => {
+    const copiedBooks = [...books];
+    const availableSortingProperties = ["title", "author"];
+
+    newSortBy = availableSortingProperties.includes(newSortBy)
+      ? newSortBy
+      : availableSortingProperties[0];
+
+    copiedBooks.sort((a, b) => {
+      return a[newSortBy].localeCompare(b[newSortBy]) * sortOrder[newSortBy];
+    });
+
+    isFiltered ? setFilteredArray(copiedBooks) : setSortedBooks(copiedBooks);
+  };
+
+  useEffect(() => {
+    setSortedBooks(data);
+  }, [page, data]);
+
+  const getFilteredBooks = (filteredBooks) => {
+    setFilteredArray(filteredBooks);
+  };
+
   return (
     <div className="container mx-auto">
       <div>
@@ -105,22 +128,28 @@ function BooksPage() {
       </div>
       <div>
         <FilterBooks
-          categories={categories}
-          selectedCategoriesIds={selectedCategoriesIds}
-          setSelectedCategoriesIds={setSelectedCategoriesIds}
+          books={allBooks}
+          getFilteredBooks={getFilteredBooks}
+          filteredArray={filteredArray}
+          setFilteredArray={setFilteredArray}
         />
       </div>
       <div>
-        {!booksAreLoading && (
+        {!isLoading && (
           <BooksList
             searchTerm={searchTerm}
-            books={books}
+            books={
+              (filteredArray?.length > 0 && filteredArray) ||
+              (sortedBooks?.length > 0 && sortedBooks) ||
+              data
+            }
             setModal={setModal}
             handleEditBook={handleEditBook}
             setBookToEdit={setBookToEdit}
-            sorting={sorting}
-            setSorting={setSorting}
+            handleSortBooks={handleSortBooks}
+            sortOrder={sortOrder}
             deleteBook={deleteBook}
+            filteredArray={filteredArray}
             addIsLoading={addIsLoading}
             editIsLoading={editIsLoading}
             deleteIsLoading={deleteIsLoading}
@@ -128,6 +157,7 @@ function BooksPage() {
             handleBookDetailWindowState={handleBookDetailWindowState}
             page={page}
             setPage={setPage}
+            allBooks={allBooks}
           />
         )}
       </div>
@@ -160,7 +190,7 @@ function BooksPage() {
         <Form
           setModal={setModal}
           book={bookToEdit}
-          books={books}
+          books={data}
           addBook={addBook}
           editBook={editBook}
           activeUser={activeUser}

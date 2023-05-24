@@ -2,8 +2,8 @@ import { useState } from "react";
 import CategoriesList from "../../components/categories/CategoriesList";
 import SearchCategories from "../../components/categories/SearchCategories";
 
-import Modal from "../../components/utils/Modal";
-import Form from "../../components/utils/Form";
+import Modal from "../../components/common/Modal";
+import Form from "../../components/common/Form";
 import SortCategories from "../../components/categories/SortCategories";
 import { useSelector } from "react-redux";
 
@@ -14,7 +14,7 @@ import {
   useDeleteCategoryMutation,
 } from "../../store";
 
-import Loader from "../../components/utils/Loader";
+import Loader from "../../components/common/Loader";
 
 function CategoriesPage() {
   const { data, isLoading } = useFetchCategoriesQuery();

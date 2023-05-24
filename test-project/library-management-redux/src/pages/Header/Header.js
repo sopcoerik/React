@@ -15,7 +15,7 @@ import {
 
 import { CgProfile } from "react-icons/cg";
 
-import Favorites from "../../components/utils/Favorites";
+import Favorites from "../../components/common/Favorites";
 
 function Header() {
   const dispatch = useDispatch();
@@ -35,7 +35,7 @@ function Header() {
     useFetchFavoritesQuery(activeUser && { userId: activeUser?.id });
 
   const { data: authors } = useFetchAuthorsQuery();
-  const { data: books } = useGetAllBooksQuery();
+  const { data: books } = useFetchBooksQuery();
 
   return (
     <div

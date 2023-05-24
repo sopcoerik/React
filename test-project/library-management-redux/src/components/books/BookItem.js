@@ -1,5 +1,5 @@
-import Loader from "../utils/Loader";
-import Button from "../utils/Button";
+import Loader from "../common/Loader";
+import Button from "../common/Button";
 import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
 import { useState } from "react";
 import {

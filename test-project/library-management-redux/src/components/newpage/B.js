@@ -1,5 +1,5 @@
 import { useAuthors } from "../../hooks/useAuthors";
-import Loader from "../utils/Loader";
+import Loader from "../common/Loader";
 import { useTheme } from "../../hooks/useTheme";
 
 function B() {

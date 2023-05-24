@@ -7,25 +7,13 @@ const booksApi = createApi({
   }),
   endpoints(builder) {
     return {
-      getAllBooks: builder.query({
-        providesTags: (res) => [
-          ...res.map((r) => ({ type: "Book", id: r.id })),
-          { type: "Books", id: "ALLBOOKS" },
-        ],
-        query: () => {
-          return {
-            url: "/books",
-            method: "GET",
-          };
-        },
-      }),
-
       fetchBooks: builder.query({
         providesTags: (res) => [
           ...res.map((r) => ({ type: "Book", id: r.id })),
           { type: "Books", id: "BOOKS" },
         ],
-        query: (page = 1) => `/books?page=${page}&limit=5`,
+        query: ({ term, catId = "", sortBy = "", order = "asc", page }) =>
+          `/books?search=${term}&categoryId=${catId}&sortBy=${sortBy}&order=${order}`,
       }),
 
       addBooks: builder.mutation({
@@ -75,6 +63,5 @@ export const {
   useAddBooksMutation,
   useEditBookMutation,
   useDeleteBookMutation,
-  useGetAllBooksQuery,
 } = booksApi;
 export { booksApi };

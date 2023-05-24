@@ -1,4 +1,4 @@
-import Loader from "../utils/Loader";
+import Loader from "../common/Loader";
 import { useTheme } from "../../hooks/useTheme";
 
 function AuthorsList({

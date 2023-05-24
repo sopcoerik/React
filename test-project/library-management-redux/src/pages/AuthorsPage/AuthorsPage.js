@@ -3,10 +3,10 @@ import { useState } from "react";
 import AuthorsList from "../../components/authors/AuthorsList";
 import SearchAuthors from "../../components/authors/SearchAuthors";
 
-import Modal from "../../components/utils/Modal";
-import Form from "../../components/utils/Form";
+import Modal from "../../components/common/Modal";
+import Form from "../../components/common/Form";
 import SortAuthors from "../../components/authors/SortAuthors";
-import Loader from "../../components/utils/Loader";
+import Loader from "../../components/common/Loader";
 
 import { useSelector } from "react-redux";
 

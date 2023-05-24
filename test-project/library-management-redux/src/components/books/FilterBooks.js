@@ -1,34 +1,25 @@
 import { useState } from "react";
-import { useCategories } from "../../hooks/useCategories";
 import { useTheme } from "../../hooks/useTheme";
 
-function FilterBooks({ books, getFilteredBooks, filteredArray }) {
+function FilterBooks({
+  categories,
+  selectedCategoriesIds,
+  setSelectedCategoriesIds,
+}) {
   const [checked, setChecked] = useState(false);
   const theme = useTheme();
-  const {
-    state: { data: categories },
-  } = useCategories();
 
   const handleCheckboxChange = (id) => {
-    const newCheck = books.filter((book) => book.categoryId === id);
-    const present = (book) => filteredArray.includes(book);
-
-    if (newCheck && !newCheck.some(present)) {
-      setChecked(true);
-      getFilteredBooks([...filteredArray, ...newCheck]);
-    } else if (
-      (newCheck && newCheck.some(present)) ||
-      (newCheck && checked === false)
-    ) {
+    if (checked) {
       setChecked(false);
-      const unchecked = filteredArray.filter(
-        (book) => !newCheck.includes(book)
-      );
-      getFilteredBooks(unchecked);
+      setSelectedCategoriesIds([]);
+    } else {
+      setSelectedCategoriesIds([id]);
+      setChecked(true);
     }
   };
 
-  const renderedCategories = categories.map((category) => (
+  const renderedCategories = categories?.map((category) => (
     <div key={category.id}>
       <input
         type="checkbox"

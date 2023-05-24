@@ -1,5 +1,5 @@
 import { useTheme } from "../../hooks/useTheme";
-import Loader from "../utils/Loader";
+import Loader from "../common/Loader";
 
 function CategoriesList({
   searchTerm,

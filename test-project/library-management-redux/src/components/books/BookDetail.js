@@ -9,7 +9,7 @@ import {
   useEditReviewMutation,
 } from "../../store/apis/reviewsApi";
 import { useState } from "react";
-import Button from "../utils/Button";
+import Button from "../common/Button";
 
 function BookDetail({
   handleBookDetailWindowState,
