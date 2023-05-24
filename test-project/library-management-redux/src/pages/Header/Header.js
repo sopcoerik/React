@@ -1,13 +1,21 @@
 import { Link } from "react-router-dom";
 import { FaCloudMoon } from "react-icons/fa";
 import { BsSun } from "react-icons/bs";
-import { setTheme } from "../../store";
+import { setTheme, useGetAllBooksQuery } from "../../store";
 import { useTheme } from "../../hooks/useTheme";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { removeActiveUser } from "../../store/slices/activeUserSlice";
 
+import {
+  useFetchFavoritesQuery,
+  useFetchAuthorsQuery,
+  useFetchBooksQuery,
+} from "../../store";
+
 import { CgProfile } from "react-icons/cg";
+
+import Favorites from "../../components/utils/Favorites";
 
 function Header() {
   const dispatch = useDispatch();
@@ -22,6 +30,12 @@ function Header() {
 
   const theme = useTheme();
   const activeUser = useSelector((state) => state.activeUser.activeUser);
+
+  const { data: favorites, isLoading: favoritesLoading } =
+    useFetchFavoritesQuery(activeUser && { userId: activeUser?.id });
+
+  const { data: authors } = useFetchAuthorsQuery();
+  const { data: books } = useGetAllBooksQuery();
 
   return (
     <div
@@ -89,6 +103,12 @@ function Header() {
         </Link>
       </div>
 
+      <div>
+        {activeUser && (
+          <Favorites favorites={favorites} authors={authors} books={books} />
+        )}
+      </div>
+
       <div
         className={`flex flex-col justify-around items-center h-16 ${
           theme === "dark"
@@ -98,8 +118,10 @@ function Header() {
       >
         <div
           className={`${
-            !activeUser ? "hover:bg-slate-700" : "bg-slate-700"
-          } py-1 px-3 cursor-pointer w-24 text-center`}
+            !activeUser
+              ? "hover:bg-slate-700 cursor-pointer"
+              : "bg-slate-200 text-black"
+          } py-1 px-3 w-24 text-center`}
         >
           {activeUser ? (
             <p>Hi, {activeUser.name}</p>

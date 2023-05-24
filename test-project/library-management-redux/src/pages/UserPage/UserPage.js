@@ -4,8 +4,9 @@ import { useUpdateUserMutation } from "../../store";
 import { useNavigate } from "react-router-dom";
 import { removeActiveUser } from "../../store/slices/activeUserSlice";
 import Input from "../../components/utils/Input";
-
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import Button from "../../components/utils/Button";
+import { HiCheck } from "react-icons/hi";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
 function UserPage() {
@@ -80,61 +81,22 @@ function UserPage() {
               }}
             >
               <Form className="flex flex-col gap-5">
-                <div className="flex flex-col">
-                  <div>
-                    <label className="text-xl font-bold">Name</label>
-                  </div>
-                  <Field type="text" name="name" className="py-1 px-2" />
-                  <ErrorMessage name="name" />
-                </div>
+                <Input label="Name" name="name" type="text" />
 
-                <div className="flex flex-col">
-                  <div>
-                    <label className="text-xl font-bold">Email</label>
-                  </div>
-                  <Field type="email" name="email" className="py-1 px-2" />
-                  <ErrorMessage name="email" />
-                </div>
+                <Input label="Email" type="email" name="email" />
 
-                <div className="flex flex-col">
-                  <div>
-                    <label className="text-xl font-bold">Password</label>
-                  </div>
-                  <Field
-                    type="password"
-                    name="password"
-                    className="py-1 px-2"
-                  />
-                  <ErrorMessage name="password" />
-                </div>
+                <Input label="Password" type="password" name="password" />
 
-                <div className="flex flex-col">
-                  <div>
-                    <label className="text-xl font-bold">
-                      Confirm Password
-                    </label>
-                  </div>
-                  <Field
-                    type="password"
-                    name="confirmPassword"
-                    className="py-1 px-2"
-                    component={Input}
-                  />
-                  <ErrorMessage
-                    name="confirmPassword"
-                    render={(message) => (
-                      <p className="text-red-300">{message}</p>
-                    )}
-                  />
-                </div>
+                <Input
+                  label="Confirm Password"
+                  type="password"
+                  name="confirmPassword"
+                />
 
                 <div>
-                  <button
-                    type="submit"
-                    className="border rounded py-1 px-3 hover:bg-slate-100"
-                  >
+                  <Button primary icon={<HiCheck />} type="submit">
                     Save Changes
-                  </button>
+                  </Button>
                 </div>
               </Form>
             </Formik>

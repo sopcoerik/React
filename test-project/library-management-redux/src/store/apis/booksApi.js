@@ -7,10 +7,10 @@ const booksApi = createApi({
   }),
   endpoints(builder) {
     return {
-      fetchBooks: builder.query({
+      getAllBooks: builder.query({
         providesTags: (res) => [
           ...res.map((r) => ({ type: "Book", id: r.id })),
-          { type: "Books", id: "BOOKS" },
+          { type: "Books", id: "ALLBOOKS" },
         ],
         query: () => {
           return {
@@ -18,6 +18,14 @@ const booksApi = createApi({
             method: "GET",
           };
         },
+      }),
+
+      fetchBooks: builder.query({
+        providesTags: (res) => [
+          ...res.map((r) => ({ type: "Book", id: r.id })),
+          { type: "Books", id: "BOOKS" },
+        ],
+        query: (page = 1) => `/books?page=${page}&limit=5`,
       }),
 
       addBooks: builder.mutation({
@@ -34,7 +42,7 @@ const booksApi = createApi({
       }),
 
       editBook: builder.mutation({
-        invalidatesTags: (res, err, id) => [{ type: "Book", id }],
+        invalidatesTags: (res, err, { id }) => [{ type: "Book", id }],
         query: ({ id, newBook }) => {
           return {
             url: `/books/${id}`,
@@ -47,7 +55,10 @@ const booksApi = createApi({
       }),
 
       deleteBook: builder.mutation({
-        invalidatesTags: (res, err, id) => [{ type: "Book", id }],
+        invalidatesTags: (res, err, id) => [
+          { type: "Book", id },
+          { type: "Books", id: "BOOKS" },
+        ],
         query: (id) => {
           return {
             url: `/books/${id}`,
@@ -64,5 +75,6 @@ export const {
   useAddBooksMutation,
   useEditBookMutation,
   useDeleteBookMutation,
+  useGetAllBooksQuery,
 } = booksApi;
 export { booksApi };

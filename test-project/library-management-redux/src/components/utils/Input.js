@@ -1,47 +1,47 @@
 import { useTheme } from "../../hooks/useTheme";
+import { Field, ErrorMessage } from "formik";
+import classNames from "classnames";
 
-function Input({
-  name,
-  label,
-  type,
-  error,
-  value,
-  onInputChange,
-  invalid,
-  className,
-  field,
-  form,
-  ...props
-}) {
+function Input({ name, label, type, className = "" }) {
   const theme = useTheme();
 
-  console.log(field, form, props);
-
-  const inputErrorClassNames = `${invalid && "border border-red-300"}`;
-
-  const inputClassNames = ` ${
-    theme === "dark" ? theme : "bg-inherit text-black"
-  }  outline-none`;
+  const classesFromUsers = classNames(
+    {
+      dark: theme === "dark",
+      "bg-inherit text-black outline-none": theme === "light",
+    },
+    className
+  );
 
   return (
     <div>
       <div>
         <label className="text-lg font-bold">{label}</label>
       </div>
+
       <div>
-        <input
-          name={name}
-          type={type}
-          onChange={onInputChange}
-          value={value}
-          className={`${className + inputClassNames}, ${inputErrorClassNames}`}
+        <Field name={name} type={type}>
+          {({ field, meta }) => (
+            <div>
+              <input
+                type={type}
+                name={name}
+                {...field}
+                className={`${
+                  meta.error && "border border-red-300"
+                } ${classesFromUsers}`}
+              />
+            </div>
+          )}
+        </Field>
+      </div>
+
+      <div>
+        <ErrorMessage
+          name={`${name}`}
+          render={(message) => <p className="text-red-300">{message}</p>}
         />
       </div>
-      {error && (
-        <div>
-          <p className="text-red-300">{error}</p>
-        </div>
-      )}
     </div>
   );
 }

@@ -4,11 +4,15 @@ import { useNavigate } from "react-router-dom";
 import { addActiveUser } from "../../store";
 import { useDispatch } from "react-redux";
 
+import { useTheme } from "../../hooks/useTheme";
+
 function LogInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const theme = useTheme();
 
   const { data, isLoading } = useFetchUsersQuery();
 
@@ -38,7 +42,11 @@ function LogInPage() {
   return (
     <>
       {!isLoading && (
-        <div className="relative container mx-auto h-4/6 mt-20 bg-white flex justify-center items-center flex-col rounded-2xl border border-gray-400">
+        <div
+          className={`relative container mx-auto h-4/6 mt-20 ${
+            theme === "dark" ? "bg-black text-white" : "bg-white text-black"
+          } flex justify-center items-center flex-col rounded-2xl border border-gray-400`}
+        >
           <h3 className="absolute top-24 left-2/4 -translate-x-2/4 -translate-y-2/4 text-3xl font-bold">
             Log In
           </h3>

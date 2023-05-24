@@ -1,4 +1,12 @@
 import Loader from "../utils/Loader";
+import Button from "../utils/Button";
+import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
+import { useState } from "react";
+import {
+  useAddFavoriteMutation,
+  useDeleteFavoriteMutation,
+  useFetchFavoritesQuery,
+} from "../../store";
 
 function BookItem({
   book,
@@ -9,19 +17,57 @@ function BookItem({
   editIsLoading,
   deleteIsLoading,
   activeUser,
-  handleReview,
   handleBookDetailWindowState,
 }) {
   const handleDeleteBook = (book) => {
     deleteBook(book.id);
   };
 
+  const { data: favorites, isLoading: favoritesLoading } =
+    useFetchFavoritesQuery(activeUser && { userId: activeUser?.id });
+
+  const [favorite, setFavorite] = useState(false);
+  const [addFavorite, addFavoriteResponse] = useAddFavoriteMutation();
+  const [deleteFavorite, deleteFavoriteResponse] = useDeleteFavoriteMutation();
+
+  const bookPresent =
+    activeUser &&
+    favorites &&
+    favorites.find((favorite) => favorite.bookId === book.id);
+
+  const handleFavoriteClick = (book) => {
+    if (favorite || bookPresent) {
+      deleteFavorite({ userId: activeUser.id, favoriteId: bookPresent.id });
+      setFavorite(false);
+      return;
+    } else {
+      addFavorite({
+        userId: activeUser.id,
+        bookId: book.id,
+      });
+      setFavorite(true);
+    }
+  };
+
   return (
     <>
       <tr className="border-b border-slate-300 h-24">
-        <td>
+        <td className="h-24 flex gap-3 items-center">
+          {activeUser && (
+            <button onClick={() => handleFavoriteClick(book)}>
+              {favorite || bookPresent ? (
+                <MdFavorite className="text-lg" />
+              ) : (
+                <MdFavoriteBorder className="text-lg" />
+              )}
+            </button>
+          )}
           <p
-            onClick={() => activeUser && handleBookDetailWindowState(book)}
+            onClick={() => {
+              if (activeUser) {
+                handleBookDetailWindowState(book);
+              }
+            }}
             className="cursor-pointer"
           >
             {book.title}
@@ -33,31 +79,23 @@ function BookItem({
         <td>
           {activeUser && (
             <>
-              <button
-                className="border rounded hover:bg-blue-300 hover:text-white px-2 py-1 border-slate-500 m-2"
+              <Button
+                rounded
                 onClick={() => handleEditBook(book)}
                 disabled={editIsLoading}
               >
                 {editIsLoading ? <Loader /> : "Edit Book"}
-              </button>
-              <button
-                className="border rounded hover:bg-red-300 hover:text-white px-2 py-1 border-slate-500 m-2"
+              </Button>
+
+              <Button
+                rounded
+                danger
                 onClick={() => handleDeleteBook(book)}
                 disabled={deleteIsLoading}
               >
                 {deleteIsLoading ? <Loader /> : "Delete"}
-              </button>
+              </Button>
             </>
-          )}
-        </td>
-        <td>
-          {activeUser && (
-            <button
-              className="border rounded hover:bg-purple-400 hover:text-white px-2 py-1 border-slate-500 m-2"
-              onClick={() => handleReview(book.id)}
-            >
-              Add Review
-            </button>
           )}
         </td>
       </tr>

@@ -9,6 +9,7 @@ import {
   useEditReviewMutation,
 } from "../../store/apis/reviewsApi";
 import { useState } from "react";
+import Button from "../utils/Button";
 
 function BookDetail({
   handleBookDetailWindowState,
@@ -18,6 +19,7 @@ function BookDetail({
   activeUser,
   categories,
   authors,
+  addReviewModal,
 }) {
   const theme = useTheme();
 
@@ -76,17 +78,18 @@ function BookDetail({
         <div className="pl-2 relative">
           <form onSubmit={handleEditFormSubmit}>
             <textarea
-              className="w-full h-full"
+              className="w-full h-full bg-inherit overflow-auto"
               disabled={!reviewToEdit || reviewToEdit.id !== review.id}
               value={
                 (reviewToEdit?.createdById === review.createdById &&
+                  reviewToEdit.id === review.id &&
                   editInput) ||
                 review.text
               }
               onChange={handleEditInputChange}
             ></textarea>
-            {reviewToEdit?.createdById === review.createdById && editInput && (
-              <button className="border p-0.5 bg-white text-xs absolute bottom-0 right-0 -translate-x-2/4 -translate-y-2/4">
+            {reviewToEdit === review && editInput && (
+              <button className="border p-0.5 bg-white text-xs absolute -bottom-10 right-0 -translate-x-2/4 -translate-y-2/4">
                 Save
               </button>
             )}
@@ -166,6 +169,11 @@ function BookDetail({
             </div>
             <div className="p-3 w-full h-full border flex flex-col gap-5 overflow-auto ">
               <>{renderedReviews}</>
+              <div className="flex justify-end">
+                <Button primary onClick={() => addReviewModal(bookToView.id)}>
+                  + Add Review
+                </Button>
+              </div>
             </div>
           </div>
         </div>

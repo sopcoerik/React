@@ -4,6 +4,7 @@ import { useAuthors } from "../../hooks/useAuthors";
 import { useCategories } from "../../hooks/useCategories";
 import Loader from "../utils/Loader";
 import { useTheme } from "../../hooks/useTheme";
+import Button from "../utils/Button";
 
 function BooksList({
   searchTerm,
@@ -19,11 +20,17 @@ function BooksList({
   editIsLoading,
   deleteIsLoading,
   activeUser,
-  handleReview,
   handleBookDetailWindowState,
+  allBooks,
+  setPage,
+  page,
 }) {
   const theme = useTheme();
 
+  const limit =
+    allBooks?.length % 5 === 1 || allBooks?.length % 5 === 0
+      ? (allBooks?.length % 5) + 1
+      : allBooks?.length % 5;
   const {
     state: { data: authors },
   } = useAuthors();
@@ -53,7 +60,6 @@ function BooksList({
             editIsLoading={editIsLoading}
             deleteIsLoading={deleteIsLoading}
             activeUser={activeUser}
-            handleReview={handleReview}
             handleBookDetailWindowState={handleBookDetailWindowState}
           />
         )
@@ -88,7 +94,7 @@ function BooksList({
                 }
                 className="flex"
               >
-                {sortOrder?.title === 1 ? <GoChevronDown /> : <GoChevronUp />}
+                {sortOrder.title === 1 ? <GoChevronDown /> : <GoChevronUp />}
                 Title
               </button>
             </th>
@@ -103,7 +109,7 @@ function BooksList({
                 }
                 className="flex"
               >
-                {sortOrder?.author === 1 ? <GoChevronDown /> : <GoChevronUp />}
+                {sortOrder.author === 1 ? <GoChevronDown /> : <GoChevronUp />}
                 Author
               </button>
             </th>
@@ -113,16 +119,31 @@ function BooksList({
         </thead>
         <tbody>{renderedBooks}</tbody>
       </table>
+      <div className="flex justify-center items-center gap-2">
+        <Button onClick={() => setPage(page > 1 ? page - 1 : 1)} rounded>
+          Previous Page
+        </Button>
+        <div>
+          {page}/{limit}
+        </div>
+        <Button
+          onClick={() => setPage(page < limit ? page + 1 : limit)}
+          rounded
+        >
+          Next Page
+        </Button>
+      </div>
       <div className="flex flex-col m-3">
         <div className="flex justify-end">
           {activeUser && (
-            <button
-              className="border rounded hover:bg-blue-300 px-3 py-1 border-slate-500 hover:text-white"
+            <Button
+              primary
+              rounded
               onClick={handleAddBook}
               disabled={addIsLoading}
             >
               {addIsLoading ? <Loader /> : "+ Add Book"}
-            </button>
+            </Button>
           )}
         </div>
       </div>

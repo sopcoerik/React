@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import SearchBooks from "../../components/books/SearchBooks";
@@ -12,6 +12,7 @@ import {
   useAddBooksMutation,
   useEditBookMutation,
   useAddReviewMutation,
+  useGetAllBooksQuery,
 } from "../../store";
 
 import { useFetchReviewsQuery } from "../../store";
@@ -23,9 +24,20 @@ import BookReview from "../../components/books/BookReview";
 import BookDetail from "../../components/books/BookDetail";
 
 function BooksPage() {
-  const { data, isLoading } = useFetchBooksQuery();
+  const activeUser = useSelector((state) => state.activeUser.activeUser);
+
+  const [page, setPage] = useState(1);
+  const [sortOrder, setSortOrder] = useState({
+    title: 1,
+    author: 1,
+  });
+
+  const { data, isLoading } = useFetchBooksQuery(page);
+
   const [deleteBook, deleteResponse] = useDeleteBookMutation();
   const { isLoading: deleteIsLoading } = deleteResponse;
+
+  const { data: allBooks } = useGetAllBooksQuery();
 
   const [addBook, addResponse] = useAddBooksMutation();
   const { isLoading: addIsLoading } = addResponse;
@@ -40,10 +52,6 @@ function BooksPage() {
   const [bookToEdit, setBookToEdit] = useState({});
   const [filteredArray, setFilteredArray] = useState([]);
   const [sortedBooks, setSortedBooks] = useState([]);
-  const [sortOrder, setSortOrder] = useState({
-    title: 1,
-    author: 1,
-  });
 
   const [reviewWindow, setReviewWindow] = useState(false);
   const [bookDetailWindow, setBookDetailWindow] = useState(false);
@@ -53,8 +61,7 @@ function BooksPage() {
   const { data: categories } = useFetchCategoriesQuery();
   const { data: authors } = useFetchAuthorsQuery();
 
-  const { data: reviews, isLoading: reviewsAreLoading } =
-    useFetchReviewsQuery();
+  const { data: reviews } = useFetchReviewsQuery();
 
   const handleReviewWindowState = (id) => {
     if (reviewWindow === false) {
@@ -74,39 +81,42 @@ function BooksPage() {
     setBookDetailWindow(!bookDetailWindow);
   };
 
-  const activeUser = useSelector((state) => state.activeUser.activeUser);
-
   const handleEditBook = (book) => {
     setModal(true);
     setBookToEdit(book);
   };
 
-  const handleSortBooks = (books, sortBy, isFiltered) => {
-    sortBy === "author"
-      ? sortOrder[sortBy] === 1
-        ? setSortOrder({ [sortBy]: -1, title: sortOrder.title })
-        : setSortOrder({ [sortBy]: 1, title: sortOrder.title })
-      : sortOrder[sortBy] === 1
-      ? setSortOrder({ [sortBy]: -1, author: sortOrder.author })
-      : setSortOrder({ [sortBy]: 1, author: sortOrder.author });
+  const handleSortBooks = (books, newSortBy, isFiltered) => {
+    newSortBy === "author"
+      ? sortOrder[newSortBy] === 1
+        ? setSortOrder({ [newSortBy]: -1, title: sortOrder.title })
+        : setSortOrder({ [newSortBy]: 1, title: sortOrder.title })
+      : sortOrder[newSortBy] === 1
+      ? setSortOrder({ [newSortBy]: -1, author: sortOrder.author })
+      : setSortOrder({ [newSortBy]: 1, author: sortOrder.author });
 
-    sortBooks(books, sortBy, isFiltered);
+    sortBooks(books, newSortBy, isFiltered);
   };
 
-  const sortBooks = (books, sortBy, isFiltered) => {
+  const sortBooks = (books, newSortBy, isFiltered) => {
     const copiedBooks = [...books];
     const availableSortingProperties = ["title", "author"];
 
-    sortBy = availableSortingProperties.includes(sortBy)
-      ? sortBy
+    newSortBy = availableSortingProperties.includes(newSortBy)
+      ? newSortBy
       : availableSortingProperties[0];
 
     copiedBooks.sort((a, b) => {
-      return a[sortBy].localeCompare(b[sortBy]) * sortOrder[sortBy];
+      return a[newSortBy].localeCompare(b[newSortBy]) * sortOrder[newSortBy];
     });
 
     isFiltered ? setFilteredArray(copiedBooks) : setSortedBooks(copiedBooks);
   };
+
+  useEffect(() => {
+    setFilteredArray(data);
+    setSortedBooks(data);
+  }, [page, data]);
 
   const getFilteredBooks = (filteredBooks) => {
     setFilteredArray(filteredBooks);
@@ -129,8 +139,8 @@ function BooksPage() {
           <BooksList
             searchTerm={searchTerm}
             books={
-              (filteredArray.length > 0 && filteredArray) ||
-              (sortedBooks.length > 0 && sortedBooks) ||
+              (filteredArray?.length > 0 && filteredArray) ||
+              (sortedBooks?.length > 0 && sortedBooks) ||
               data
             }
             setModal={setModal}
@@ -144,8 +154,10 @@ function BooksPage() {
             editIsLoading={editIsLoading}
             deleteIsLoading={deleteIsLoading}
             activeUser={activeUser}
-            handleReview={handleReviewWindowState}
             handleBookDetailWindowState={handleBookDetailWindowState}
+            page={page}
+            setPage={setPage}
+            allBooks={allBooks}
           />
         )}
       </div>
@@ -155,7 +167,7 @@ function BooksPage() {
           setReviewWindow={setReviewWindow}
           activeUser={activeUser}
           addReview={addReview}
-          reviewedBookId={reviewedBookId}
+          reviewedBookId={bookToView.id}
         />
       )}
 
@@ -169,6 +181,7 @@ function BooksPage() {
           activeUser={activeUser}
           categories={categories}
           authors={authors}
+          addReviewModal={handleReviewWindowState}
         />
       )}
 
