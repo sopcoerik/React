@@ -80,13 +80,13 @@ function BooksList({
                 onClick={() =>
                   setSorting({
                     sortBy: "title",
-                    sortOrder: sorting.sortOrder === 1 ? -1 : 1,
+                    sortOrder: sorting.sortOrder === "desc" ? "asc" : "desc",
                   })
                 }
                 className="flex"
               >
                 {sorting.sortBy === "title" &&
-                  (sorting.sortOrder === 1 ? (
+                  (sorting.sortOrder === "desc" ? (
                     <GoChevronDown />
                   ) : (
                     <GoChevronUp />
@@ -99,7 +99,7 @@ function BooksList({
                 onClick={() =>
                   setSorting({
                     sortBy: "author",
-                    sortOrder: sorting.sortOrder === 1 ? -1 : 1,
+                    sortOrder: sorting.sortOrder === "desc" ? "asc" : "desc",
                   })
                 }
                 className="flex"
