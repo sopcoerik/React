@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useState } from "react";
 import { useTheme } from "../../hooks/useTheme";
 
 function Dropdown({
@@ -7,47 +7,20 @@ function Dropdown({
   setSelectedCategory,
   category,
   author,
-  dropdownClose,
 }) {
-  const OPEN_DROPDOWN = "open_dropdown";
-  const CHANGE_HEADER = "change_header";
-  const CHANGE_ALL = "change_all_state";
-
   const theme = useTheme();
 
-  const dropdownReducer = (state, action) => {
-    switch (action.type) {
-      case OPEN_DROPDOWN:
-        return {
-          isOpen: action.payload,
-          header: state.header,
-        };
-      case CHANGE_HEADER:
-        return {
-          isOpen: state.isOpen,
-          header: action.payload,
-        };
-      case CHANGE_ALL:
-        return {
-          isOpen: action.payload.isOpen,
-          header: action.payload.header,
-        };
-      default:
-        return;
-    }
-  };
-
-  const [state, dispatch] = useReducer(dropdownReducer, {
+  const [state, setState] = useState({
     isOpen: false,
     header:
       (author && "Available authors...") ||
       (category && "Available categories..."),
   });
 
-  const handleDropdownClick = (e) => {
-    dispatch({
-      type: OPEN_DROPDOWN,
-      payload: !state.isOpen,
+  const handleDropdownClick = () => {
+    setState({
+      ...state,
+      isOpen: !state.isOpen,
     });
   };
 
@@ -55,14 +28,6 @@ function Dropdown({
     setSelectedCategory
       ? setSelectedCategory(option)
       : setSelectedAuthor(option);
-
-    dispatch({
-      type: CHANGE_ALL,
-      payload: {
-        isOpen: false,
-        header: option.name,
-      },
-    });
   };
 
   const availableOptions = options.map((option) => (

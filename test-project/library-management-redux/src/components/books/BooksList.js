@@ -1,7 +1,5 @@
 import BookItem from "./BookItem";
 import { GoChevronDown, GoChevronUp } from "react-icons/go";
-import { useAuthors } from "../../hooks/useAuthors";
-import { useCategories } from "../../hooks/useCategories";
 import Loader from "../common/Loader";
 import { useTheme } from "../../hooks/useTheme";
 import Button from "../common/Button";
@@ -19,27 +17,17 @@ function BooksList({
   deleteIsLoading,
   activeUser,
   handleBookDetailWindowState,
-  allBooks,
   setPage,
   page,
+  authors,
+  categories,
 }) {
   const theme = useTheme();
 
-  const limit =
-    allBooks?.length % 5 === 1 || allBooks?.length % 5 === 0
-      ? (allBooks?.length % 5) + 1
-      : allBooks?.length % 5;
-  const {
-    state: { data: authors },
-  } = useAuthors();
-  const {
-    state: { data: categories },
-  } = useCategories();
-
   const mappingFunction = (array) => {
     return array.map((book) => {
-      const bookAuthor = authors.find((author) => book.authorId === author.id);
-      const bookCategory = categories.find(
+      const bookAuthor = authors?.find((author) => book.authorId === author.id);
+      const bookCategory = categories?.find(
         (category) => book.categoryId === category.id
       );
       return (
@@ -123,11 +111,8 @@ function BooksList({
         <Button onClick={() => setPage(page > 1 ? page - 1 : 1)} rounded>
           Previous Page
         </Button>
-        <div>
-          {page}/{limit}
-        </div>
         <Button
-          onClick={() => setPage(page < limit ? page + 1 : limit)}
+          onClick={() => setPage(books.length > 4 ? page + 1 : page)}
           rounded
         >
           Next Page

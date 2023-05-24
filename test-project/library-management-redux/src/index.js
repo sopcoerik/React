@@ -11,7 +11,6 @@ import App from "./App";
 import BooksPage from "./pages/BooksPage/BooksPage";
 import AuthorsPage from "./pages/AuthorsPage/AuthorsPage";
 import CategoriesPage from "./pages/CategoriesPage/CategoriesPage";
-import NewPage from "./pages/NewPage/NewPage";
 
 import "./index.css";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
@@ -39,10 +38,6 @@ const router = createBrowserRouter([
       {
         path: "/categories",
         element: <CategoriesPage />,
-      },
-      {
-        path: "/newpage",
-        element: <NewPage />,
       },
       {
         path: "/signup",

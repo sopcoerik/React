@@ -1,6 +1,4 @@
-import { useReducer } from "react";
-import { useAuthors } from "../../hooks/useAuthors";
-import { useCategories } from "../../hooks/useCategories";
+import { useState } from "react";
 
 import Dropdown from "./Dropdown";
 
@@ -21,127 +19,12 @@ function Form({
   addBook,
   editBook,
   activeUser,
+  authors,
+  categories,
 }) {
   const theme = useTheme();
 
-  const {
-    state: { data: authors },
-  } = useAuthors();
-  const {
-    state: { data: categories },
-  } = useCategories();
-
-  const CHANGE_TITLE = "change_title";
-  const CHANGE_DESCRIPTION = "change_description";
-  const CHANGE_SELECTED_AUTHOR = "change_selected_author";
-  const CHANGE_AUTHOR = "change_author";
-  const CHANGE_CATEGORY = "change_category";
-  const CHANGE_SELECTED_CATEGORY = "change_selected_category";
-
-  const formReducer = (state, action) => {
-    switch (action.type) {
-      case CHANGE_TITLE:
-        return {
-          title: action.payload,
-          description: state.description,
-          selectedAuthor: state.selectedAuthor,
-          author: state.author,
-          category: state.category,
-          selectedCategory: state.selectedCategory,
-        };
-      case CHANGE_DESCRIPTION:
-        return {
-          title: state.title,
-          description: action.payload,
-          selectedAuthor: state.selectedAuthor,
-          author: state.author,
-          category: state.category,
-          selectedCategory: state.selectedCategory,
-        };
-      case CHANGE_SELECTED_AUTHOR:
-        return {
-          title: state.title,
-          description: state.description,
-          selectedAuthor: action.payload,
-          author: state.author,
-          category: state.category,
-          selectedCategory: state.selectedCategory,
-        };
-      case CHANGE_AUTHOR:
-        return {
-          title: state.title,
-          description: state.description,
-          selectedAuthor: state.selectedAuthor,
-          author: action.payload,
-          category: state.category,
-          selectedCategory: state.selectedCategory,
-        };
-      case CHANGE_CATEGORY:
-        return {
-          title: state.title,
-          description: state.description,
-          selectedAuthor: state.selectedAuthor,
-          author: state.author,
-          category: action.payload,
-          selectedCategory: state.selectedCategory,
-        };
-      case CHANGE_SELECTED_CATEGORY:
-        return {
-          title: state.title,
-          description: state.description,
-          selectedAuthor: state.selectedAuthor,
-          author: state.author,
-          category: state.category,
-          selectedCategory: action.payload,
-        };
-      default:
-        return;
-    }
-  };
-
-  const handleTitleChange = (e) => {
-    dispatch({
-      type: CHANGE_TITLE,
-      payload: e.target.value,
-    });
-  };
-
-  const setSelectedAuthor = (value) => {
-    dispatch({
-      type: CHANGE_SELECTED_AUTHOR,
-      payload: value,
-    });
-  };
-
-  const handleDescriptionChange = (e) => {
-    dispatch({
-      type: CHANGE_DESCRIPTION,
-      payload: e.target.value,
-    });
-  };
-
-  const handleAuthorChange = (e) => {
-    dispatch({
-      type: CHANGE_AUTHOR,
-      payload: e.target.value,
-    });
-  };
-
-  const setSelectedCategory = (value) => {
-    dispatch({
-      type: CHANGE_SELECTED_CATEGORY,
-      payload: value,
-    });
-  };
-
-  const handleCategoryChange = (e) => {
-    dispatch({
-      type: CHANGE_CATEGORY,
-      payload: e.target.value,
-    });
-  };
-
-  const [state, dispatch] = useReducer(formReducer, {
+  const [state, setState] = useState({
     title: book?.title || "",
     description: book?.description || "",
     selectedAuthor: {},
@@ -149,6 +32,18 @@ function Form({
     category: categoryToEdit?.name || "",
     selectedCategory: categoryToEdit || {},
   });
+
+  const handleFormInputsChange = (e) => {
+    setState({ ...state, [e.target.name]: e.target.value });
+  };
+
+  const handleAuthorChange = (value) => {
+    setState({ ...state, selectedAuthor: value });
+  };
+
+  const handleCategoryChange = (value) => {
+    setState({ ...state, selectedCategory: value });
+  };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -197,7 +92,9 @@ function Form({
   const handleCancelForm = () => {
     setModal(false);
   };
+
   let content;
+
   content = category ? (
     <div
       className={`rounded border ${
@@ -210,9 +107,10 @@ function Form({
       >
         <input
           value={state.category}
+          name="category"
           type="text"
           placeholder="Category Name"
-          onChange={handleCategoryChange}
+          onChange={handleFormInputsChange}
           className={`border rounded border-slate-200 px-1 py-3 ${
             theme === "dark" ? "bg-black text-white" : "bg-white text-black"
           }`}
@@ -237,9 +135,10 @@ function Form({
       >
         <input
           value={state.author}
+          name="author"
           type="text"
           placeholder="Author Name"
-          onChange={handleAuthorChange}
+          onChange={handleFormInputsChange}
           className={`border rounded border-slate-200 px-1 py-3 ${
             theme === "dark" ? "bg-black text-white" : "bg-white text-black"
           }`}
@@ -264,9 +163,10 @@ function Form({
       >
         <input
           value={state.title}
+          name="title"
           type="text"
           placeholder="Book Title"
-          onChange={handleTitleChange}
+          onChange={handleFormInputsChange}
           className={`border rounded border-slate-200 px-1 py-3 ${
             theme === "dark" ? "bg-black text-white" : "bg-white text-black"
           }`}
@@ -275,13 +175,14 @@ function Form({
           author
           options={authors}
           book={book}
-          setSelectedAuthor={setSelectedAuthor}
+          setSelectedAuthor={handleAuthorChange}
         />
         <input
           value={state.description}
+          name="description"
           type="text"
           placeholder="Book Description"
-          onChange={handleDescriptionChange}
+          onChange={handleFormInputsChange}
           className={`border rounded border-slate-200 px-1 py-3 ${
             theme === "dark" ? "bg-black text-white" : "bg-white text-black"
           }`}
@@ -290,7 +191,7 @@ function Form({
           category
           options={categories}
           book={book}
-          setSelectedCategory={setSelectedCategory}
+          setSelectedCategory={handleCategoryChange}
         />
         <button
           className="border rounded border-slate-200 py-1 w-24 hover:bg-blue-300 hover:text-white"

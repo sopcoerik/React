@@ -39,7 +39,7 @@ function BooksPage() {
   // done
 
   // Filter
-  const [selectedCategoriesIds, setSelectedCategoriesIds] = useState([""]);
+  const [selectedCategoriesIds, setSelectedCategoriesIds] = useState([]);
   const { data: categories, isLoading: categoriesAreLoading } =
     useFetchCategoriesQuery();
 
@@ -72,7 +72,6 @@ function BooksPage() {
   const [bookToView, setBookToView] = useState(null);
   const { data: users } = useFetchUsersQuery();
   const { data: authors } = useFetchAuthorsQuery();
-
   const { data: reviews } = useFetchReviewsQuery();
 
   const handleReviewWindowState = (id) => {
@@ -101,19 +100,17 @@ function BooksPage() {
   return (
     <div className="container mx-auto">
       <div>
-        <SearchBooks term={searchTerm} setTerm={setSearchTerm} />
+        <SearchBooks setTerm={setSearchTerm} />
       </div>
       <div>
         <FilterBooks
           categories={categories}
-          selectedCategoriesIds={selectedCategoriesIds}
           setSelectedCategoriesIds={setSelectedCategoriesIds}
         />
       </div>
       <div>
         {!booksAreLoading && (
           <BooksList
-            searchTerm={searchTerm}
             books={books}
             setModal={setModal}
             handleEditBook={handleEditBook}
@@ -128,6 +125,8 @@ function BooksPage() {
             handleBookDetailWindowState={handleBookDetailWindowState}
             page={page}
             setPage={setPage}
+            authors={authors}
+            categories={categories}
           />
         )}
       </div>
@@ -164,6 +163,8 @@ function BooksPage() {
           addBook={addBook}
           editBook={editBook}
           activeUser={activeUser}
+          authors={authors}
+          categories={categories}
         />
       )}
     </div>
