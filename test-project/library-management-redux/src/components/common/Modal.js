@@ -7,12 +7,14 @@ function Modal({
   onCancel,
   onOk,
   isOpen,
-  confirmText,
-  cancelText,
+  confirmText="Ok",
+  cancelText="Cancel",
 }) {
   const theme = useTheme();
+
+  if (!isOpen) return null;
+
   return (
-    isOpen &&
     createPortal(
       <>
         <div className="modal absolute z-20 -translate-x-2/4 -translate-y-2/4 top-2/4 left-2/4 bg-white border border-gray-300 rounded flex flex-col justify-around">
@@ -34,9 +36,9 @@ function Modal({
           <div>{children}</div>
           <div className="flex justify-end mx-3 mb-10 gap-2">
             <Button danger onClick={onCancel}>
-              Cancel
+              {cancelText}
             </Button>
-            <Button onClick={onOk}>Ok</Button>
+            <Button onClick={onOk}>{confirmText}</Button>
           </div>
         </div>
         <div

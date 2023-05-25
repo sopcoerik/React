@@ -13,8 +13,9 @@ function EditBookModal({
   bookToEditId,
   editBook,
   addBook,
-  modalIsOpen,
-  setModalIsOpen,
+  isOpen,
+  onCancel,
+  onOk,
   activeUser,
   setBookToEditId,
   books,
@@ -71,22 +72,25 @@ function EditBookModal({
       selectedCategory: {},
     });
 
-    setModalIsOpen(false);
+    onOk();
     setBookToEditId(undefined);
   };
 
+  const formInitialValues = {
+    title: bookToEdit?.title || "",
+    description: bookToEdit?.description || "",
+  }
+  
+
   return (
     <Modal
-      isOpen={modalIsOpen}
-      onCancel={() => setModalIsOpen(false)}
+      isOpen={isOpen}
+      onCancel={onCancel}
       onOk={handleBookFormSubmit}
     >
       <>
         <Formik
-          initialValues={{
-            title: bookToEdit?.title || "",
-            description: bookToEdit?.description || "",
-          }}
+          initialValues={formInitialValues}
           onSubmit={(values, actions) => {
             handleBookFormSubmit(values.title, values.description);
             actions.resetForm({
@@ -130,6 +134,7 @@ function EditBookModal({
               options={categories}
               setSelectedCategory={handleCategoryChange}
             />
+            {/* TODO: check how we can submit form on modal ok handler !!!! this is an ugly workaround */}
             <Button
               className="absolute -translate-x-2/4 -translate-y-2/4 bottom-6 -right-3"
               type="submit"

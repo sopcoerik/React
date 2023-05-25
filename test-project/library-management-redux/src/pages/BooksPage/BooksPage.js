@@ -50,8 +50,8 @@ function BooksPage() {
   // Other
   const [deleteBook] = useDeleteBookMutation();
 
+  // TODO: move these to EditBookModal
   const [addBook] = useAddBooksMutation();
-
   const [editBook] = useEditBookMutation();
 
   const [addReview] = useAddReviewMutation();
@@ -145,8 +145,10 @@ function BooksPage() {
         setBookToEditId={setBookToEditId}
         editBook={editBook}
         addBook={addBook}
-        modalIsOpen={modalIsOpen}
-        setModalIsOpen={setModalIsOpen}
+        isOpen={modalIsOpen}
+        onCancel={() => setModalIsOpen(false)}
+        onOk={() => setModalIsOpen(false)}
+        setIsOpen={setModalIsOpen}
         activeUser={activeUser}
         books={books}
         authors={authors}
