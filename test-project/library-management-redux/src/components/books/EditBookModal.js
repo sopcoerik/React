@@ -79,28 +79,23 @@ function EditBookModal({
   const formInitialValues = {
     title: bookToEdit?.title || "",
     description: bookToEdit?.description || "",
-  }
-  
+  };
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onCancel={onCancel}
-      onOk={handleBookFormSubmit}
+    <Formik
+      initialValues={formInitialValues}
+      onSubmit={(values, actions) => {
+        handleBookFormSubmit(values.title, values.description);
+        actions.resetForm({
+          values: {
+            title: "",
+            description: "",
+          },
+        });
+      }}
     >
-      <>
-        <Formik
-          initialValues={formInitialValues}
-          onSubmit={(values, actions) => {
-            handleBookFormSubmit(values.title, values.description);
-            actions.resetForm({
-              values: {
-                title: "",
-                description: "",
-              },
-            });
-          }}
-        >
+      {({ handleSubmit }) => (
+        <Modal isOpen={isOpen} onCancel={onCancel} onOk={handleSubmit}>
           <Form className="p-10 flex flex-col gap-5 items-center">
             <Input
               name="title"
@@ -134,17 +129,10 @@ function EditBookModal({
               options={categories}
               setSelectedCategory={handleCategoryChange}
             />
-            {/* TODO: check how we can submit form on modal ok handler !!!! this is an ugly workaround */}
-            <Button
-              className="absolute -translate-x-2/4 -translate-y-2/4 bottom-6 -right-3"
-              type="submit"
-            >
-              Ok
-            </Button>
           </Form>
-        </Formik>
-      </>
-    </Modal>
+        </Modal>
+      )}
+    </Formik>
   );
 }
 
