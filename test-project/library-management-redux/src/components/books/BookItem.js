@@ -8,6 +8,8 @@ import {
   useFetchFavoritesQuery,
 } from "../../store";
 
+import { useNavigate } from "react-router-dom";
+
 function BookItem({
   book,
   handleEditBook,
@@ -22,6 +24,8 @@ function BookItem({
   const handleDeleteBook = (book) => {
     deleteBook(book.id);
   };
+
+  const navigate = useNavigate();
 
   const { data: favorites } = useFetchFavoritesQuery(
     activeUser && { userId: activeUser?.id }
@@ -63,16 +67,7 @@ function BookItem({
               )}
             </button>
           )}
-          <p
-            onClick={() => {
-              if (activeUser) {
-                handleBookDetailWindowState(book);
-              }
-            }}
-            className="cursor-pointer"
-          >
-            {book.title}
-          </p>
+          <p className="cursor-pointer">{book.title}</p>
         </td>
         <td>{bookAuthor?.name}</td>
         <td>{book.description}</td>
@@ -82,7 +77,7 @@ function BookItem({
             <>
               <Button
                 rounded
-                onClick={() => handleEditBook(book)}
+                onClick={() => handleEditBook(book.id)}
                 disabled={editIsLoading}
               >
                 {editIsLoading ? <Loader /> : "Edit Book"}

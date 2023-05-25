@@ -14,6 +14,9 @@ import {
 } from "../../store";
 
 import Loader from "../../components/common/Loader";
+import Input from "../../components/common/Input";
+
+import { Formik, Form } from "formik";
 
 function CategoriesPage() {
   const theme = useTheme();
@@ -37,13 +40,11 @@ function CategoriesPage() {
     categoryToEdit?.name || ""
   );
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-
+  const handleFormSubmit = (name) => {
     categoryToEditId
       ? editCategory({
           id: categoryToEditId,
-          newCategory: { name: categoryInput, createdById: activeUser.id },
+          newCategory: { name, createdById: activeUser.id },
         })
       : addCategory &&
         addCategory({
@@ -88,18 +89,21 @@ function CategoriesPage() {
         onOk={handleFormSubmit}
         onCancel={() => setModalIsOpen(false)}
       >
-        <form className="p-10 flex flex-col gap-5 items-center">
-          <input
-            value={categoryInput}
-            name="category"
-            type="text"
-            placeholder="Category Name"
-            onChange={handleFormInputsChange}
-            className={`border rounded border-slate-200 px-1 py-3 ${
-              theme === "dark" ? "bg-black text-white" : "bg-white text-black"
-            }`}
-          />
-        </form>
+        <Formik
+          initialValues={{
+            name: categoryToEdit?.name || "",
+          }}
+          onSubmit={handleFormSubmit}
+        >
+          <Form className="p-10 flex flex-col gap-5 items-center">
+            <Input
+              name="category"
+              type="text"
+              placeholder="Category Name"
+              className={`border rounded border-slate-200 px-1 py-3`}
+            />
+          </Form>
+        </Formik>
       </Modal>
     </div>
   );

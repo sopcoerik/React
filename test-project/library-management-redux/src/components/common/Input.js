@@ -6,15 +6,16 @@ function Input({ name, label, type, className = "" }) {
   const theme = useTheme();
 
   const classesFromUsers = classNames(
+    className,
     {
       dark: theme === "dark",
       "bg-inherit text-black outline-none": theme === "light",
     },
-    className
+    "w-full"
   );
 
   return (
-    <div>
+    <div className="w-full">
       <div>
         <label className="text-lg font-bold">{label}</label>
       </div>

@@ -1,15 +1,13 @@
 import { GoChevronDown, GoChevronUp } from "react-icons/go";
-import Loader from "../common/Loader";
 import { useTheme } from "../../hooks/useTheme";
 import Button from "../common/Button";
-//TODO: REMOVE UNUSED REFFERENCES. eg. addIsLoading
+
 function BooksList({
   books,
   setModal,
-  setBookToEdit,
+  setBookToEditId,
   sorting,
   setSorting,
-  addIsLoading,
   activeUser,
   setPage,
   page,
@@ -18,7 +16,7 @@ function BooksList({
   const theme = useTheme();
 
   const handleAddBook = () => {
-    setBookToEdit(undefined);
+    setBookToEditId(undefined);
     setModal(true);
   };
 
@@ -89,13 +87,8 @@ function BooksList({
       <div className="flex flex-col m-3">
         <div className="flex justify-end">
           {activeUser && (
-            <Button
-              primary
-              rounded
-              onClick={handleAddBook}
-              disabled={addIsLoading}
-            >
-              {addIsLoading ? <Loader /> : "+ Add Book"}
+            <Button primary rounded onClick={handleAddBook}>
+              + Add Book
             </Button>
           )}
         </div>

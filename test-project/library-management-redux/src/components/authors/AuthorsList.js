@@ -1,4 +1,3 @@
-import Loader from "../common/Loader";
 import { useTheme } from "../../hooks/useTheme";
 
 function AuthorsList({
@@ -6,9 +5,6 @@ function AuthorsList({
   setAuthorToEdit,
   authors,
   deleteAuthor,
-  addIsLoading,
-  editIsLoading,
-  deleteIsLoading,
   activeUser,
 }) {
   const theme = useTheme();
@@ -40,13 +36,13 @@ function AuthorsList({
               onClick={() => handleEditAuthorClick(author)}
               className="px-3 py-1 border border-slate-300 rounded hover:bg-blue-300 mb-2 hover:text-white"
             >
-              {editIsLoading ? <Loader /> : "Edit Author"}
+              Edit Author
             </button>
             <button
               onClick={() => handleDeleteAuthorClick(author.id)}
               className="px-3 py-1 ml-3 border border-slate-300 rounded hover:bg-red-300 mb-2 hover:text-white"
             >
-              {deleteIsLoading ? <Loader /> : "Delete"}
+              Delete
             </button>
           </>
         )}
@@ -68,7 +64,7 @@ function AuthorsList({
             className="px-3 py-1 border rounded hover:bg-blue-300 hover:text-white"
             onClick={handleAddAuthorClick}
           >
-            {addIsLoading ? <Loader /> : "+ Add Author"}
+            + Add Author
           </button>
         )}
       </div>

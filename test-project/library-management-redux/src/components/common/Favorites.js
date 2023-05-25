@@ -16,7 +16,6 @@ function Favorites({ favorites = [], authors = [], books = [] }) {
     );
     return <FavoritesItem favorite={favBook} author={favAuthor} key={fav.id} />;
   });
-  console.log(renderedFavorites);
   return (
     <div className="relative">
       <div onClick={handleFavoritesState} className="hover:cursor-pointer">
