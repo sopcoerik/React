@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 
 import SearchBooks from "../../components/books/SearchBooks";
 import BooksList from "../../components/books/BooksList";
-import Modal from "../../components/common/Modal";
 import FilterBooks from "../../components/books/FilterBooks";
 import {
   useFetchBooksQuery,
@@ -11,10 +10,10 @@ import {
   useAddBooksMutation,
   useEditBookMutation,
   useAddReviewMutation,
+  useFetchFavoritesQuery,
+  useFetchCategoriesQuery,
+  useFetchAuthorsQuery,
 } from "../../store";
-
-import { useFetchCategoriesQuery } from "../../store";
-import { useFetchAuthorsQuery } from "../../store";
 
 import BookItem from "../../components/books/BookItem";
 import EditBookModal from "../../components/books/EditBookModal";
@@ -40,7 +39,7 @@ function BooksPage() {
   const { data: categories } = useFetchCategoriesQuery();
 
   const { data: books, isLoading: booksAreLoading } = useFetchBooksQuery({
-    term: searchTerm,
+    term: searchTerm || "",
     catId: selectedCategoriesIds[0],
     sortBy: sorting.sortBy,
     order: sorting.sortOrder,
@@ -66,6 +65,8 @@ function BooksPage() {
   const { data: authors } = useFetchAuthorsQuery();
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const { data: favorites } = useFetchFavoritesQuery(activeUser?.id);
 
   const handleReviewWindowState = (id) => {
     if (reviewWindow === false) {
@@ -106,6 +107,7 @@ function BooksPage() {
           deleteBook={deleteBook}
           activeUser={activeUser}
           handleBookDetailWindowState={handleBookDetailWindowState}
+          favorites={favorites}
         />
       );
     });

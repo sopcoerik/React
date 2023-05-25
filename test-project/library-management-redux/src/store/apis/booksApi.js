@@ -12,7 +12,13 @@ const booksApi = createApi({
           ...res.map((r) => ({ type: "Book", id: r.id })),
           { type: "Books", id: "BOOKS" },
         ],
-        query: ({ term, catId = "", sortBy = "", order = "asc", page }) =>
+        query: ({
+          term = "",
+          catId = "",
+          sortBy = "",
+          order = "asc",
+          page = 1,
+        } = {}) =>
           `/books?search=${term}&categoryId=${catId}&sortBy=${sortBy}&order=${order}&page=${page}&limit=5`,
       }),
 

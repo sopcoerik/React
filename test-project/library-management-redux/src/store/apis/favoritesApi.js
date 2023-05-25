@@ -8,17 +8,19 @@ const favoritesApi = createApi({
   endpoints(builder) {
     return {
       fetchFavorites: builder.query({
-        providesTags: (res) => {
+        providesTags: (res = []) => {
           return [
             ...res.map((r) => ({ type: "Favorite", id: r.id })),
             { type: "Favorites", id: "FAVORITES" },
           ];
         },
-        query: ({ userId }) => {
-          return {
-            url: `/users/${userId}/favorites`,
-            method: "GET",
-          };
+        query: (userId) => {
+          return userId
+            ? {
+                url: `/users/${userId}/favorites`,
+                method: "GET",
+              }
+            : { data: [] };
         },
       }),
 
@@ -54,6 +56,7 @@ export const {
   useFetchFavoritesQuery,
   useAddFavoriteMutation,
   useDeleteFavoriteMutation,
+  use,
 } = favoritesApi;
 
 export { favoritesApi };

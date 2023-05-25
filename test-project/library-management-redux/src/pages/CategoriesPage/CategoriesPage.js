@@ -2,9 +2,8 @@ import { useState } from "react";
 import CategoriesList from "../../components/categories/CategoriesList";
 
 import Modal from "../../components/common/Modal";
-import Overlay from "../../components/common/Overlay";
+import Button from "../../components/common/Button";
 import { useSelector } from "react-redux";
-import { useTheme } from "../../hooks/useTheme";
 
 import {
   useFetchCategoriesQuery,
@@ -19,8 +18,6 @@ import Input from "../../components/common/Input";
 import { Formik, Form } from "formik";
 
 function CategoriesPage() {
-  const theme = useTheme();
-
   const { data: categories, categoriesAreLoading } = useFetchCategoriesQuery();
 
   const [addCategory] = useAddCategoryMutation();
@@ -30,15 +27,9 @@ function CategoriesPage() {
   const [deleteCategory] = useDeleteCategoryMutation();
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [categoryToEditId, setCategoryToEditId] = useState({});
+  const [categoryToEditId, setCategoryToEditId] = useState(undefined);
 
   const activeUser = useSelector((state) => state.activeUser.activeUser);
-
-  const categoryToEdit = categories.find((cat) => cat.id === categoryToEditId);
-
-  const [categoryInput, setCategoryInput] = useState(
-    categoryToEdit?.name || ""
-  );
 
   const handleFormSubmit = (name) => {
     categoryToEditId
@@ -48,17 +39,16 @@ function CategoriesPage() {
         })
       : addCategory &&
         addCategory({
-          name: categoryInput,
+          name,
           createdById: activeUser.id,
         });
 
     setModalIsOpen(false);
   };
-
-  const handleFormInputsChange = (e) => {
-    setCategoryInput(e.target.value);
+  const categoryToEdit = categories?.find((cat) => cat.id === categoryToEditId);
+  const formInitialValues = {
+    category: categoryToEdit?.name || "",
   };
-
   return (
     <div>
       {categoriesAreLoading && (
@@ -83,25 +73,36 @@ function CategoriesPage() {
         </div>
       )}
 
-      <Overlay isOpen={modalIsOpen} setModal={setModalIsOpen} />
       <Modal
         isOpen={modalIsOpen}
         onOk={handleFormSubmit}
         onCancel={() => setModalIsOpen(false)}
       >
         <Formik
-          initialValues={{
-            name: categoryToEdit?.name || "",
+          initialValues={formInitialValues}
+          onSubmit={(values, actions) => {
+            handleFormSubmit(values.category);
+            actions.resetForm({
+              values: {
+                category: "",
+              },
+            });
           }}
-          onSubmit={handleFormSubmit}
         >
           <Form className="p-10 flex flex-col gap-5 items-center">
             <Input
               name="category"
               type="text"
+              label="Category Name"
               placeholder="Category Name"
               className={`border rounded border-slate-200 px-1 py-3`}
             />
+            <Button
+              className="absolute -translate-x-2/4 -translate-y-2/4 bottom-6 -right-3"
+              type="submit"
+            >
+              Ok
+            </Button>
           </Form>
         </Formik>
       </Modal>
