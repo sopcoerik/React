@@ -2,7 +2,7 @@ import { GoChevronDown, GoChevronUp } from "react-icons/go";
 import Loader from "../common/Loader";
 import { useTheme } from "../../hooks/useTheme";
 import Button from "../common/Button";
-
+//TODO: REMOVE UNUSED REFFERENCES. eg. addIsLoading
 function BooksList({
   books,
   setModal,
