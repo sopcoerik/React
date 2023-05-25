@@ -66,9 +66,7 @@ function BooksPage() {
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const { data: favorites } = useFetchFavoritesQuery(
-    activeUser && { userId: activeUser?.id }
-  );
+  const { data: favorites } = useFetchFavoritesQuery(activeUser?.id);
 
   const handleReviewWindowState = (id) => {
     if (reviewWindow === false) {
