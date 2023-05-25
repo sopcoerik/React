@@ -62,7 +62,7 @@ function BooksPage() {
 
   const [addReview] = useAddReviewMutation();
 
-  const [bookToEdit, setBookToEdit] = useState({});
+  const [bookToEdit, setBookToEdit] = useState({}); // set only the id of the book to edit. if undefined, add new book. will be passed to editBookModal
 
   const theme = useTheme();
 
@@ -202,6 +202,7 @@ function BooksPage() {
           />
         )}
       </div>
+      {/* // TODO: this will be moved to book details page. also create new modal for it with logic. */}
       {reviewWindow && <Modal setModal={setReviewWindow} />}
       {reviewWindow && (
         <BookReview
@@ -235,6 +236,7 @@ function BooksPage() {
       >
         <>
           <form
+            // todo: remove this onsubmit, you have it in onOK
             onSubmit={handleBookFormSubmit}
             className="p-10 flex flex-col gap-5 items-center"
           >
@@ -273,7 +275,6 @@ function BooksPage() {
           </form>
         </>
       </Modal>
-      {/* <Overlay setModal={setModalIsOpen} isOpen={modalIsOpen} /> */}
     </div>
   );
 }
