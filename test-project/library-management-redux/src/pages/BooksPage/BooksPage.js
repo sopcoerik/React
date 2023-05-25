@@ -212,6 +212,7 @@ function BooksPage() {
         />
       )}
 
+        {/* // TODO: this will be moved to it's own page */}
       {bookDetailWindow && <Modal setModal={handleBookDetailWindowState} />}
       {bookDetailWindow && (
         <BookDetail
@@ -226,6 +227,7 @@ function BooksPage() {
         />
       )}
 
+        {/* TODO: Move this to EditBookModal component */}
       <Modal
         isOpen={modalIsOpen}
         onCancel={() => setModalIsOpen(false)}
@@ -271,7 +273,7 @@ function BooksPage() {
           </form>
         </>
       </Modal>
-      <Overlay setModal={setModalIsOpen} isOpen={modalIsOpen} />
+      {/* <Overlay setModal={setModalIsOpen} isOpen={modalIsOpen} /> */}
     </div>
   );
 }
