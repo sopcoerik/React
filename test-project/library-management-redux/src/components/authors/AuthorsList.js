@@ -2,7 +2,7 @@ import { useTheme } from "../../hooks/useTheme";
 
 function AuthorsList({
   setModal,
-  setAuthorToEdit,
+  setAuthorToEditId,
   authors,
   deleteAuthor,
   activeUser,
@@ -14,12 +14,12 @@ function AuthorsList({
   };
 
   const handleAddAuthorClick = () => {
-    setAuthorToEdit(null);
+    setAuthorToEditId(null);
     setModal(true);
   };
 
-  const handleEditAuthorClick = (author) => {
-    setAuthorToEdit(author);
+  const handleEditAuthorClick = (id) => {
+    setAuthorToEditId(id);
     setModal(true);
   };
 
@@ -33,7 +33,7 @@ function AuthorsList({
         {activeUser && (
           <>
             <button
-              onClick={() => handleEditAuthorClick(author)}
+              onClick={() => handleEditAuthorClick(author.id)}
               className="px-3 py-1 border border-slate-300 rounded hover:bg-blue-300 mb-2 hover:text-white"
             >
               Edit Author

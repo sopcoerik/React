@@ -2,11 +2,7 @@ import Loader from "../common/Loader";
 import Button from "../common/Button";
 import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
 import { useState } from "react";
-import {
-  useAddFavoriteMutation,
-  useDeleteFavoriteMutation,
-  useFetchFavoritesQuery,
-} from "../../store";
+import { useAddFavoriteMutation, useDeleteFavoriteMutation } from "../../store";
 
 import { useNavigate } from "react-router-dom";
 
@@ -19,17 +15,11 @@ function BookItem({
   editIsLoading,
   deleteIsLoading,
   activeUser,
-  handleBookDetailWindowState,
+  favorites,
 }) {
   const handleDeleteBook = (book) => {
     deleteBook(book.id);
   };
-
-  const navigate = useNavigate();
-
-  const { data: favorites } = useFetchFavoritesQuery(
-    activeUser && { userId: activeUser?.id }
-  );
 
   const [favorite, setFavorite] = useState(false);
   const [addFavorite] = useAddFavoriteMutation();

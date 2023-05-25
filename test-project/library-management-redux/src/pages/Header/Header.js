@@ -31,9 +31,7 @@ function Header() {
   const theme = useTheme();
   const activeUser = useSelector((state) => state.activeUser.activeUser);
 
-  const { data: favorites } = useFetchFavoritesQuery(
-    activeUser && { userId: activeUser?.id }
-  );
+  const { data: favorites } = useFetchFavoritesQuery(activeUser?.id);
 
   const { data: authors } = useFetchAuthorsQuery();
   const { data: books } = useFetchBooksQuery();
@@ -72,14 +70,6 @@ function Header() {
             }`}
           >
             <p className="mx-5 py-4">Categories</p>
-          </Link>
-          <Link
-            to="/newpage"
-            className={`hover:border-b hover:border-green-300 ${
-              theme === "dark" ? "bg-black" : "hover:bg-slate-300"
-            }`}
-          >
-            <p className="mx-5 py-4">New Page</p>
           </Link>
         </div>
       </div>

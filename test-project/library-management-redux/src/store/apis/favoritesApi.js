@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { useSelector } from "react-redux";
 
 const favoritesApi = createApi({
   reducerPath: "favorites",
@@ -8,15 +9,18 @@ const favoritesApi = createApi({
   endpoints(builder) {
     return {
       fetchFavorites: builder.query({
-        providesTags: (res) => {
+        providesTags: (res = []) => {
           return [
             ...res.map((r) => ({ type: "Favorite", id: r.id })),
             { type: "Favorites", id: "FAVORITES" },
           ];
         },
-        query: ({ userId }) => {
+        query: (id) => {
+          const activeUser = useSelector(
+            (state) => state.activeUser.activeUser
+          );
           return {
-            url: `/users/${userId}/favorites`,
+            url: `/users/${id || ""}/favorites`,
             method: "GET",
           };
         },

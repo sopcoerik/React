@@ -4,7 +4,9 @@ import AuthorsList from "../../components/authors/AuthorsList";
 
 import Loader from "../../components/common/Loader";
 import Modal from "../../components/common/Modal";
-import Overlay from "../../components/common/Overlay";
+import { Formik, Form } from "formik";
+import Input from "../../components/common/Input";
+import Button from "../../components/common/Button";
 
 import { useSelector } from "react-redux";
 
@@ -14,12 +16,9 @@ import {
   useEditAuthorMutation,
   useDeleteAuthorsMutation,
 } from "../../store";
-import { useTheme } from "../../hooks/useTheme";
 
 function AuthorsPage() {
-  const theme = useTheme();
-
-  const { data, isLoading, error } = useFetchAuthorsQuery();
+  const { data: authors, isLoading, error } = useFetchAuthorsQuery();
 
   const [addNewAuthor] = useAddAuthorsMutation();
 
@@ -28,27 +27,25 @@ function AuthorsPage() {
   const [deleteAuthor] = useDeleteAuthorsMutation();
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [authorToEdit, setAuthorToEdit] = useState({});
+  const [authorToEditId, setAuthorToEditId] = useState({});
 
-  const [authorInput, setAuthorInput] = useState(authorToEdit.name || "");
+  const authorToEdit = authors?.find((auth) => auth.id === authorToEditId);
 
   const activeUser = useSelector((state) => state.activeUser.activeUser);
 
-  const handleFormInputsChange = (e) => {
-    setAuthorInput(e.target.value);
-  };
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-
-    authorToEdit
+  const handleFormSubmit = (name) => {
+    authorToEditId
       ? editAuthor({
-          id: authorToEdit.id,
-          newAuthor: { name: authorInput, createdById: activeUser.id },
+          id: authorToEditId,
+          newAuthor: { name, createdById: activeUser.id },
         })
-      : addNewAuthor({ name: authorInput, createdById: activeUser.id });
+      : addNewAuthor({ name, createdById: activeUser.id });
 
     setModalIsOpen(false);
+  };
+
+  const formInitialValues = {
+    author: authorToEdit?.name || "",
   };
 
   let content;
@@ -67,27 +64,45 @@ function AuthorsPage() {
       <div>
         <div>
           <AuthorsList
-            authors={data}
+            authors={authors}
             setModal={setModalIsOpen}
-            setAuthorToEdit={setAuthorToEdit}
+            setAuthorToEditId={setAuthorToEditId}
             deleteAuthor={deleteAuthor}
             activeUser={activeUser}
           />
         </div>
-        <Overlay isOpen={modalIsOpen} setModal={setModalIsOpen} />
-        <Modal isOpen={modalIsOpen} onOk={handleFormSubmit}>
-          <form className="p-10 flex flex-col gap-5 items-center">
-            <input
-              value={authorInput}
-              name="author"
-              type="text"
-              placeholder="Author Name"
-              onChange={handleFormInputsChange}
-              className={`border rounded border-slate-200 px-1 py-3 ${
-                theme === "dark" ? "bg-black text-white" : "bg-white text-black"
-              }`}
-            />
-          </form>
+        <Modal
+          isOpen={modalIsOpen}
+          onOk={handleFormSubmit}
+          onCancel={() => setModalIsOpen(false)}
+        >
+          <Formik
+            initialValues={formInitialValues}
+            onSubmit={(values, actions) => {
+              handleFormSubmit(values.author);
+              actions.resetForm({
+                values: {
+                  author: "",
+                },
+              });
+            }}
+          >
+            <Form className="p-10 flex flex-col gap-5 items-center">
+              <Input
+                name="author"
+                type="text"
+                label="Author Name"
+                placeholder="Author Name"
+                className={`border rounded border-slate-200 px-1 py-3`}
+              />
+              <Button
+                className="absolute -translate-x-2/4 -translate-y-2/4 bottom-6 -right-3"
+                type="submit"
+              >
+                Ok
+              </Button>
+            </Form>
+          </Formik>
         </Modal>
       </div>
     );
