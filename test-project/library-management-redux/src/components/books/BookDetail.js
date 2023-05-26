@@ -76,7 +76,7 @@ function BookDetail({
         key={review.id}
         className="w-full border py-1 px-1 h-28 overflow-auto"
       >
-        <p className="font-bold">{user.name}</p>
+        <p className="font-bold">{user?.name}</p>
         <div className="pl-2 relative">
           <form onSubmit={handleEditFormSubmit}>
             <textarea
@@ -97,26 +97,28 @@ function BookDetail({
             )}
           </form>
         </div>
-        {activeUser?.id === user.id && (
-          <div className="flex gap-1 mt-2">
-            <div className="flex justify-end">
-              <button
-                className="border p-0.5"
-                onClick={() => handleEditReview(review)}
-              >
-                <MdModeEditOutline />
-              </button>
-            </div>
-            <div className="flex justify-end">
-              <button
-                className="border p-0.5"
-                onClick={() => deleteReview(review.id)}
-              >
-                <BsTrashFill />
-              </button>
-            </div>
-          </div>
-        )}
+        <div className="flex gap-1 mt-2">
+          {activeUser.id === user.id && (
+            <>
+              <div className="flex justify-end">
+                <button
+                  className="border p-0.5"
+                  onClick={() => handleEditReview(review)}
+                >
+                  <MdModeEditOutline />
+                </button>
+              </div>
+              <div className="flex justify-end">
+                <button
+                  className="border p-0.5"
+                  onClick={() => deleteReview(review.id)}
+                >
+                  <BsTrashFill />
+                </button>
+              </div>
+            </>
+          )}
+        </div>
       </div>
     );
   });

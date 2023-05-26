@@ -9,7 +9,7 @@ const booksApi = createApi({
     return {
       fetchBooks: builder.query({
         providesTags: (res) => [
-          ...res.map((r) => ({ type: "Book", id: r.id })),
+          ...res?.map((r) => ({ type: "Book", id: r.id })),
           { type: "Books", id: "BOOKS" },
         ],
         query: ({

@@ -9,7 +9,7 @@ const reviewsApi = createApi({
     return {
       fetchReviews: builder.query({
         providesTags: (res) => [
-          ...res.map((r) => ({ type: "Review", id: r.id })),
+          ...res?.map((r) => ({ type: "Review", id: r.id })),
           { type: "Reviews", id: "REVIEWS" },
         ],
         query: () => {

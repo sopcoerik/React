@@ -6,18 +6,25 @@ function FilterBooks({ categories, setSelectedCategoriesIds }) {
   const theme = useTheme();
 
   const handleCheckboxChange = (id) => {
-    if (!checked) {
-      setChecked(true);
-      setSelectedCategoriesIds([id]);
-    } else {
-      setChecked(false);
-      setSelectedCategoriesIds([]);
-    }
+    // if (!checked) {
+    //   setChecked(true);
+    //   setSelectedCategoriesIds([id]);
+    // } else {
+    //   setChecked(false);
+    //   setSelectedCategoriesIds([]);
+    // }
+    setSelectedCategoriesIds([id]);
   };
+
+  const handleShowAll = () => {
+    setSelectedCategoriesIds([]);
+  };
+
   const renderedCategories = categories?.map((category) => (
     <div key={category.id}>
       <input
-        type="checkbox"
+        type="radio"
+        name="category"
         onClick={() => handleCheckboxChange(category.id)}
       />
       &nbsp;{category.name}
@@ -29,6 +36,10 @@ function FilterBooks({ categories, setSelectedCategoriesIds }) {
       <div>
         <label>Filter Books By Category: &nbsp;</label>
         <div className={`flex justify-around flex-wrap`}>
+          <div>
+            <input type="radio" name="category" onClick={handleShowAll} />
+            All
+          </div>
           {renderedCategories}
         </div>
       </div>

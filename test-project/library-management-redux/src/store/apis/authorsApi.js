@@ -9,7 +9,7 @@ const authorsApi = createApi({
     return {
       fetchAuthors: builder.query({
         providesTags: (res) => [
-          ...res.map((r) => ({ type: "Author", id: r.id })),
+          ...res?.map((r) => ({ type: "Author", id: r.id })),
           { type: "Authors", id: "AUTHORS" },
         ],
         query: () => {
