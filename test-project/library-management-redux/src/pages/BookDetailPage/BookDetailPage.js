@@ -1,10 +1,9 @@
 import BookReview from "../../components/books/BookReview";
-import Modal from "../../components/common/Modal";
 import BookDetail from "../../components/books/BookDetail";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+
 import {
-  useAddReviewMutation,
   useFetchUsersQuery,
   useFetchReviewsQuery,
   useFetchAuthorsQuery,
@@ -15,7 +14,6 @@ import {
 function BookDetailPage() {
   const activeUser = useSelector((state) => state.activeUser.activeUser);
 
-  const [addReview] = useAddReviewMutation();
   const { data: users } = useFetchUsersQuery();
   const { data: reviews } = useFetchReviewsQuery();
   const { data: authors } = useFetchAuthorsQuery();
@@ -33,8 +31,7 @@ function BookDetailPage() {
         isOpen={reviewWindow}
         onCancel={() => setReviewWindow(false)}
         activeUser={activeUser}
-        addReview={addReview}
-        reviewedBookId
+        reviewedBookId={bookToViewId}
       />
       {/* // TODO: this will be moved to it's own page */}
       <BookDetail

@@ -22,9 +22,9 @@ function BookDetail({
 }) {
   const theme = useTheme();
 
-  const viewedBookReviews = reviews?.filter(
-    (review) => review.bookId === bookToView?.id
-  );
+  const viewedBookReviews = reviews?.filter((review) => {
+    return Number(review.bookId) === Number(bookToView?.id);
+  });
 
   const category = categories?.find(
     (category) => category.id === bookToView?.categoryId
@@ -67,7 +67,10 @@ function BookDetail({
   const author = authors?.find((author) => author.id === bookToView?.authorId);
 
   const renderedReviews = viewedBookReviews?.map((review) => {
-    const user = users?.find((user) => user.id === review.createdById);
+    const user = users?.find(
+      (user) => Number(user.id) === Number(review.createdById)
+    );
+
     return (
       <div
         key={review.id}

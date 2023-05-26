@@ -1,18 +1,16 @@
-import { Formik, Form } from "formik";
+import { Formik, Form, Field } from "formik";
 import Modal from "../common/Modal";
+import { useAddReviewMutation } from "../../store";
 
-function BookReview({
-  isOpen,
-  onCancel,
-  activeUser,
-  addReview,
-  reviewedBookId,
-}) {
+function BookReview({ isOpen, onCancel, activeUser, reviewedBookId }) {
+  const [addReview] = useAddReviewMutation();
+
   const handleReviewSubmit = (review) => {
+    console.log(review);
     addReview({
       text: review,
-      createdById: activeUser.id,
-      bookId: reviewedBookId,
+      createdById: Number(activeUser.id),
+      bookId: Number(reviewedBookId),
     });
 
     onCancel();
@@ -26,6 +24,7 @@ function BookReview({
       <Formik
         initialValues={formInitialValues}
         onSubmit={(values, actions) => {
+          console.log(values);
           handleReviewSubmit(values.review);
           actions.resetForm({
             values: {
@@ -43,10 +42,7 @@ function BookReview({
           >
             <Form className="flex flex-col gap-2 px-3 my-2">
               <label className="font-bold">Enter Review</label>
-              <textarea
-                className="border outline-none"
-                name="review"
-              ></textarea>
+              <Field as="textarea" name="review" className="border m-2 p-2" />
             </Form>
           </Modal>
         )}
