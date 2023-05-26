@@ -15,7 +15,6 @@ function Favorites({ activeUser }) {
     setFavOpen(!favOpen);
   };
 
-  // todo: move this to favorites component
   const { data: favorites } = useFetchFavoritesQuery(activeUser?.id, {
     skip: !activeUser,
   });

@@ -90,23 +90,26 @@ function EditBookModal({
       }}
     >
       {({ handleSubmit }) => (
-        <Modal isOpen={isOpen} onCancel={onCancel} onOk={handleSubmit}>
-          <Form className="p-10 flex flex-col gap-5 items-center">
+        <Modal
+          isOpen={isOpen}
+          onCancel={onCancel}
+          onOk={handleSubmit}
+          headerText={`Edit book`}
+        >
+          <Form className="p-10 flex flex-col gap-5 items-center w-full">
             <Input
               name="title"
               type="text"
               label="Book Title"
               placeholder="Book Title"
               onChange={handleFormInputsChange}
-              className={`border rounded border-slate-200 px-1 py-3`}
+              className="border rounded border-slate-200 px-1 py-3"
             />
-            <label className="text-lg font-bold text-start w-full">
-              Choose an Author
-            </label>
             <Dropdown
               author
               options={authors}
               setSelectedAuthor={handleAuthorChange}
+              label={"Choose an Author"}
             />
             <Input
               name="description"
@@ -116,13 +119,11 @@ function EditBookModal({
               onChange={handleFormInputsChange}
               className={`border rounded border-slate-200 px-1 py-3`}
             />
-            <label className="text-lg font-bold text-start w-full">
-              Choose a Category
-            </label>
             <Dropdown
               category
               options={categories}
               setSelectedCategory={handleCategoryChange}
+              label={"Choose a Category"}
             />
           </Form>
         </Modal>

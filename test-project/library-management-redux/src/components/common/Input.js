@@ -15,9 +15,9 @@ function Input({ name, label, type, className = "", row, as }) {
   );
 
   return (
-    <div className={`${row && "flex items-center"}`}>
+    <div className={`${row && "flex items-center"} w-full`}>
       <div>
-        <label className="text-lg font-bold">{label}</label>
+        <label className="text-base font-bold">{label}</label>
       </div>
 
       <div>

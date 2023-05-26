@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 
 import SearchBooks from "../../components/books/SearchBooks";
@@ -9,10 +9,11 @@ import {
   useDeleteBookMutation,
   useAddBooksMutation,
   useEditBookMutation,
-  useAddReviewMutation,
   useFetchFavoritesQuery,
   useFetchCategoriesQuery,
   useFetchAuthorsQuery,
+  useAddFavoriteMutation,
+  useDeleteFavoriteMutation,
 } from "../../store";
 
 import BookItem from "../../components/books/BookItem";
@@ -55,41 +56,21 @@ function BooksPage() {
   const [addBook] = useAddBooksMutation();
   const [editBook] = useEditBookMutation();
 
-  const [addReview] = useAddReviewMutation();
-
   const [bookToEditId, setBookToEditId] = useState(undefined);
-
-  const [reviewWindow, setReviewWindow] = useState(false);
-  const [bookDetailWindow, setBookDetailWindow] = useState(false);
-  const [reviewedBookId, setReviewedBookId] = useState(null);
-  const [bookToView, setBookToView] = useState(null);
 
   const { data: authors } = useFetchAuthorsQuery();
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const { data: favorites } = useFetchFavoritesQuery(activeUser?.id, {skip: !activeUser});
+  const { data: favorites } = useFetchFavoritesQuery(activeUser?.id, {
+    skip: !activeUser,
+  });
+
+  const [addFavorite] = useAddFavoriteMutation();
+  const [deleteFavorite] = useDeleteFavoriteMutation();
 
   const [isDeleted, setIsDeleted] = useState(false);
   const [bookToDelete, setBookToDelete] = useState({});
-
-  const handleReviewWindowState = (id) => {
-    if (reviewWindow === false) {
-      setReviewedBookId(id);
-    } else {
-      setReviewedBookId(null);
-    }
-    setReviewWindow(!reviewWindow);
-  };
-
-  const handleBookDetailWindowState = (book) => {
-    if (bookDetailWindow === false) {
-      setBookToView(book);
-    } else {
-      setBookToView(null);
-    }
-    setBookDetailWindow(!bookDetailWindow);
-  };
 
   const handleEditBook = (id) => {
     setModalIsOpen(true);
@@ -106,6 +87,20 @@ function BooksPage() {
     deleteBook(book.id);
   };
 
+  const handleFavoriteClick = (bookId, favoriteBook, favorite, setFavorite) => {
+    if (favorite || favoriteBook) {
+      deleteFavorite({ userId: activeUser.id, favoriteId: favoriteBook.id });
+      setFavorite(false);
+      return;
+    } else {
+      addFavorite({
+        userId: activeUser.id,
+        bookId: bookId,
+      });
+      setFavorite(true);
+    }
+  };
+
   const mappingFunction = (array) => {
     return array?.map((book) => {
       const bookAuthor = authors?.find((author) => book.authorId === author.id);
@@ -120,10 +115,11 @@ function BooksPage() {
           bookAuthor={bookAuthor}
           bookCategory={bookCategory}
           activeUser={activeUser}
-          favorites={favorites}
           deleteMessage={deleteMessage}
           isDeleted={isDeleted}
           setIsDeleted={setIsDeleted}
+          handleFavoriteClick={handleFavoriteClick}
+          favorites={favorites}
         />
       );
     });
