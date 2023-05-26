@@ -15,13 +15,13 @@ function Button({
     "border",
     "py-1",
     "px-3",
-    "bg-blue-300 text-white hover:bg-blue-400",
+    `${!danger ? "bg-blue-500" : ""} hover:bg-blue-300 text-white `,
     {
       "rounded-full": pill,
       "rounded-md": rounded,
       "bg-transparent text-blue-300": outlined && primary,
       "bg-transparent text-red-300": outlined && danger,
-      "bg-red-300 text-white hover:bg-red-400": danger && !outlined,
+      "bg-red-500 hover:bg-red-300": danger && !outlined,
     },
     className
   );
