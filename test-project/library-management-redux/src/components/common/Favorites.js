@@ -2,12 +2,26 @@ import { GrFavorite } from "react-icons/gr";
 import { useState } from "react";
 import FavoritesItem from "./FavoritesItem";
 
-function Favorites({ favorites = [], authors = [], books = [] }) {
+import {
+  useFetchFavoritesQuery,
+  useFetchAuthorsQuery,
+  useFetchBooksQuery,
+} from "../../store";
+
+function Favorites({ activeUser }) {
   const [favOpen, setFavOpen] = useState(false);
 
   const handleFavoritesState = () => {
     setFavOpen(!favOpen);
   };
+
+  // todo: move this to favorites component
+  const { data: favorites } = useFetchFavoritesQuery(activeUser?.id, {
+    skip: !activeUser,
+  });
+
+  const { data: authors } = useFetchAuthorsQuery();
+  const { data: books } = useFetchBooksQuery();
 
   const renderedFavorites = favorites?.map((fav) => {
     const favBook = books.find((book) => book.id === fav.bookId);

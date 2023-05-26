@@ -12,14 +12,13 @@ import { useState } from "react";
 import Button from "../common/Button";
 
 function BookDetail({
-  handleBookDetailWindowState,
   bookToView,
   reviews,
   users,
   activeUser,
   categories,
   authors,
-  addReviewModal,
+  setReviewWindow,
 }) {
   const theme = useTheme();
 
@@ -95,7 +94,7 @@ function BookDetail({
             )}
           </form>
         </div>
-        {activeUser.id === user.id && (
+        {activeUser?.id === user.id && (
           <div className="flex gap-1 mt-2">
             <div className="flex justify-end">
               <button
@@ -125,18 +124,6 @@ function BookDetail({
         theme === "dark" ? theme : "bg-slate-50"
       } overflow-hidden`}
     >
-      <div className="header w-full border-b border-slate-300">
-        <div className="flex justify-end">
-          <div
-            className="x-boss px-4 py-1 relative flex h-8 cursor-pointer"
-            onClick={handleBookDetailWindowState}
-          >
-            <div className="x absolute w-0.5 h-5 top-2/4 left-2/4 bg-gray-300 rotate-45 -translate-x-2/4 -translate-y-2/4" />
-            <div className="x absolute w-0.5 h-5 top-2/4 left-2/4 bg-gray-300 -rotate-45 -translate-x-2/4 -translate-y-2/4" />
-          </div>
-        </div>
-      </div>
-
       <div className="h-full flex items-center">
         <div className="w-full h-5/6 flex justify-around items-center">
           <div className="h-full w-2/4 p-12">
@@ -169,10 +156,13 @@ function BookDetail({
             </div>
             <div className="p-3 w-full h-full border flex flex-col gap-5 overflow-auto ">
               <>{renderedReviews}</>
+
               <div className="flex justify-end">
-                <Button primary onClick={() => addReviewModal(bookToView?.id)}>
-                  + Add Review
-                </Button>
+                {activeUser && (
+                  <Button primary onClick={() => setReviewWindow(true)}>
+                    + Add Review
+                  </Button>
+                )}
               </div>
             </div>
           </div>

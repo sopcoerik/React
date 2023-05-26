@@ -1,6 +1,7 @@
 import BookReview from "../../components/books/BookReview";
 import Modal from "../../components/common/Modal";
 import BookDetail from "../../components/books/BookDetail";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import {
   useAddReviewMutation,
@@ -8,13 +9,10 @@ import {
   useFetchReviewsQuery,
   useFetchAuthorsQuery,
   useFetchCategoriesQuery,
+  useGetBookToViewQuery,
 } from "../../store";
 
-function BookDetailPage({
-  setReviewWindow,
-  bookToView,
-  handleReviewWindowState,
-}) {
+function BookDetailPage() {
   const activeUser = useSelector((state) => state.activeUser.activeUser);
 
   const [addReview] = useAddReviewMutation();
@@ -23,17 +21,21 @@ function BookDetailPage({
   const { data: authors } = useFetchAuthorsQuery();
   const { data: categories } = useFetchCategoriesQuery();
 
+  const [reviewWindow, setReviewWindow] = useState(false);
+
+  const bookToViewId = window.location.pathname.split("/").pop();
+  const { data: bookToView } = useGetBookToViewQuery(bookToViewId);
+
   return (
     <div>
       {/* // TODO: this will be moved to book details page. also create new modal for it with logic. */}
-      <Modal>
-        <BookReview
-          setReviewWindow={setReviewWindow}
-          activeUser={activeUser}
-          addReview={addReview}
-          reviewedBookId={bookToView?.id}
-        />
-      </Modal>
+      <BookReview
+        isOpen={reviewWindow}
+        onCancel={() => setReviewWindow(false)}
+        activeUser={activeUser}
+        addReview={addReview}
+        reviewedBookId
+      />
       {/* // TODO: this will be moved to it's own page */}
       <BookDetail
         bookToView={bookToView}
@@ -42,7 +44,7 @@ function BookDetailPage({
         activeUser={activeUser}
         categories={categories}
         authors={authors}
-        addReviewModal={handleReviewWindowState}
+        setReviewWindow={setReviewWindow}
       />
     </div>
   );

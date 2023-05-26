@@ -67,14 +67,11 @@ function UserPage() {
                   updatedUser: { ...activeUser, ...values },
                 });
 
-                navigate("/login");
-                dispatch(removeActiveUser());
-
                 resetForm({
                   values: {
-                    name: "",
-                    email: "",
-                    password: "",
+                    name: activeUser.name,
+                    email: activeUser.email,
+                    password: activeUser.password,
                     confirmPassword: "",
                   },
                 });

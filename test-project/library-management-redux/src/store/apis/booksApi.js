@@ -24,6 +24,15 @@ const booksApi = createApi({
           }&sortBy=${sortBy}&order=${order}&page=${page}&limit=5`,
       }),
 
+      getBookToView: builder.query({
+        query: (bookId) => {
+          return {
+            url: `/books/${bookId}`,
+            method: "GET",
+          };
+        },
+      }),
+
       addBooks: builder.mutation({
         invalidatesTags: [{ type: "Books", id: "BOOKS" }],
         query: (book) => {
@@ -68,6 +77,7 @@ const booksApi = createApi({
 
 export const {
   useFetchBooksQuery,
+  useGetBookToViewQuery,
   useAddBooksMutation,
   useEditBookMutation,
   useDeleteBookMutation,

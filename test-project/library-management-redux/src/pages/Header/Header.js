@@ -7,12 +7,6 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { removeActiveUser } from "../../store/slices/activeUserSlice";
 
-import {
-  useFetchFavoritesQuery,
-  useFetchAuthorsQuery,
-  useFetchBooksQuery,
-} from "../../store";
-
 import { CgProfile } from "react-icons/cg";
 
 import Favorites from "../../components/common/Favorites";
@@ -29,12 +23,8 @@ function Header() {
   };
 
   const theme = useTheme();
-  const activeUser = useSelector((state) => state.activeUser.activeUser);
-// todo: move this to favorites component
-  const { data: favorites } = useFetchFavoritesQuery(activeUser?.id, {skip: !activeUser});
 
-  const { data: authors } = useFetchAuthorsQuery();
-  const { data: books } = useFetchBooksQuery();
+  const activeUser = useSelector((state) => state.activeUser.activeUser);
 
   return (
     <div
@@ -94,12 +84,7 @@ function Header() {
         </Link>
       </div>
 
-      <div>
-        {/* TODO: move favorites data fetching in favorites component */}
-        {activeUser && (
-          <Favorites favorites={favorites} authors={authors} books={books} />
-        )}
-      </div>
+      <div>{activeUser && <Favorites activeUser={activeUser} />}</div>
 
       <div
         className={`flex flex-col justify-around items-center h-16 ${

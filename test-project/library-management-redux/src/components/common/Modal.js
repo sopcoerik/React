@@ -30,7 +30,7 @@ function Modal({
             </div>
           </div>
         </div>
-        <div className="ml-3">{headerText}</div>
+        <div className="ml-3 mb-6 text-lg">{headerText}</div>
         <div>{children}</div>
         <div className="flex justify-end mx-3 mb-10 gap-2">
           <Button danger onClick={onCancel}>

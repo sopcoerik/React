@@ -2,7 +2,7 @@ import { useTheme } from "../../hooks/useTheme";
 import { Field, ErrorMessage } from "formik";
 import classNames from "classnames";
 
-function Input({ name, label, type, className = "", row }) {
+function Input({ name, label, type, className = "", row, as }) {
   const theme = useTheme();
 
   const classesFromUsers = classNames(
@@ -21,11 +21,11 @@ function Input({ name, label, type, className = "", row }) {
       </div>
 
       <div>
-        <Field name={name} type={type}>
+        <Field name={name} type={type} as={as}>
           {({ field, meta }) => (
             <div>
               <input
-                type={type}
+                type={type ? type : ""}
                 name={name}
                 {...field}
                 className={`${

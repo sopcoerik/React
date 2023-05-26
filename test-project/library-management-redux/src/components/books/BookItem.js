@@ -50,7 +50,10 @@ function BookItem({
               )}
             </button>
           )}
-          <Link to={`/detail/${book.id}`} target="_blank">
+          <Link
+            to={activeUser ? `/detail/${book.id}` : ""}
+            target={activeUser ? "_blank" : ""}
+          >
             <p className="cursor-pointer">{book.title}</p>
           </Link>
         </td>
