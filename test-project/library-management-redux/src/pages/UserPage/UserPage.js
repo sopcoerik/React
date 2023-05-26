@@ -1,24 +1,21 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useTheme } from "../../hooks/useTheme";
 import { useUpdateUserMutation } from "../../store";
-import { useNavigate } from "react-router-dom";
-import { removeActiveUser } from "../../store/slices/activeUserSlice";
 import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
 import { HiCheck } from "react-icons/hi";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
+import { editActiveUser } from "../../store";
+
 function UserPage() {
   const activeUser = useSelector((state) => state.activeUser.activeUser);
-
-  const navigate = useNavigate();
-
-  const dispatch = useDispatch();
 
   const theme = useTheme();
 
   const [updateUser] = useUpdateUserMutation();
+  const dispatch = useDispatch();
 
   if (!activeUser) {
     return (
@@ -67,11 +64,17 @@ function UserPage() {
                   updatedUser: { ...activeUser, ...values },
                 });
 
+                dispatch(
+                  editActiveUser({
+                    ...activeUser,
+                    ...values,
+                  })
+                );
                 resetForm({
                   values: {
-                    name: activeUser.name,
-                    email: activeUser.email,
-                    password: activeUser.password,
+                    name: values.name,
+                    email: values.email,
+                    password: values.password,
                     confirmPassword: "",
                   },
                 });

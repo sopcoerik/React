@@ -45,4 +45,4 @@ export * from "./apis/usersApi";
 export * from "./apis/reviewsApi";
 export * from "./apis/favoritesApi";
 export { setTheme } from "./slices/themeSlice";
-export { addActiveUser } from "./slices/activeUserSlice";
+export { addActiveUser, editActiveUser } from "./slices/activeUserSlice";

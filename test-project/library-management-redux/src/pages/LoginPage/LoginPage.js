@@ -14,6 +14,8 @@ function LogInPage() {
 
   const theme = useTheme();
 
+  const [loginError, setLoginError] = useState(null);
+
   const { data, isLoading } = useFetchUsersQuery();
 
   const handleEmailChange = (e) => {
@@ -36,6 +38,15 @@ function LogInPage() {
       setPassword("");
       navigate("/");
       dispatch(addActiveUser(userMatch));
+      setLoginError(null);
+    } else {
+      setLoginError(
+        <div className="w-full h-24 flex justify-center items-center">
+          <p className="font-bold text-red-500">
+            Error logging in! Incorrect UserName or Password!
+          </p>
+        </div>
+      );
     }
   };
 
@@ -52,7 +63,7 @@ function LogInPage() {
           </h3>
           <div className="w-4/6 h-0.5 bg-gray-200 mb-24" />
           <div className="w-96 flex justify-center items-center">
-            <form onSubmit={handleFormSubmit}>
+            <form onSubmit={handleFormSubmit} className="w-full">
               <div className="flex flex-col mb-8">
                 <label>E-mail:</label>
                 <input
@@ -78,6 +89,7 @@ function LogInPage() {
                   Log In
                 </button>
               </div>
+              {loginError && loginError}
             </form>
           </div>
         </div>

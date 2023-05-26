@@ -21,6 +21,16 @@ const activeUserSlice = createSlice({
       state.activeUser = { ...action.payload };
       localStorage.setItem("activeUser", JSON.stringify(action.payload));
     },
+    editActiveUser(state, action) {
+      const updatedUser = {
+        ...state.activeUser,
+        ...action.payload,
+      };
+      state.activeUser = {
+        ...updatedUser,
+      };
+      localStorage.setItem("activeUser", JSON.stringify(updatedUser));
+    },
     removeActiveUser(state, action) {
       state.activeUser = null;
       localStorage.removeItem("activeUser");
@@ -28,5 +38,6 @@ const activeUserSlice = createSlice({
   },
 });
 
-export const { addActiveUser, removeActiveUser } = activeUserSlice.actions;
+export const { addActiveUser, editActiveUser, removeActiveUser } =
+  activeUserSlice.actions;
 export const ActiveUserReducer = activeUserSlice.reducer;
