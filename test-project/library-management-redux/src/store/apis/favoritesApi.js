@@ -56,7 +56,6 @@ export const {
   useFetchFavoritesQuery,
   useAddFavoriteMutation,
   useDeleteFavoriteMutation,
-  use,
 } = favoritesApi;
 
 export { favoritesApi };

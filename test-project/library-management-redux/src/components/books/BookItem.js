@@ -1,10 +1,7 @@
-import Loader from "../common/Loader";
 import Button from "../common/Button";
 import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
 import { useState } from "react";
 import { useAddFavoriteMutation, useDeleteFavoriteMutation } from "../../store";
-
-import { useNavigate } from "react-router-dom";
 
 function BookItem({
   book,
@@ -12,15 +9,12 @@ function BookItem({
   deleteBook,
   bookAuthor,
   bookCategory,
-  editIsLoading,
-  deleteIsLoading,
   activeUser,
   favorites,
+  deleteMessage,
+  isDeleted,
+  setIsDeleted,
 }) {
-  const handleDeleteBook = (book) => {
-    deleteBook(book.id);
-  };
-
   const [favorite, setFavorite] = useState(false);
   const [addFavorite] = useAddFavoriteMutation();
   const [deleteFavorite] = useDeleteFavoriteMutation();
@@ -65,21 +59,12 @@ function BookItem({
         <td>
           {activeUser && (
             <>
-              <Button
-                rounded
-                onClick={() => handleEditBook(book.id)}
-                disabled={editIsLoading}
-              >
-                {editIsLoading ? <Loader /> : "Edit Book"}
+              <Button rounded onClick={() => handleEditBook(book.id)}>
+                Edit Book
               </Button>
 
-              <Button
-                rounded
-                danger
-                onClick={() => handleDeleteBook(book)}
-                disabled={deleteIsLoading}
-              >
-                {deleteIsLoading ? <Loader /> : "Delete"}
+              <Button rounded danger onClick={() => deleteMessage(book)}>
+                Delete
               </Button>
             </>
           )}

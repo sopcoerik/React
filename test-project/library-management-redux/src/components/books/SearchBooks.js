@@ -1,19 +1,17 @@
-import { useState } from "react";
 import { useTheme } from "../../hooks/useTheme";
 import Button from "../common/Button";
+import { Form, Formik } from "formik";
+import Input from "../common/Input";
 
 function SearchBooks({ setTerm }) {
   const theme = useTheme();
 
-  const [localTerm, setLocalTerm] = useState("");
-
-  const handleSearchTermChange = (e) => {
-    setLocalTerm(e.target.value);
+  const handleSubmit = (searchTerm) => {
+    setTerm(searchTerm);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setTerm(localTerm);
+  const initialFormValues = {
+    term: "",
   };
 
   return (
@@ -22,17 +20,25 @@ function SearchBooks({ setTerm }) {
         theme === "dark" ? "bg-black text-white" : "bg-slate-200"
       }  rounded`}
     >
-      <form onSubmit={handleSubmit} className="flex w-full">
-        <label>Search:</label>
-        <input
-          value={localTerm}
-          onChange={handleSearchTermChange}
-          className={`w-full border border-gray-400 ml-2 ${
-            theme === "dark" && "bg-black text-white"
-          } px-3 outline-none`}
-        />
-        <Button type="submit">Submit</Button>
-      </form>
+      <Formik
+        initialValues={initialFormValues}
+        onSubmit={(values, actions) => {
+          handleSubmit(values.term);
+        }}
+      >
+        <Form className="flex">
+          <Input
+            name="term"
+            type="text"
+            label="Search:"
+            className={`border border-gray-400 ml-2 px-3 outline-none`}
+            row
+          />
+          <Button type="submit" className="ml-3">
+            Submit
+          </Button>
+        </Form>
+      </Formik>
     </div>
   );
 }

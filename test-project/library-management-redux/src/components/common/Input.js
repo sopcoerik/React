@@ -2,7 +2,7 @@ import { useTheme } from "../../hooks/useTheme";
 import { Field, ErrorMessage } from "formik";
 import classNames from "classnames";
 
-function Input({ name, label, type, className = "" }) {
+function Input({ name, label, type, className = "", row }) {
   const theme = useTheme();
 
   const classesFromUsers = classNames(
@@ -15,7 +15,7 @@ function Input({ name, label, type, className = "" }) {
   );
 
   return (
-    <div className="w-full">
+    <div className={`${row && "flex items-center"}`}>
       <div>
         <label className="text-lg font-bold">{label}</label>
       </div>

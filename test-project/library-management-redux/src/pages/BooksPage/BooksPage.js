@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import SearchBooks from "../../components/books/SearchBooks";
@@ -17,6 +17,7 @@ import {
 
 import BookItem from "../../components/books/BookItem";
 import EditBookModal from "../../components/books/EditBookModal";
+import Modal from "../../components/common/Modal";
 
 function BooksPage() {
   const activeUser = useSelector((state) => state.activeUser.activeUser);
@@ -38,13 +39,21 @@ function BooksPage() {
   const [selectedCategoriesIds, setSelectedCategoriesIds] = useState([]);
   const { data: categories } = useFetchCategoriesQuery();
 
-  const { data: books, isLoading: booksAreLoading } = useFetchBooksQuery({
-    term: searchTerm || "",
+  const {
+    data: books,
+    isLoading: booksAreLoading,
+    refetch,
+  } = useFetchBooksQuery({
+    term: searchTerm,
     catId: selectedCategoriesIds[0],
     sortBy: sorting.sortBy,
     order: sorting.sortOrder,
     page,
   });
+
+  useEffect(() => {
+    refetch();
+  }, [searchTerm, refetch]);
 
   // Other
   const [deleteBook] = useDeleteBookMutation();
@@ -67,6 +76,9 @@ function BooksPage() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const { data: favorites } = useFetchFavoritesQuery(activeUser?.id);
+
+  const [isDeleted, setIsDeleted] = useState(false);
+  const [bookToDelete, setBookToDelete] = useState({});
 
   const handleReviewWindowState = (id) => {
     if (reviewWindow === false) {
@@ -91,6 +103,16 @@ function BooksPage() {
     setBookToEditId(id);
   };
 
+  const deleteMessage = (book) => {
+    setBookToDelete(book);
+    setIsDeleted(true);
+  };
+
+  const handleDeleteBook = (book) => {
+    setIsDeleted(false);
+    deleteBook(book.id);
+  };
+
   const mappingFunction = (array) => {
     return array?.map((book) => {
       const bookAuthor = authors?.find((author) => book.authorId === author.id);
@@ -104,10 +126,11 @@ function BooksPage() {
           handleEditBook={handleEditBook}
           bookAuthor={bookAuthor}
           bookCategory={bookCategory}
-          deleteBook={deleteBook}
           activeUser={activeUser}
-          handleBookDetailWindowState={handleBookDetailWindowState}
           favorites={favorites}
+          deleteMessage={deleteMessage}
+          isDeleted={isDeleted}
+          setIsDeleted={setIsDeleted}
         />
       );
     });
@@ -141,6 +164,17 @@ function BooksPage() {
           />
         )}
       </div>
+
+      {isDeleted && (
+        <Modal
+          headerText={`Are you sure you want to delete ${bookToDelete.title} book?`}
+          isOpen={isDeleted}
+          onOk={() => handleDeleteBook(bookToDelete)}
+          onCancel={() => setIsDeleted(false)}
+          confirmText="Yes"
+          cancelText="No"
+        ></Modal>
+      )}
 
       <EditBookModal
         bookToEditId={bookToEditId}

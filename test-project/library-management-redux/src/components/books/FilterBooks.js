@@ -6,11 +6,12 @@ function FilterBooks({ categories, setSelectedCategoriesIds }) {
   const theme = useTheme();
 
   const handleCheckboxChange = (id) => {
-    if (checked) {
+    if (!checked) {
       setChecked(true);
-      setSelectedCategoriesIds(id);
+      setSelectedCategoriesIds([id]);
     } else {
       setChecked(false);
+      setSelectedCategoriesIds([]);
     }
   };
   const renderedCategories = categories?.map((category) => (
