@@ -16,6 +16,7 @@ import "./index.css";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import LogInPage from "./pages/LoginPage/LoginPage";
 import UserPage from "./pages/UserPage/UserPage";
+import BookDetailPage from "./pages/BookDetailPage/BookDetailPage";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: "/user",
         element: <UserPage />,
+      },
+      {
+        path: "/detail",
+        element: <BookDetailPage />,
       },
     ],
   },

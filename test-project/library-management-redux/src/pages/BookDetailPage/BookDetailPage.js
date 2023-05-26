@@ -10,7 +10,11 @@ import {
   useFetchCategoriesQuery,
 } from "../../store";
 
-function BookDetailPage() {
+function BookDetailPage({
+  setReviewWindow,
+  bookToView,
+  handleReviewWindowState,
+}) {
   const activeUser = useSelector((state) => state.activeUser.activeUser);
 
   const [addReview] = useAddReviewMutation();
@@ -27,7 +31,7 @@ function BookDetailPage() {
           setReviewWindow={setReviewWindow}
           activeUser={activeUser}
           addReview={addReview}
-          reviewedBookId={bookToView.id}
+          reviewedBookId={bookToView?.id}
         />
       </Modal>
       {/* // TODO: this will be moved to it's own page */}

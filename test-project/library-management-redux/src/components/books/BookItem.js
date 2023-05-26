@@ -3,17 +3,16 @@ import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
 import { useState } from "react";
 import { useAddFavoriteMutation, useDeleteFavoriteMutation } from "../../store";
 
+import { Link } from "react-router-dom";
+
 function BookItem({
   book,
   handleEditBook,
-  deleteBook,
   bookAuthor,
   bookCategory,
   activeUser,
   favorites,
   deleteMessage,
-  isDeleted,
-  setIsDeleted,
 }) {
   const [favorite, setFavorite] = useState(false);
   const [addFavorite] = useAddFavoriteMutation();
@@ -51,7 +50,9 @@ function BookItem({
               )}
             </button>
           )}
-          <p className="cursor-pointer">{book.title}</p>
+          <Link to={`/detail/${book.id}`} target="_blank">
+            <p className="cursor-pointer">{book.title}</p>
+          </Link>
         </td>
         <td>{bookAuthor?.name}</td>
         <td>{book.description}</td>

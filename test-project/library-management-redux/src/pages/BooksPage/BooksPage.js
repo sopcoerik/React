@@ -18,6 +18,7 @@ import {
 import BookItem from "../../components/books/BookItem";
 import EditBookModal from "../../components/books/EditBookModal";
 import Modal from "../../components/common/Modal";
+import Loader from "../../components/common/Loader";
 
 function BooksPage() {
   const activeUser = useSelector((state) => state.activeUser.activeUser);
@@ -39,21 +40,13 @@ function BooksPage() {
   const [selectedCategoriesIds, setSelectedCategoriesIds] = useState([]);
   const { data: categories } = useFetchCategoriesQuery();
 
-  const {
-    data: books,
-    isLoading: booksAreLoading,
-    refetch,
-  } = useFetchBooksQuery({
+  const { data: books, isLoading: booksAreLoading } = useFetchBooksQuery({
     term: searchTerm,
     catId: selectedCategoriesIds[0],
     sortBy: sorting.sortBy,
     order: sorting.sortOrder,
     page,
   });
-
-  useEffect(() => {
-    refetch();
-  }, [searchTerm, refetch]);
 
   // Other
   const [deleteBook] = useDeleteBookMutation();
@@ -150,6 +143,11 @@ function BooksPage() {
         />
       </div>
       <div>
+        {booksAreLoading && (
+          <div className="w-full h-36 flex justify-center items-center">
+            <Loader />
+          </div>
+        )}
         {!booksAreLoading && (
           <BooksList
             books={books}

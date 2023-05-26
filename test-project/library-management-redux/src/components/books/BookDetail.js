@@ -23,12 +23,12 @@ function BookDetail({
 }) {
   const theme = useTheme();
 
-  const viewedBookReviews = reviews.filter(
-    (review) => review.bookId === bookToView.id
+  const viewedBookReviews = reviews?.filter(
+    (review) => review.bookId === bookToView?.id
   );
 
-  const category = categories.find(
-    (category) => category.id === bookToView.categoryId
+  const category = categories?.find(
+    (category) => category.id === bookToView?.categoryId
   );
 
   const [reviewToEdit, setReviewToEdit] = useState(null);
@@ -65,10 +65,10 @@ function BookDetail({
     setEditInput(null);
   };
 
-  const author = authors.find((author) => author.id === bookToView.authorId);
+  const author = authors?.find((author) => author.id === bookToView?.authorId);
 
-  const renderedReviews = viewedBookReviews.map((review) => {
-    const user = users.find((user) => user.id === review.createdById);
+  const renderedReviews = viewedBookReviews?.map((review) => {
+    const user = users?.find((user) => user.id === review.createdById);
     return (
       <div
         key={review.id}
@@ -142,23 +142,23 @@ function BookDetail({
           <div className="h-full w-2/4 p-12">
             <div className="w-full h-1/6 border-b border-gray-300 mt-2">
               <h3 className="text-lg font-bold">
-                Title: <p className="font-light italic">{bookToView.title}</p>
+                Title: <p className="font-light italic">{bookToView?.title}</p>
               </h3>
             </div>
             <div className="w-full h-1/6 border-b border-gray-300 mt-2">
               <h3 className="text-lg font-bold">
-                Author: <p className="font-light">{author.name}</p>
+                Author: <p className="font-light">{author?.name}</p>
               </h3>
             </div>
             <div className="w-full h-1/6 border-b border-gray-300 mt-2">
               <h3 className="text-lg font-bold">
-                Category: <p className="font-light">{category.name}</p>
+                Category: <p className="font-light">{category?.name}</p>
               </h3>
             </div>
             <div className="w-full h-1/6 border-b border-gray-300 mt-2">
               <h3 className="text-lg font-bold">
                 Description:
-                <p className="pl-3 font-light">{bookToView.description}</p>
+                <p className="pl-3 font-light">{bookToView?.description}</p>
               </h3>
             </div>
           </div>
@@ -170,7 +170,7 @@ function BookDetail({
             <div className="p-3 w-full h-full border flex flex-col gap-5 overflow-auto ">
               <>{renderedReviews}</>
               <div className="flex justify-end">
-                <Button primary onClick={() => addReviewModal(bookToView.id)}>
+                <Button primary onClick={() => addReviewModal(bookToView?.id)}>
                   + Add Review
                 </Button>
               </div>
