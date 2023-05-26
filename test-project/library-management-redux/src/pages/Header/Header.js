@@ -30,8 +30,8 @@ function Header() {
 
   const theme = useTheme();
   const activeUser = useSelector((state) => state.activeUser.activeUser);
-
-  const { data: favorites } = useFetchFavoritesQuery(activeUser?.id);
+// todo: move this to favorites component
+  const { data: favorites } = useFetchFavoritesQuery(activeUser?.id, {skip: !activeUser});
 
   const { data: authors } = useFetchAuthorsQuery();
   const { data: books } = useFetchBooksQuery();
@@ -95,6 +95,7 @@ function Header() {
       </div>
 
       <div>
+        {/* TODO: move favorites data fetching in favorites component */}
         {activeUser && (
           <Favorites favorites={favorites} authors={authors} books={books} />
         )}

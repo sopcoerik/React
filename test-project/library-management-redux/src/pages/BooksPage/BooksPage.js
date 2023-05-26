@@ -68,7 +68,7 @@ function BooksPage() {
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const { data: favorites } = useFetchFavoritesQuery(activeUser?.id);
+  const { data: favorites } = useFetchFavoritesQuery(activeUser?.id, {skip: !activeUser});
 
   const [isDeleted, setIsDeleted] = useState(false);
   const [bookToDelete, setBookToDelete] = useState({});
