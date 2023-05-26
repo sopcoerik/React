@@ -15,12 +15,10 @@ const favoritesApi = createApi({
           ];
         },
         query: (userId) => {
-          return userId
-            ? {
+          return  {
                 url: `/users/${userId}/favorites`,
                 method: "GET",
-              }
-            : { data: [] };
+              };
         },
       }),
 
