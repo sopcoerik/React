@@ -19,7 +19,9 @@ const booksApi = createApi({
           order = "asc",
           page = 1,
         } = {}) =>
-          `/books?&search=${term}&categoryId=${catId}&sortBy=${sortBy}&order=${order}&page=${page}&limit=5`,
+          `/books?&search=${term}${
+            catId ? "&categoryId=" + catId : ""
+          }&sortBy=${sortBy}&order=${order}&page=${page}&limit=5`,
       }),
 
       addBooks: builder.mutation({
