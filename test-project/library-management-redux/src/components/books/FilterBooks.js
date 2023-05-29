@@ -37,12 +37,7 @@ function FilterBooks({ categories, setSelectedCategoriesIds }) {
         <label>Filter Books By Category: &nbsp;</label>
         <div className={`flex justify-around flex-wrap`}>
           <div>
-            <input
-              type="radio"
-              name="category"
-              onClick={handleShowAll}
-              checked
-            />
+            <input type="radio" name="category" onClick={handleShowAll} />
             All
           </div>
           {renderedCategories}
