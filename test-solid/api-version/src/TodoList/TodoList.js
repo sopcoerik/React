@@ -2,21 +2,18 @@ import { useState } from "react";
 import AddTodo from "../AddTodo/AddTodo";
 import TodoItemCheck from "../TodoItem/TodoItemCheck";
 
-import { useTodosFetch } from "../hooks/useTodosFetch";
-import { useTodoAdd } from "../hooks/useTodoAdd";
-import { useTodoDelete } from "../hooks/useTodoDelete";
-import { useTodoComplete } from "../hooks/useTodoComplete";
+import {useTodos} from "../hooks/useTodos";
 
 export default function TodoList() {
   const [addTodoIsOpen, setAddToDoIsOpen] = useState(false);
 
-  const deleteTodo = useTodoDelete();
+  // const completeTodo = useTodoComplete();
+  // const deleteTodo = useTodoDelete();
 
-  const addTodo = useTodoAdd();
+  const {todos: todoList, addTodo, getTodos} = useTodos();
 
-  const todoList = useTodosFetch();
-
-  const completeTodo = useTodoComplete();
+  const deleteTodo = fn => fn;
+  const completeTodo = fn => fn;
 
   const renderedTodos = todoList?.map((todo) => (
     <TodoItemCheck

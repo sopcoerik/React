@@ -5,32 +5,18 @@ import TodoItem from "./TodoItem";
 export default function TodoItemCheck({ todo, deleteTodo, completeTodo }) {
   const [completed, setCompleted] = useState(false);
 
-  const completeTask = (todoId) => {
-    setCompleted(true);
-
-    completeTodo(todoId, true);
-  };
-
-  const unCompleteTask = (todoId) => {
-    setCompleted(false);
-
-    completeTodo(todoId, false);
-  };
-
-  const changeTodoCompleted = (todoId) => {
-    if (todo.completed) {
-      completeTask(todoId);
-    } else {
-      unCompleteTask(todoId);
-    }
-  };
+  const changeTodoState = todoId => {
+    const newState = !todo.completed;
+    setCompleted(newState)
+    completeTodo(todoId, newState)
+  }
 
   return (
     <div className="flex gap-10">
       <input
         type="checkbox"
         checked={completed}
-        onChange={() => changeTodoCompleted(todo.id)}
+        onChange={() => changeTodoState(todo.id)}
       />
       <TodoItem todo={todo} deleteTodo={deleteTodo} />
     </div>
