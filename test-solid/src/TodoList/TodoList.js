@@ -1,20 +1,20 @@
 import { useState } from "react";
 import AddTodo from "../AddTodo/AddTodo";
-import TodoItem from "../TodoItem/TodoItem";
+import TodoItemCheck from "../TodoItem/TodoItemCheck";
 
 export default function TodoList() {
   const [addTodoIsOpen, setAddToDoIsOpen] = useState(false);
   const [todoList, setTodoList] = useState([]);
 
   const renderedTodos = todoList.map((todo) => (
-    <TodoItem
+    <TodoItemCheck
       key={todo.todoName}
       todo={todo}
       tasks={todoList}
       setTasks={setTodoList}
     />
   ));
-
+  console.log(todoList);
   return (
     <div>
       <div>{renderedTodos}</div>
