@@ -1,0 +1,6 @@
+export { default as Author } from './author'
+export { default as Book } from './book'
+export { default as Category } from './category'
+export { default as Favorite } from './favorite'
+export { default as Review } from './review'
+export { default as User } from './user'

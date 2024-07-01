@@ -18,13 +18,12 @@
       "title": "Refined Bronze Car",
       "userId": 1,
       "id": 1
+    },
+    {
+      "title": "Ergonomic Frozen Bike",
+      "userId": 2,
+      "id": 2
     }
   ],
-  "photos": [
-    {
-      "albumId": 1,
-      "url": "https://loremflickr.com/150/150/abstract?lock=43189",
-      "id": 3
-    }
-  ]
+  "photos": []
 }
