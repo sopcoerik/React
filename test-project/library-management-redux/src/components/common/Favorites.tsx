@@ -49,31 +49,26 @@ function Favorites({ activeUser }: TFavoritesProps) {
 
 	return (
 		<div className='relative'>
-			<div
-				onClick={handleFavoritesState}
-				className='hover:cursor-pointer'
-			>
+			<button onClick={handleFavoritesState}>
 				<GrFavorite className='text-3xl' />
-			</div>
+			</button>
 			{favOpen && (
 				<div
-					className={`absolute w-44 top-3/4 right-2/4 border rounded-lg border-gray-500 ${
+					className={`absolute top-3/4 right-2/4 border min-w-48 rounded-lg border-gray-500 ${
 						theme === 'dark'
 							? 'bg-black text-white'
 							: 'bg-white text-black'
 					}`}
 				>
-					<div>
-						{favOpen &&
-						renderedFavorites?.length &&
-						renderedFavorites.length > 0 ? (
-							renderedFavorites
-						) : (
-							<p className='p-1'>
-								Add a book to your favorites! :{')'}
-							</p>
-						)}
-					</div>
+					{favOpen &&
+					renderedFavorites?.length &&
+					renderedFavorites.length > 0 ? (
+						renderedFavorites
+					) : (
+						<p className='p-1'>
+							Add a book to your favorites! :{')'}
+						</p>
+					)}
 				</div>
 			)}
 		</div>
