@@ -1,65 +1,66 @@
 {
-  "name": "library-management",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@auth0/auth0-react": "^2.2.4",
-    "@faker-js/faker": "^8.0.0",
-    "@ory/client": "^1.12.1",
-    "@reduxjs/toolkit": "^1.9.5",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/bcrypt": "^5.0.2",
-    "aws-amplify": "^6.4.3",
-    "axios": "^1.4.0",
-    "classnames": "^2.3.2",
-    "formik": "^2.2.9",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-icons": "^4.8.0",
-    "react-redux": "^8.0.5",
-    "react-router-dom": "^6.11.1",
-    "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4",
-    "yup": "^1.1.1"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "coupling-graph": "npx madge --extensions js,jsx,ts,tsx,css,md,mdx ./ --exclude '.next|tailwind.config.js|reset.d.ts|prettier.config.js|postcss.config.js|playwright.config.ts|next.config.js|next-env.d.ts|instrumentation.ts|e2e/|README.md|.storybook/|.eslintrc.js' --image graph.svg"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@aws-amplify/backend": "^1.0.4",
-    "@aws-amplify/backend-cli": "^1.2.2",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
-    "aws-cdk": "^2.151.0",
-    "aws-cdk-lib": "^2.151.0",
-    "constructs": "^10.3.0",
-    "esbuild": "^0.23.0",
-    "tailwindcss": "^3.3.2",
-    "tsx": "^4.16.5",
-    "typescript": "^4.9.5"
-  }
+	"name": "library-management",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+		"@auth0/auth0-react": "^2.2.4",
+		"@faker-js/faker": "^8.0.0",
+		"@ory/client": "^1.12.1",
+		"@reduxjs/toolkit": "^1.9.5",
+		"@testing-library/jest-dom": "^5.16.5",
+		"@testing-library/react": "^13.4.0",
+		"@testing-library/user-event": "^13.5.0",
+		"@types/bcrypt": "^5.0.2",
+		"aws-amplify": "^6.4.3",
+		"axios": "^1.4.0",
+		"classnames": "^2.3.2",
+		"formik": "^2.2.9",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-icons": "^4.8.0",
+		"react-redux": "^8.0.5",
+		"react-router-dom": "^6.11.1",
+		"react-scripts": "5.0.1",
+		"web-vitals": "^2.1.4",
+		"yup": "^1.1.1"
+	},
+	"scripts": {
+		"start": "PORT=3001 react-scripts start",
+		"build": "react-scripts build",
+		"kratos": "npx @ory/cli tunnel --project 76a81c19-ec8f-4812-a086-7a6de7906c92 --dev http://localhost:3001",
+		"test": "react-scripts test",
+		"eject": "react-scripts eject",
+		"coupling-graph": "npx madge --extensions js,jsx,ts,tsx,css,md,mdx ./ --exclude '.next|tailwind.config.js|reset.d.ts|prettier.config.js|postcss.config.js|playwright.config.ts|next.config.js|next-env.d.ts|instrumentation.ts|e2e/|README.md|.storybook/|.eslintrc.js' --image graph.svg"
+	},
+	"eslintConfig": {
+		"extends": [
+			"react-app",
+			"react-app/jest"
+		]
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	},
+	"devDependencies": {
+		"@aws-amplify/backend": "^1.0.4",
+		"@aws-amplify/backend-cli": "^1.2.2",
+		"@types/react": "^18.3.3",
+		"@types/react-dom": "^18.3.0",
+		"aws-cdk": "^2.151.0",
+		"aws-cdk-lib": "^2.151.0",
+		"constructs": "^10.3.0",
+		"esbuild": "^0.23.0",
+		"tailwindcss": "^3.3.2",
+		"tsx": "^4.16.5",
+		"typescript": "^4.9.5"
+	}
 }

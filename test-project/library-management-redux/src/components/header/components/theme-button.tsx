@@ -1,7 +1,7 @@
 import { BsSun } from 'react-icons/bs'
 import { FaCloudMoon } from 'react-icons/fa'
-import { useTheme } from '../../hooks/useTheme'
-import { setTheme } from '../../store'
+import { useTheme } from '../../../hooks/useTheme'
+import { setTheme } from '../../../store'
 import { useDispatch } from 'react-redux'
 
 export const ThemeButton = () => {
@@ -15,7 +15,7 @@ export const ThemeButton = () => {
 
 	return (
 		<button
-			className='relative text-4xl'
+			className='text-3xl'
 			onClick={handleThemeChange}
 		>
 			{theme === 'dark' ? <FaCloudMoon /> : <BsSun />}
