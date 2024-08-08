@@ -1,8 +1,8 @@
 import { GoChevronDown, GoChevronUp } from 'react-icons/go'
-import { useTheme } from '../../hooks/useTheme'
+import { useTheme } from '@hooks'
 import Button from '../common/Button'
 import { ReactNode } from 'react'
-import { TBook, TSortingState } from '../../types'
+import { TBook, TSortingState } from '@types'
 import { Session } from '@ory/client'
 
 type TBooksListProps = {

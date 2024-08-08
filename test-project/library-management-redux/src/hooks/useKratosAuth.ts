@@ -1,7 +1,7 @@
 import { FrontendApi, Configuration, Session, Identity } from '@ory/client'
 import { useState, useCallback, useMemo } from 'react'
 
-export const useKratosAuth = () => {
+export function useKratosAuth() {
 	const basePath = useMemo(
 		() => process.env.REACT_APP_ORY_URL || 'http://localhost:4000',
 		[]

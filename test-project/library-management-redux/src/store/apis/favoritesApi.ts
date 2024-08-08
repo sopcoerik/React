@@ -4,7 +4,7 @@ import {
 	FetchFavoritesParams,
 	AddFavoritePayload,
 	DeleteFavoriteParams,
-} from '../../types'
+} from '@types'
 
 const favoritesApi = createApi({
 	reducerPath: 'favorites',

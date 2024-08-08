@@ -3,8 +3,8 @@ import { useFetchUsersQuery } from '../../store'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 
-import { useTheme } from '../../hooks/useTheme'
-import { TUser } from '../../types'
+import { useTheme } from '@hooks'
+import { TUser } from '@types'
 
 function LogInPage() {
 	const [email, setEmail] = useState('')

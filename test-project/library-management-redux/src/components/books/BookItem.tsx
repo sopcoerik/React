@@ -2,7 +2,7 @@ import Button from '../common/Button'
 import { MdFavoriteBorder, MdFavorite } from 'react-icons/md'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Author, TBook, TCategory, TFavorite } from '../../types'
+import { Author, TBook, TCategory, TFavorite } from '@types'
 import { Session } from '@ory/client'
 
 type TBookItemProps = {

@@ -15,7 +15,7 @@ import Loader from '../../components/common/Loader'
 import Input from '../../components/common/Input'
 
 import { Form, Formik } from 'formik'
-import { TCategory } from '../../types'
+import { TCategory } from '@types'
 import { useActiveUser } from '../../store/slices/activeUserSlice'
 
 function CategoriesPage() {

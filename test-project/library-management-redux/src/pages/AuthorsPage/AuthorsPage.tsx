@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import AuthorsList from '../../components/authors/AuthorsList'
+import AuthorsList from '../../components/authors/authors-list'
 
 import Loader from '../../components/common/Loader'
 import Modal from '../../components/common/Modal'
@@ -14,7 +14,7 @@ import {
 	useEditAuthorMutation,
 	useDeleteAuthorMutation,
 } from '../../store'
-import { Author } from '../../types'
+import { Author } from '@types'
 import { useActiveUser } from '../../store/slices/activeUserSlice'
 
 function AuthorsPage() {

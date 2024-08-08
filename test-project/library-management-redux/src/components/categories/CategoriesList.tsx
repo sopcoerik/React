@@ -1,6 +1,6 @@
 import { Session } from '@ory/client'
-import { useTheme } from '../../hooks/useTheme'
-import { TCategory } from '../../types'
+import { useTheme } from '@hooks'
+import { TCategory } from '@types'
 
 type TCategoriesListProps = {
 	setModal(value: boolean): void

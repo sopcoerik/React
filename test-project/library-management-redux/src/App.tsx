@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom'
-import Header from './components/header/header'
-import { useTheme } from './hooks/useTheme'
+
+import { Header } from '@components'
+import { useTheme } from '@hooks'
 
 function App() {
 	const theme = useTheme()

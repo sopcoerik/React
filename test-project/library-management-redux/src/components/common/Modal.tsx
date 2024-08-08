@@ -1,7 +1,7 @@
 import { RxCross2 } from 'react-icons/rx'
 import { createPortal } from 'react-dom'
 import Button from './Button'
-import { useTheme } from '../../hooks/useTheme'
+import { useTheme } from '@hooks'
 import { ReactNode } from 'react'
 
 type TModalProps = {

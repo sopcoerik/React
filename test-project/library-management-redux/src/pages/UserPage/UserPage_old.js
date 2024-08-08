@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { useTheme } from '../../hooks/useTheme'
+import { useTheme } from '@hooks'
 import { useEffect, useState } from 'react'
 import { useUpdateUserMutation } from '../../store'
 import { useNavigate } from 'react-router-dom'

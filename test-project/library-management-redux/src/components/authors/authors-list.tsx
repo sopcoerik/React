@@ -1,6 +1,6 @@
 import { Session } from '@ory/client'
-import { useTheme } from '../../hooks/useTheme'
-import { Author } from '../../types'
+import { useTheme } from '@hooks'
+import { Author } from '@types'
 
 type TAuthorsListProps = {
 	setModal(value: boolean): void

@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useTheme } from '../../hooks/useTheme'
-import { TCategory } from '../../types'
+import { useTheme } from '@hooks'
+import { TCategory } from '@types'
 
 type TFilterBooksProps = {
 	categories: TCategory[]

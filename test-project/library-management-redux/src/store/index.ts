@@ -45,4 +45,8 @@ export * from './apis/usersApi_backup'
 export * from './apis/reviewsApi'
 export * from './apis/favoritesApi'
 export { setTheme } from './slices/themeSlice'
-export { updateActiveUserData, resetActiveUser } from './slices/activeUserSlice'
+export {
+	updateActiveUserData,
+	resetActiveUser,
+	useActiveUser,
+} from './slices/activeUserSlice'

@@ -2,26 +2,25 @@ import { useDispatch } from 'react-redux'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import App from '../App'
-import ThemeProvider from '../contexts/themeContext'
+import { ThemeProvider } from '@providers'
 import AuthorsPage from '../pages/AuthorsPage/AuthorsPage'
 import BookDetailPage from '../pages/BookDetailPage/BookDetailPage'
 import BooksPage from '../pages/BooksPage/BooksPage'
 import CategoriesPage from '../pages/CategoriesPage/CategoriesPage'
 import UserPage from '../pages/UserPage/UserPage'
-import { useKratosAuth } from '../hooks/useKratosAuth'
+import { useKratosAuth } from '@hooks'
 import {
 	updateActiveUserData,
 	useActiveUser,
 } from '../store/slices/activeUserSlice'
 
-export const Router = () => {
+export function Router() {
 	const { session, logoutUrl } = useKratosAuth()
 	const dispatch = useDispatch()
 
 	const activeUser = useActiveUser()
 
 	if (session === 'loading') {
-		// Still loading
 		return <h1>Loading...</h1>
 	}
 

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useTheme } from '../../../hooks/useTheme'
+import { useTheme } from '@hooks'
 import { FC } from 'react'
 
 type TNavElementProps = {

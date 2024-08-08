@@ -1,6 +1,6 @@
-import { useTheme } from '../../../hooks/useTheme'
+import { useTheme } from '@hooks'
 import { useFetchAuthorsQuery, useFetchBooksQuery } from '../../../store'
-import { Author, TBook, TFavorite } from '../../../types'
+import { Author, TBook, TFavorite } from '@types'
 import FavoritesItem from './favorites-item'
 
 type TFavoritesListProps = {

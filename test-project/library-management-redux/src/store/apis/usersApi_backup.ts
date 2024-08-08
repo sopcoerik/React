@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { TUser, UserPayload, UpdateUserParams } from '../../types'
+import { TUser, UserPayload, UpdateUserParams } from '@types'
 
 const apiBaseUrl = 'https://666c43f349dbc5d7145d5e5e.mockapi.io'
 

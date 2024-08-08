@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { FetchBooksParams, TBook } from '../../types'
+import { FetchBooksParams, TBook } from '@types'
 
 const booksApi = createApi({
 	reducerPath: 'books',

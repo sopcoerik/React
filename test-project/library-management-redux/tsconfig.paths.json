@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"baseUrl": "src",
+		"paths": {
+			"@": ["./*"],
+			"@components": ["components/index"],
+			"@contexts": ["contexts/index"],
+			"@hooks": ["hooks/index"],
+			"@pages": ["pages/index"],
+			"@providers": ["providers/index"],
+			"@security": ["security/index"],
+			"@store": ["store/index"],
+			"@types": ["types/index"]
+		}
+	}
+}

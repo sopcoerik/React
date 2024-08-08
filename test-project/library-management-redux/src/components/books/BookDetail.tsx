@@ -2,7 +2,7 @@ import { createPortal } from 'react-dom'
 import { MdModeEditOutline } from 'react-icons/md'
 import { BsTrashFill } from 'react-icons/bs'
 
-import { useTheme } from '../../hooks/useTheme'
+import { useTheme } from '@hooks'
 
 import {
 	useDeleteReviewMutation,
@@ -10,7 +10,7 @@ import {
 } from '../../store/apis/reviewsApi'
 import { ChangeEvent, FormEvent, useState } from 'react'
 import Button from '../common/Button'
-import { Author, TBook, TCategory, TReview } from '../../types'
+import { Author, TBook, TCategory, TReview } from '@types'
 import { Session } from '@ory/client'
 import { BookDetailCard } from './BookDetailCard'
 

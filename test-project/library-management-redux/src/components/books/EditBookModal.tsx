@@ -3,7 +3,7 @@ import Modal from '../common/Modal'
 import Dropdown from '../common/Dropdown'
 import { Formik, Form } from 'formik'
 import Input from '../common/Input'
-import { Author, TBook, TCategory } from '../../types'
+import { Author, TBook, TCategory } from '@types'
 import Button from '../common/Button'
 import { Session } from '@ory/client'
 

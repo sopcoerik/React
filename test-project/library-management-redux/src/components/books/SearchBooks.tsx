@@ -1,4 +1,4 @@
-import { useTheme } from '../../hooks/useTheme'
+import { useTheme } from '@hooks'
 import Button from '../common/Button'
 import { Form, Formik } from 'formik'
 import Input from '../common/Input'

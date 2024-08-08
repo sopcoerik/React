@@ -1,4 +1,4 @@
-import { TBook, Author } from '../../../types'
+import { TBook, Author } from '@types'
 
 type TFavoritesItem = {
 	favorite: TBook

@@ -1,12 +1,15 @@
 import { Session } from '@ory/client'
-import { useTheme } from '../../hooks/useTheme'
-import { useActiveUser } from '../../store/slices/activeUserSlice'
 
-import Navigation from './components/navigation'
-import UserActionButtons from './components/user-action-buttons'
-import Logo from './components/logo'
-import FavoritesButton from './components/favorites-button'
-import UserGreet from './components/user-greet'
+import { useTheme } from '@hooks'
+import { useActiveUser } from '@store'
+
+import {
+	Logo,
+	Navigation,
+	UserActionButtons,
+	FavoritesButton,
+	UserGreet,
+} from './components'
 
 export default function Header() {
 	const theme = useTheme()

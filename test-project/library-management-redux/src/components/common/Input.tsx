@@ -1,4 +1,4 @@
-import { useTheme } from '../../hooks/useTheme'
+import { useTheme } from '@hooks'
 import { Field, ErrorMessage } from 'formik'
 import classNames from 'classnames'
 import { ChangeEvent } from 'react'

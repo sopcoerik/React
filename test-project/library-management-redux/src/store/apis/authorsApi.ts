@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { FetchAuthorsResponse, Author } from '../../types'
+import { FetchAuthorsResponse, Author } from '@types'
 
 export const authorsApi = createApi({
 	reducerPath: 'authors',

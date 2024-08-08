@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useTheme } from '../../hooks/useTheme'
-import { Author, TCategory } from '../../types'
+import { useTheme } from '@hooks'
+import { Author, TCategory } from '@types'
 
 type TDropdownProps = {
 	options: Author[] | TCategory[]

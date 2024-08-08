@@ -1,8 +1,8 @@
+import { useState } from 'react'
 import { GrFavorite } from 'react-icons/gr'
 import { Session } from '@ory/client'
-import { useState } from 'react'
 
-import { useFetchFavoritesQuery } from '../../../store'
+import { useFetchFavoritesQuery } from '@store'
 import FavoritesList from './favorites-list'
 
 type TFavoritesButtonProps = {

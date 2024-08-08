@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { useTheme } from '../../hooks/useTheme'
+import { useTheme } from '@hooks'
 import { useUpdateUserMutation } from '../../store'
 import Input from '../../components/common/Input'
 import Button from '../../components/common/Button'

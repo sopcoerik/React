@@ -1,6 +1,7 @@
+import { ReactNode } from 'react'
+
 import { ThemeButton } from './theme-button'
 import UserProfileButton from './user-profile-button'
-import { ReactNode } from 'react'
 
 type TUserActionButtonsProps = {
 	children?: ReactNode

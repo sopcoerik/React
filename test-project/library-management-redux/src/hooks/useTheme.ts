@@ -1,9 +1,7 @@
 import { useSelector } from 'react-redux'
 
-function useTheme() {
+export function useTheme() {
 	return useSelector(
 		(state: { theme: { theme: string } }) => state.theme.theme
 	)
 }
-
-export { useTheme }

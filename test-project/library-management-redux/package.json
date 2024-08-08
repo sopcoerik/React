@@ -25,10 +25,10 @@
 		"yup": "^1.1.1"
 	},
 	"scripts": {
-		"start": "PORT=3001 react-scripts start",
-		"build": "react-scripts build",
+		"start": "PORT=3001 react-app-rewired start",
+		"build": "react-app-rewired build",
 		"kratos": "npx @ory/cli tunnel --project 76a81c19-ec8f-4812-a086-7a6de7906c92 --dev http://localhost:3001",
-		"test": "react-scripts test",
+		"test": "react-app-rewired test",
 		"eject": "react-scripts eject",
 		"coupling-graph": "npx madge --extensions js,jsx,ts,tsx,css,md,mdx ./ --exclude '.next|tailwind.config.js|reset.d.ts|prettier.config.js|postcss.config.js|playwright.config.ts|next.config.js|next-env.d.ts|instrumentation.ts|e2e/|README.md|.storybook/|.eslintrc.js' --image graph.svg"
 	},
@@ -53,13 +53,17 @@
 	"devDependencies": {
 		"@aws-amplify/backend": "^1.0.4",
 		"@aws-amplify/backend-cli": "^1.2.2",
+		"@types/node": "^22.1.0",
 		"@types/react": "^18.3.3",
 		"@types/react-dom": "^18.3.0",
 		"aws-cdk": "^2.151.0",
 		"aws-cdk-lib": "^2.151.0",
 		"constructs": "^10.3.0",
+		"customize-cra": "^1.0.0",
 		"esbuild": "^0.23.0",
+		"react-app-rewired": "^2.2.1",
 		"tailwindcss": "^3.3.2",
+		"ts-node": "^10.9.2",
 		"tsx": "^4.16.5",
 		"typescript": "^4.9.5"
 	}

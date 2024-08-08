@@ -1,6 +1,6 @@
 import { BsSun } from 'react-icons/bs'
 import { FaCloudMoon } from 'react-icons/fa'
-import { useTheme } from '../../../hooks/useTheme'
+import { useTheme } from '@hooks'
 import { setTheme } from '../../../store'
 import { useDispatch } from 'react-redux'
 
